@@ -4,6 +4,7 @@ import {
   SiCss3,
   SiTypescript,
   SiReact,
+  SiVuedotjs,
   SiNextdotjs,
   SiTailwindcss,
   SiNodedotjs,
@@ -18,7 +19,11 @@ import {
   SiJest,
   SiEjs,
   SiGooglecloud,
-  SiPostman
+  SiPostman,
+  SiAmazonwebservices,
+  SiApollographql,
+  SiSalesforce,
+  SiPrismic,
 } from 'react-icons/si';
 import { GrGraphQl } from 'react-icons/gr';
 import { DiMysql } from "react-icons/di";
@@ -40,6 +45,7 @@ export const technologyMap = [
     name: 'Frontend',
     technologies: [
       { name: 'React', logo: SiReact, color: '#61DAFB', description: 'Library for building UIs' },
+      { name: 'Vue.js', logo: SiVuedotjs, color: '#4FC08D', description: 'Progressive JavaScript framework' },
       { name: 'Next.js', logo: SiNextdotjs, color: '#000000', description: 'React framework with SSR/SSG' },
       { name: 'Tailwind CSS', logo: SiTailwindcss, color: '#06B6D4', description: 'Utility-first CSS framework' },
       { name: 'EJS', logo: SiEjs, color: '#A91E50', description: 'Embedded JavaScript templating' },
@@ -52,10 +58,12 @@ export const technologyMap = [
       { name: 'Node.js', logo: SiNodedotjs, color: '#339933', description: 'JavaScript runtime environment' },
       { name: 'Express.js', logo: SiExpress, color: '#000000', description: 'Minimal web framework for Node.js' },
       { name: 'GraphQL', logo: GrGraphQl, color: '#E10098', description: 'Query language for APIs and runtime for executing queries' },
+      { name: 'Apollo GraphQL', logo: SiApollographql, color: '#311C87', description: 'GraphQL client and server implementation' },
       { name: 'REST APIs', logo: SiPostman, color: '#FF6C37', description: 'Architectural style for building scalable APIs' },
       { name: 'PostgreSQL', logo: SiPostgresql, color: '#336791', description: 'Relational database emphasizing extensibility' },
       { name: 'MongoDB', logo: SiMongodb, color: '#47A248', description: 'Document-oriented NoSQL database' },
       { name: 'Redis', logo: SiRedis, color: '#DC382D', description: 'In-memory key-value data store' },
+      { name: 'Prismic', logo: SiPrismic, color: '#5163BA', description: 'Headless CMS for content management' },
     ],
   },
   {
@@ -64,6 +72,8 @@ export const technologyMap = [
       { name: 'Docker', logo: SiDocker, color: '#2496ED', description: 'Container platform for apps' },
       { name: 'Vercel', logo: SiVercel, color: '#000000', description: 'Hosting and deployment platform' },
       { name: 'Google Cloud Platform', logo: SiGooglecloud, color: '#4285F4', description: 'Cloud computing services for hosting, storage, and computing' },
+      { name: 'AWS', logo: SiAmazonwebservices, color: '#FF9900', description: 'Cloud computing platform for scalable infrastructure' },
+      { name: 'Salesforce', logo: SiSalesforce, color: '#00A1E0', description: 'CRM and enterprise integration platform' },
     ],
   },
   {

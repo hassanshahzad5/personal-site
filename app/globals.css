@@ -20,7 +20,11 @@ body {
 }
 
 .clickable {
- @apply hover:scale-110 hover:cursor-pointer transition-transform
+ @apply hover:scale-105 hover:cursor-pointer transition-all duration-200
+}
+
+.clickable:hover {
+  @apply dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.15)] light:drop-shadow-[0_0_8px_rgba(0,0,0,0.1)]
 }
 
 .base-navtab {
@@ -32,11 +36,11 @@ body {
 }
 
 .experience-navtab {
-  @apply font-normal dark:bg-zinc-900 dark:hover:bg-zinc-800 light:bg-zinc-100 light:hover:bg-zinc-200 hover:scale-101 rounded-none
+  @apply font-normal dark:bg-zinc-900 dark:hover:bg-zinc-800 light:bg-zinc-100 light:hover:bg-zinc-200 hover:scale-101 rounded-none transition-all duration-200
 }
 
 .experience-navtab-active {
-  @apply font-bold dark:bg-zinc-800 dark:hover:bg-zinc-800 light:bg-zinc-200 light:hover:bg-zinc-200
+  @apply font-bold dark:bg-zinc-800 dark:hover:bg-zinc-800 light:bg-zinc-200 light:hover:bg-zinc-200 dark:shadow-inner light:shadow-inner
 }
 
 .navbar {
@@ -44,5 +48,5 @@ body {
 }
 
 .custom-section {
-  @apply flex flex-col w-[100%] p-5 dark:bg-zinc-900 light:bg-zinc-100 gap-5
+  @apply flex flex-col w-[100%] p-5 dark:bg-zinc-950 light:bg-zinc-50 gap-6
 }

@@ -59,7 +59,7 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className='w-[100vw] md:w-[inherit] flex flex-col md:flex-row justify-center md:justify-between py-3 items-center sticky top-0 dark:bg-zinc-950 light:bg-zinc-50'>
+    <nav className='w-[100vw] md:w-[100%] flex flex-col md:flex-row justify-center md:justify-between py-3 px-5 items-center sticky top-0 z-50 dark:bg-zinc-950 light:bg-zinc-50'>
       <div className={`${isMobile ? 'flex' : 'hidden'} w-[95%] items-center justify-between py-2 ${isMenuOpen ? 'mb-2' : 'mb-0'}`}>
         <button onClick={() => toggleTheme()} className='clickable icon border-1 rounded-full p-0.5'>
           {theme === 'dark' ? <MdOutlineDarkMode/> : <MdOutlineLightMode/>}

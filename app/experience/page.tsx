@@ -22,7 +22,8 @@ export default function Experience() {
     if (!matchedExperience) return (<div>Coming Soon...</div>); // No 'state' matched in experience.ts data file
     if (!matchedExperience.data || matchedExperience.data.length === 0) return (<div>Coming Soon...</div>); // No data in matched 'state' data array
 
-    const experienceJSX = matchedExperience.data.map((dp) => {
+    const experienceJSX = matchedExperience.data.map((dp, idx) => {
+      const isLast = idx === matchedExperience.data.length - 1;
       return (
         <ExperienceChip
           key={dp.company}
@@ -36,6 +37,7 @@ export default function Experience() {
           info={dp.info}
           tech={dp.tech}
           display={dp.display}
+          isLast={isLast}
           >
         </ExperienceChip>
       )
@@ -45,12 +47,12 @@ export default function Experience() {
   }
 
   return (
-    <section className='w-[100%] flex flex-col justify-center md:justify-between items-center border-1 dark:border-zinc-800 light:border-zinc-200 p-4 rounded-lg'>
-      <h2 className='text-2xl md:text-3xl mb-3'>Experience</h2>
+    <section className='w-[100%] flex flex-col justify-center md:justify-between items-center border-1 dark:border-zinc-800 light:border-zinc-200 p-4 rounded-xl dark:bg-zinc-900/50 light:bg-white/80 dark:shadow-lg dark:shadow-zinc-900/50 light:shadow-lg light:shadow-zinc-200/50 backdrop-blur-sm'>
+      <h2 className='text-2xl md:text-3xl mb-3 font-semibold bg-gradient-to-r dark:from-zinc-100 dark:to-zinc-400 light:from-zinc-700 light:to-zinc-900 bg-clip-text text-transparent'>Experience</h2>
       <nav className='w-[100%] flex flex-row border-1 dark:border-zinc-800 light:border-zinc-200'>
         {renderButtons()}
       </nav>
-      <article className='w-[100%] border-1 dark:border-zinc-800 light:border-zinc-200 p-4 flex flex-col gap-8'>
+      <article className='w-[100%] border-1 dark:border-zinc-800 light:border-zinc-200 p-4 flex flex-col'>
         {renderInformation()}
       </article>
     </section>
