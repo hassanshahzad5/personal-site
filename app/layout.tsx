@@ -35,7 +35,7 @@ export default function RootLayout({
       <ThemeProvider>
       <html lang='en' className='dark'>
         <body className={`${dmSans.variable} ${newsreader.variable} antialiased`}>
-          <main className='flex flex-col justify-self-center items-center w-full sm:w-[90vw] lg:w-[60vw]'>
+          <main className='flex flex-col items-center w-full max-w-4xl mx-auto'>
             <Navbar />
             {children}
             <Footer />

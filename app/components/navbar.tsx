@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 import { ThemeContext } from '../theme'
 
-// Breakpoints: mobile < 640px (sm), tablet 640-1024px (sm-lg), desktop > 1024px (lg)
+// Breakpoints: mobile < 768px (md), desktop >= 768px (md+)
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -49,14 +49,14 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className={`w-full flex flex-col sm:flex-row justify-center sm:justify-between 
+    <nav className={`w-full flex flex-col md:flex-row justify-center md:justify-between 
                      py-3 px-5 items-center sticky top-0 z-50 transition-all duration-200
                      ${isScrolled 
                        ? 'dark:bg-neutral-900/80 light:bg-white/80 backdrop-blur-md border-b dark:border-neutral-800/50 light:border-neutral-200/50' 
                        : 'dark:bg-transparent light:bg-transparent'}`}>
       
-      {/* Mobile Header - only shows below sm breakpoint */}
-      <div className={`flex sm:hidden w-[95%] items-center justify-between py-2 ${isMenuOpen ? 'mb-2' : 'mb-0'}`}>
+      {/* Mobile Header - only shows below md breakpoint */}
+      <div className={`flex md:hidden w-[95%] items-center justify-between py-2 ${isMenuOpen ? 'mb-2' : 'mb-0'}`}>
         <button 
           onClick={() => toggleTheme()} 
           className='clickable flex items-center justify-center w-9 h-9 
@@ -84,13 +84,13 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Main Nav Content - always visible on desktop (sm+), toggle on mobile */}
-      <div className={`${isMenuOpen ? 'flex' : 'hidden'} sm:flex
-                       w-full flex-col sm:flex-row justify-center sm:justify-between items-center
+      {/* Main Nav Content - always visible on desktop (md+), toggle on mobile */}
+      <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex
+                       w-full flex-col md:flex-row justify-center md:justify-between items-center gap-2 md:gap-0
                        ${isMenuOpen ? 'animate-fade-in' : ''}`}>
         
         {/* Navigation Links */}
-        <div className='flex flex-col w-full sm:w-auto sm:flex-row mb-3 sm:mb-0 sm:gap-1'>
+        <div className='flex flex-col w-full md:w-auto md:flex-row mb-3 md:mb-0 md:gap-1'>
           {navTabs.map((tab) => {
             const active = pathname === tab.href;
             return (
@@ -98,7 +98,7 @@ export default function Navbar() {
                 key={tab.href} 
                 href={tab.href} 
                 onClick={closeMenuOnMobile} 
-                className={`px-4 py-2 rounded-none sm:rounded-md
+                className={`px-4 py-2 rounded-none md:rounded-md
                            text-center font-medium transition-all duration-200
                            ${active 
                              ? 'dark:text-neutral-100 light:text-neutral-900 dark:bg-neutral-900 light:bg-neutral-100' 
@@ -168,7 +168,7 @@ export default function Navbar() {
           
           <button 
             onClick={() => toggleTheme()} 
-            className='hidden sm:flex clickable items-center justify-center w-9 h-9
+            className='hidden md:flex clickable items-center justify-center w-9 h-9
                        dark:bg-neutral-800/60 light:bg-white/60
                        border dark:border-neutral-700/50 light:border-neutral-300/50
                        rounded-md backdrop-blur-sm transition-all duration-200'

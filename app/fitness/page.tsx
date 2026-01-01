@@ -74,24 +74,45 @@ export default function FitnessPage() {
           </div>
         </div>
 
-        <div className='grid grid-cols-4 sm:grid-cols-6 gap-2'>
+        {/* SBDT Row */}
+        <div className='grid grid-cols-4 gap-2'>
           {[
-            { label: 'SQ', value: convert(bests.squat), order: 'sm:order-2', span: '' },
-            { label: 'BP', value: convert(bests.bench), order: 'sm:order-3', span: '' },
-            { label: 'DL', value: convert(bests.deadlift), order: 'sm:order-4', span: '' },
-            { label: 'Total', value: convert(bests.total), order: 'sm:order-5', span: '' },
-            { label: 'BW', value: convert(bests.bodyweight), order: 'sm:order-1', span: 'col-span-2 sm:col-span-1' },
-            { label: 'DOTS', value: bests.dots.toFixed(2), noUnit: true, order: 'sm:order-6', span: 'col-span-2 sm:col-span-1' },
+            { label: 'SQ', value: convert(bests.squat) },
+            { label: 'BP', value: convert(bests.bench) },
+            { label: 'DL', value: convert(bests.deadlift) },
+            { label: 'Total', value: convert(bests.total) },
           ].map((lift) => (
             <div
               key={lift.label}
-              className={`flex flex-col items-center justify-center p-2.5 rounded-md min-h-[56px]
+              className='flex flex-col items-center justify-center p-2.5 rounded-md min-h-[56px]
                          dark:bg-neutral-800/30 light:bg-neutral-50
-                         border dark:border-neutral-800 light:border-neutral-200 ${lift.order} ${lift.span}`}
+                         border dark:border-neutral-800 light:border-neutral-200'
             >
               <span className='text-sm sm:text-base font-semibold dark:text-neutral-100 light:text-neutral-900 tabular-nums'>
                 {lift.value}
-                {!lift.noUnit && <span className='text-[10px] sm:text-xs font-normal ml-0.5 dark:text-neutral-500 light:text-neutral-500'>{unit}</span>}
+                <span className='text-[10px] sm:text-xs font-normal ml-0.5 dark:text-neutral-500 light:text-neutral-500'>{unit}</span>
+              </span>
+              <span className='text-[10px] sm:text-xs dark:text-neutral-500 light:text-neutral-500 mt-0.5'>
+                {lift.label}
+              </span>
+            </div>
+          ))}
+        </div>
+        {/* BW + DOTS Row */}
+        <div className='grid grid-cols-2 gap-2 mt-2'>
+          {[
+            { label: 'BW', value: convert(bests.bodyweight), showUnit: true },
+            { label: 'DOTS', value: bests.dots.toFixed(2), showUnit: false },
+          ].map((lift) => (
+            <div
+              key={lift.label}
+              className='flex flex-col items-center justify-center p-2.5 rounded-md min-h-[56px]
+                         dark:bg-neutral-800/30 light:bg-neutral-50
+                         border dark:border-neutral-800 light:border-neutral-200'
+            >
+              <span className='text-sm sm:text-base font-semibold dark:text-neutral-100 light:text-neutral-900 tabular-nums'>
+                {lift.value}
+                {lift.showUnit && <span className='text-[10px] sm:text-xs font-normal ml-0.5 dark:text-neutral-500 light:text-neutral-500'>{unit}</span>}
               </span>
               <span className='text-[10px] sm:text-xs dark:text-neutral-500 light:text-neutral-500 mt-0.5'>
                 {lift.label}
@@ -110,7 +131,7 @@ export default function FitnessPage() {
           Records
         </h3>
         
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
           {bests.records.map((record, idx) => (
             <div
               key={idx}
@@ -207,22 +228,21 @@ export default function FitnessPage() {
                   {/* Title and rest - indented to align with date text on desktop */}
                   <div className='sm:ml-7 flex flex-col mb-3'>
                     <div className='text-center sm:text-left'>
-                      {meet.usaplUrl ? (
-                        <a
-                          href={meet.usaplUrl}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                          className='inline-flex items-center gap-1.5 text-lg sm:text-xl font-semibold dark:text-neutral-100 light:text-neutral-900
-                                     hover:underline underline-offset-2 transition-colors'
-                        >
-                          {meet.name}
-                          <FiExternalLink className='w-3.5 h-3.5 dark:text-neutral-500 light:text-neutral-400' />
-                        </a>
-                      ) : (
-                        <h4 className='text-lg sm:text-xl font-semibold dark:text-neutral-100 light:text-neutral-900'>
-                          {meet.name}
-                        </h4>
-                      )}
+                      <h4 className='text-lg sm:text-xl font-semibold dark:text-neutral-100 light:text-neutral-900'>
+                        {meet.usaplUrl ? (
+                          <a
+                            href={meet.usaplUrl}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='inline-flex items-center gap-1.5 hover:underline underline-offset-2 transition-colors'
+                          >
+                            {meet.name}
+                            <FiExternalLink className='w-3.5 h-3.5 dark:text-neutral-500 light:text-neutral-400' />
+                          </a>
+                        ) : (
+                          meet.name
+                        )}
+                      </h4>
                     </div>
                     
                     {/* Placements */}
@@ -246,25 +266,41 @@ export default function FitnessPage() {
                     </div>
                   
                     {/* Lift Details - Grid */}
-                    <div className='grid grid-cols-4 sm:grid-cols-6 gap-1.5 mt-3'>
-                    {[
-                      { label: 'SQ', value: meet.squat, showUnit: true, order: 'sm:order-2', span: '' },
-                      { label: 'BP', value: meet.bench, showUnit: true, order: 'sm:order-3', span: '' },
-                      { label: 'DL', value: meet.deadlift, showUnit: true, order: 'sm:order-4', span: '' },
-                      { label: 'Total', value: meet.total, showUnit: true, order: 'sm:order-5', span: '' },
-                      { label: 'BW', value: meet.bodyweight, showUnit: true, order: 'sm:order-1', span: 'col-span-2 sm:col-span-1' },
-                      { label: 'DOTS', value: meet.dots, showUnit: false, isFixed: true, order: 'sm:order-6', span: 'col-span-2 sm:col-span-1' },
-                    ].map((lift) => (
-                      <div 
-                        key={lift.label}
-                        className={`flex flex-col items-center justify-center px-2 py-2 rounded dark:bg-neutral-800/40 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200 min-h-[48px] ${lift.order} ${lift.span}`}
-                      >
-                        <span className='text-xs font-medium dark:text-neutral-300 light:text-neutral-700 tabular-nums'>
-                          {lift.isFixed ? lift.value.toFixed(2) : convert(lift.value)}{lift.showUnit && unit}
-                        </span>
-                        <span className='text-[9px] dark:text-neutral-500 light:text-neutral-500 mt-0.5'>{lift.label}</span>
-                      </div>
-                    ))}
+                    {/* SBDT Row */}
+                    <div className='grid grid-cols-4 gap-1.5 mt-3'>
+                      {[
+                        { label: 'SQ', value: meet.squat },
+                        { label: 'BP', value: meet.bench },
+                        { label: 'DL', value: meet.deadlift },
+                        { label: 'Total', value: meet.total },
+                      ].map((lift) => (
+                        <div 
+                          key={lift.label}
+                          className='flex flex-col items-center justify-center px-2 py-2 rounded dark:bg-neutral-800/40 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200 min-h-[48px]'
+                        >
+                          <span className='text-xs font-medium dark:text-neutral-300 light:text-neutral-700 tabular-nums'>
+                            {convert(lift.value)}{unit}
+                          </span>
+                          <span className='text-[9px] dark:text-neutral-500 light:text-neutral-500 mt-0.5'>{lift.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* BW + DOTS Row */}
+                    <div className='grid grid-cols-2 gap-1.5 mt-1.5'>
+                      {[
+                        { label: 'BW', value: convert(meet.bodyweight), showUnit: true },
+                        { label: 'DOTS', value: meet.dots.toFixed(2), showUnit: false },
+                      ].map((lift) => (
+                        <div 
+                          key={lift.label}
+                          className='flex flex-col items-center justify-center px-2 py-2 rounded dark:bg-neutral-800/40 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200 min-h-[48px]'
+                        >
+                          <span className='text-xs font-medium dark:text-neutral-300 light:text-neutral-700 tabular-nums'>
+                            {lift.value}{lift.showUnit && unit}
+                          </span>
+                          <span className='text-[9px] dark:text-neutral-500 light:text-neutral-500 mt-0.5'>{lift.label}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                   
@@ -534,7 +570,7 @@ export default function FitnessPage() {
           Fitness
         </h2>
         <p className='text-sm dark:text-neutral-500 light:text-neutral-500 mb-3 text-center w-full'>
-          Leader of Iron Fortress Powerlifting · Former President of CU Boulder Barbell
+          Building Iron Fortress Powerlifting · Former President of CU Boulder Barbell
         </p>
 
         {/* Tab Navigation */}
