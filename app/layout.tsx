@@ -1,17 +1,23 @@
 import { StrictMode } from 'react';
 import type { Metadata } from 'next';
-import { Mukta } from 'next/font/google';
+import { DM_Sans, Newsreader } from 'next/font/google';
 import './globals.css';
 
 import { ThemeProvider } from './theme'
-import Header from './components/header'
 import Footer from './components/footer'
 import Navbar from './components/navbar'
 
-const mukta = Mukta({
-  variable: '--font-mukta',
-  weight: '400',
+const dmSans = DM_Sans({
+  variable: '--font-sans',
   subsets: ['latin'],
+  display: 'swap',
+})
+
+const newsreader = Newsreader({
+  variable: '--font-serif',
+  subsets: ['latin'],
+  display: 'swap',
+  style: ['normal', 'italic'],
 })
 
 export const metadata: Metadata = {
@@ -28,12 +34,11 @@ export default function RootLayout({
     <StrictMode>
       <ThemeProvider>
       <html lang='en' className='dark'>
-        <body className={`${mukta.variable} ${mukta.variable} antialiased`}>
-          <main className='flex flex-col justify-self-center items-center w-[100vw] md:w-[60vw]'>
-            <Navbar></Navbar>
-            <Header></Header>
+        <body className={`${dmSans.variable} ${newsreader.variable} antialiased`}>
+          <main className='flex flex-col justify-self-center items-center w-full sm:w-[90vw] lg:w-[60vw]'>
+            <Navbar />
             {children}
-            <Footer></Footer>
+            <Footer />
           </main>
         </body>
       </html>

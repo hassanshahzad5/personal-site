@@ -7,12 +7,13 @@ export const experienceData = [
         photo: '/exclusiveresorts.png',
         altPhotoText: 'Logo - Exclusive Resorts',
         company: 'Exclusive Resorts',
+        website: 'https://exclusiveresorts.com',
         location: 'Denver, CO (Hybrid)',
         role: 'Full Stack Developer',
         industry: 'Luxury Travel & Hospitality',
         timeline: 'Nov 2025 - Present',
         info: [
-          'Maintain and develop multiple web projects including the public-facing site and member portal, building features with React, TypeScript, and GraphQL on AWS infrastructure.',
+          'Maintain and develop <strong>multiple web projects</strong> including the public-facing site and member portal, building features with <strong>React, TypeScript, and GraphQL</strong> on AWS infrastructure.',
         ],
         tech: [
           'JavaScript',
@@ -37,12 +38,13 @@ export const experienceData = [
         photo: '/second-edition.png',
         altPhotoText: 'Logo - Second Edition, LLC',
         company: 'Second Edition, LLC',
+        website: 'https://secondedition.co',
         location: 'Denver, CO',
         role: 'Full Stack Developer',
         industry: 'Furniture Resale & Consignment Retail',
         timeline: 'May 2023 - Sep 2025',
         info: [
-          'Built and owned a full-stack web app on Node.js, React, Express, and MySQL (GCP), replacing a legacy spreadsheet system and cutting input errors 90%. Created routing and cost-analysis APIs to guarantee 20%+ profit per appointment, and automated workflows with JS/Python cron jobs, saving 80 staff hours weekly.',
+          'Built and owned a <strong>full-stack web app</strong> on Node.js, React, Express, and MySQL (GCP), replacing a legacy spreadsheet system and cutting input errors <strong>90%</strong>. Created routing and cost-analysis APIs to guarantee <strong>20%+ profit</strong> per appointment, and automated workflows with JS/Python cron jobs, saving <strong>80 staff hours weekly</strong>.',
         ],
         tech: [
           'JavaScript',
@@ -67,12 +69,13 @@ export const experienceData = [
         photo: '/nist.svg',
         altPhotoText: 'Logo - National Institute of Standards & Technology',
         company: 'National Institute of Standards & Technology',
+        website: 'https://nist.gov',
         location: 'Boulder, CO',
         role: 'Database Administrator (Pathways Intern)',
         industry: 'Government Research & Standards Organization',
         timeline: 'Dec 2021 - May 2023',
         info: [
-          'Maintained and optimized a SQL-based access database linked to electronic locks for 700+ personnel. Programmed keycards, synced hardware with the database, and implemented data-driven access protocols, reducing on-site setup 30% and latency 25%, while performing daily backups to ensure continuity.',
+          'Maintained and optimized a <strong>SQL-based access database</strong> linked to electronic locks for <strong>700+ personnel</strong>. Programmed keycards, synced hardware with the database, and implemented data-driven access protocols, reducing on-site setup <strong>30%</strong> and latency <strong>25%</strong>, while performing daily backups to ensure continuity.',
         ],
         tech: [
           'SQL',
@@ -89,6 +92,7 @@ export const experienceData = [
         photo: '/cuboulder.png',
         altPhotoText: 'Logo - University of Colorado Boulder',
         company: 'University of Colorado - Boulder',
+        website: 'https://colorado.edu',
         location: 'Boulder, CO',
         role: 'B.S. Computer Science, Minor Creative Technology & Design',
         industry: '',
@@ -111,12 +115,13 @@ export const experienceData = [
         photo: '/second-edition.png',
         altPhotoText: 'Logo - Second Edition, LLC',
         company: 'Second Edition, LLC',
+        website: 'https://secondedition.co',
         location: 'Denver, CO',
         role: 'Software Development Team Lead',
         industry: 'Furniture Resale & Consignment Retail',
         timeline: 'Jun 2025 - Aug 2025',
         info: [
-          'Led and mentored a software engineering intern through a full development cycle, refactoring a Vanilla JS/Node.js/Express app to integrate React, GraphQL (Apollo), and token-based authentication, delivering a real-time employee tool-pinning feature. Implemented CI/CD pipelines with GitHub Actions, automated ESLint checks, structured branching, and streamlined deployments to standardize code quality and enable efficient team collaboration.',
+          '<strong>Led and mentored</strong> a software engineering intern through a full development cycle, refactoring a Vanilla JS/Node.js/Express app to integrate <strong>React, GraphQL (Apollo), and token-based authentication</strong>, delivering a real-time employee tool-pinning feature. Implemented <strong>CI/CD pipelines</strong> with GitHub Actions, automated ESLint checks, structured branching, and streamlined deployments to standardize code quality.',
         ],
         tech: [
           'JavaScript',
@@ -138,12 +143,13 @@ export const experienceData = [
         photo: '/cubarbell.png',
         altPhotoText: 'Logo - CU Boulder Barbell, NPO',
         company: 'CU Boulder Barbell, NPO',
+        website: 'https://cubarbell.com',
         location: 'Boulder, CO',
         role: 'Founder & Chief Executive Officer',
         industry: 'Amateur Sports Clubs',
         timeline: 'May 2023 - May 2025',
         info: [
-          'Founded and scaled a 501(c)(3) nonprofit, achieving financial independence through public charity status, multi-source sponsorships, and a revenue-generating Shopify store, while leading a 10-person officer team for 100+ members. Directed and produced the Colorado Collegiate Showdown, raising $35K over two years and cutting athlete registration costs 90%, delivering a professional powerlifting event that combined project management, branding, and community outreach.',
+          '<strong>Founded and scaled</strong> a 501(c)(3) nonprofit, achieving financial independence through public charity status, multi-source sponsorships, and a revenue-generating Shopify store, while leading a <strong>10-person officer team</strong> for <strong>100+ members</strong>. Directed and produced the <strong>Colorado Collegiate Showdown</strong>, raising <strong>$35K</strong> over two years and cutting athlete registration costs <strong>90%</strong>, delivering a professional powerlifting event.',
         ],
         tech: [
 

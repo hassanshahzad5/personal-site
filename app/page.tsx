@@ -7,8 +7,8 @@ import AboutMe from './components/about'
 export default function Home() {
   return (
     <section className='custom-section'>
-      <AboutMe></AboutMe>
-      <Experience></Experience>
+      <AboutMe />
+      <Experience />
     </section>
   )
 }

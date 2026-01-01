@@ -1,11 +1,16 @@
+'use client';
+
 import Image from 'next/image';
 import { technologyMap } from '../data/technologyMap'
 import TechnologyChip from './technologyChip'
+
+// Breakpoints: mobile < 640px (sm), tablet 640-1024px (sm-lg), desktop > 1024px (lg)
 
 type ChipProps = {
   photo: string;
   altPhotoText: string;
   company: string;
+  website?: string;
   location: string;
   role: string;
   industry: string;
@@ -14,9 +19,10 @@ type ChipProps = {
   tech: string[];
   display: boolean;
   isLast?: boolean;
+  index?: number;
 }
 
-export default function ExperienceChip({photo, altPhotoText, company, location, role, industry, timeline, info, tech, display, isLast = false}: ChipProps) {
+export default function ExperienceChip({photo, altPhotoText, company, website, location, role, industry, timeline, info, tech, isLast = false, index = 0}: ChipProps) {
   const categorizedTech: Record<string, object[]> = {};
 
   tech.forEach((techName) => {
@@ -45,51 +51,128 @@ export default function ExperienceChip({photo, altPhotoText, company, location, 
   });
 
   return (
-    <article className='flex flex-col md:flex-row md:mx-2 relative'>
-      {/* Mobile: Centered logo with line below */}
-      <div className={`flex md:hidden flex-col items-center ${isLast ? 'mb-3' : 'mb-4'}`}>
-        <div className='relative z-10 shrink-0'>
-          <Image src={photo} alt={altPhotoText} width={0} height={0} className='h-16 w-16 bg-white p-2 object-contain rounded-full shadow-lg dark:shadow-zinc-700 light:shadow-zinc-400'></Image>
-        </div>
-        {!isLast && (
-          <div className='w-0.5 h-6 mt-3 dark:bg-zinc-700 light:bg-zinc-300'></div>
-        )}
+    <article 
+      className='flex flex-col sm:flex-row relative animate-fade-in-up'
+      style={{ animationDelay: `${index * 100}ms` }}
+    >
+      {/* Mobile: Logo only, no timeline */}
+      <div className='flex sm:hidden flex-col items-center mb-3'>
+        <Image 
+          src={photo} 
+          alt={altPhotoText} 
+          width={64} 
+          height={64} 
+          className='h-14 w-14 bg-white p-2 object-contain rounded-full 
+                     border dark:border-neutral-700 light:border-neutral-300'
+        />
       </div>
 
-      {/* Desktop: Timeline connector on the left */}
-      <div className='hidden md:flex flex-col items-center mr-5'>
+      {/* Tablet/Desktop: Timeline connector on the left */}
+      <div className='hidden sm:flex flex-col items-center mr-4 lg:mr-5'>
         <div className='relative z-10 shrink-0'>
-          <Image src={photo} alt={altPhotoText} width={0} height={0} className='h-20 w-20 bg-white p-2 object-contain rounded-full shadow-md dark:shadow-zinc-700 light:shadow-zinc-400'></Image>
+          <Image 
+            src={photo} 
+            alt={altPhotoText} 
+            width={80} 
+            height={80} 
+            className='h-12 w-12 lg:h-14 lg:w-14 bg-white p-2 object-contain rounded-full 
+                       border dark:border-neutral-700 light:border-neutral-300'
+          />
         </div>
         {!isLast && (
-          <div className='w-0.5 grow dark:bg-zinc-700 light:bg-zinc-300'></div>
+          <div className='w-px grow dark:bg-neutral-800 light:bg-neutral-300'></div>
         )}
       </div>
 
       {/* Content */}
-      <div className={`flex-1 ${isLast ? 'pb-0' : 'pb-6'}`}>
-        <p className='text-sm md:text-md text-center md:text-start dark:text-zinc-400 light:text-zinc-500'>{company} • {location}</p>
-        <p className='text-xl md:text-2xl text-center md:text-start font-medium'>{role}</p>
-        <p className='text-sm md:text-md text-center md:text-start mb-3 dark:text-zinc-400 light:text-zinc-500'>{timeline}</p>
-        <ul className='text-sm md:text-base text-center md:text-start leading-relaxed'>
-          { info.map((accomplishment, idx) => <li key={idx}>{accomplishment}</li>) }
-        </ul>
+      <div className={`flex-1 ${isLast ? 'pb-0' : 'pb-5'}`}>
+        {/* Header */}
+        <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between mb-1'>
+          <div>
+            <p className='text-sm text-center sm:text-start dark:text-neutral-500 light:text-neutral-500'>
+              {website ? (
+                <a 
+                  href={website} 
+                  target='_blank' 
+                  rel='noopener noreferrer'
+                  className='underline underline-offset-2 hover:dark:text-neutral-300 hover:light:text-neutral-700 transition-colors'
+                >
+                  {company}
+                </a>
+              ) : (
+                company
+              )} · {location}
+            </p>
+            <h3 className='text-lg sm:text-xl lg:text-2xl text-center sm:text-start font-semibold dark:text-neutral-100 light:text-neutral-900 mt-1.5'>
+              {role}
+            </h3>
+          </div>
+          <span className='text-sm text-center sm:text-end dark:text-neutral-400 light:text-neutral-500 mt-1 sm:mt-0'>
+            {timeline}
+          </span>
+        </div>
 
-        <div className="flex flex-col gap-2 md:gap-2 justify-start mt-3">
-          {
-            Object.entries(categorizedTech).map(([categoryName, techArray]) => (
-              <div key={categoryName} className="flex flex-col md:grid md:grid-cols-4 gap-2 md:gap-3 items-center md:items-start justify-center mt-2 md:mt-3 h-[100%]">
-                <p className="text-sm md:text-md flex font-semibold md:col-span-1 border-b-2 md:border-r-3 md:border-b-0 dark:border-zinc-700 light:border-zinc-300 px-2 md:px-1 py-0.5 h-[100%] w-auto md:w-[100%]">{categoryName}</p>
-                <div className="flex flex-row flex-wrap gap-2 items-center justify-center md:justify-start md:col-span-3 h-[100%] w-[100%]">
+        {/* Industry badge */}
+        {industry && (
+          <div className='flex justify-center sm:justify-start mb-2'>
+            <span className='text-[11px] px-1.5 py-0.5 rounded
+                            dark:bg-neutral-800/60 light:bg-neutral-100
+                            dark:text-neutral-400 light:text-neutral-600
+                            border dark:border-neutral-700/50 light:border-neutral-300/50'>
+              {industry}
+            </span>
+          </div>
+        )}
+
+        {/* Accomplishments - Summary on mobile, bullet list on tablet/desktop */}
+        {info.length > 0 && (
+          <>
+            {/* Mobile: Single summary paragraph */}
+            <p className='sm:hidden text-sm text-center leading-relaxed dark:text-neutral-300 light:text-neutral-700'>
+              {info.map((accomplishment, idx) => (
+                <span key={idx}>
+                  <span dangerouslySetInnerHTML={{ __html: accomplishment }} />
+                  {idx < info.length - 1 && ' '}
+                </span>
+              ))}
+            </p>
+            
+            {/* Tablet/Desktop: Bullet point list */}
+            <ul className='hidden sm:block text-sm lg:text-base text-start leading-relaxed dark:text-neutral-300 light:text-neutral-700 space-y-1'>
+              {info.map((accomplishment, idx) => (
+                <li key={idx} className='relative pl-4'>
+                  <span className='inline-block absolute left-0 top-2 w-1 h-1 rounded-full dark:bg-neutral-600 light:bg-neutral-400'></span>
+                  <span dangerouslySetInnerHTML={{ __html: accomplishment }} />
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        {/* Technologies */}
+        {Object.keys(categorizedTech).length > 0 && (
+          <div className="flex flex-col gap-2 justify-start mt-3">
+            {Object.entries(categorizedTech).map(([categoryName, techArray]) => (
+              <div 
+                key={categoryName} 
+                className="flex flex-col sm:grid sm:grid-cols-5 gap-2 items-center sm:items-start justify-center"
+              >
+                <p className="text-xs font-medium sm:col-span-1 
+                              dark:text-neutral-500 light:text-neutral-500
+                              border-b sm:border-r sm:border-b-0 
+                              dark:border-neutral-800 light:border-neutral-300 
+                              px-2 sm:px-0 sm:pr-3 py-1 w-auto sm:w-full">
+                  {categoryName}
+                </p>
+                <div className="flex flex-row flex-wrap gap-1.5 items-center justify-center sm:justify-start sm:col-span-4 w-full">
                   {techArray.map((technology, idx) => (
                     <TechnologyChip key={idx} {...technology} />
                   ))}
                 </div>
               </div>
-            ))
-          }
-        </div>
-
+            ))}
+          </div>
+        )}
       </div>
     </article>
   );

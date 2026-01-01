@@ -4,49 +4,284 @@
 @custom-variant light (&:where(.light, .light *));
 
 @theme inline {
-  --font-mukta: var(--font-mukta);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+}
+
+/* ===== Base Styles ===== */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  @apply dark:bg-zinc-950 dark:text-zinc-50 light:bg-zinc-50 light:text-zinc-950
+  @apply dark:text-neutral-100 light:text-neutral-900;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100vh;
 }
 
+/* Dark mode gradient - subtle warm to cool neutrals */
+.dark body {
+  background: linear-gradient(
+    165deg,
+    hsl(30, 3%, 6%) 0%,
+    hsl(220, 5%, 8%) 50%,
+    hsl(240, 4%, 7%) 100%
+  );
+  background-attachment: fixed;
+}
+
+/* Light mode gradient - subtle warm cream to cool white */
+.light body {
+  background: linear-gradient(
+    165deg,
+    hsl(40, 20%, 97%) 0%,
+    hsl(30, 10%, 96%) 40%,
+    hsl(220, 15%, 97%) 100%
+  );
+  background-attachment: fixed;
+}
+
+/* ===== Typography ===== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+code, pre, .mono {
+  font-family: ui-monospace, 'SF Mono', monospace;
+}
+
+/* ===== Animation Keyframes ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes spin3D {
+  0% {
+    transform: rotateY(0deg);
+  }
+  49.9% {
+    transform: rotateY(90deg);
+  }
+  50% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes nameCarouselOut {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes nameCarouselIn {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ===== Animation Utilities ===== */
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.2s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.2s ease-out forwards;
+}
+
+.animate-slide-in-down {
+  animation: slideInDown 0.2s ease-out forwards;
+}
+
+.animate-text-reveal {
+  animation: textReveal 0.3s ease-out forwards;
+}
+
+.animate-text-reveal-delayed > p:nth-child(1) { animation: textReveal 0.3s ease-out 0ms forwards; opacity: 0; }
+.animate-text-reveal-delayed > p:nth-child(2) { animation: textReveal 0.3s ease-out 50ms forwards; opacity: 0; }
+.animate-text-reveal-delayed > p:nth-child(3) { animation: textReveal 0.3s ease-out 100ms forwards; opacity: 0; }
+.animate-text-reveal-delayed > button { animation: textReveal 0.3s ease-out 150ms forwards; opacity: 0; }
+
+.animate-spin-3d {
+  animation: spin3D 0.5s ease-in-out forwards;
+}
+
+.animate-name-out {
+  animation: nameCarouselOut 0.25s ease-in forwards;
+}
+
+.animate-name-in {
+  animation: nameCarouselIn 0.25s ease-out forwards;
+}
+
+/* Staggered animation delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* ===== Component Styles ===== */
 .icon {
-  @apply w-6 h-6
+  @apply w-6 h-6;
 }
 
 .icon-small {
-  @apply w-auto h-auto
+  @apply w-auto h-auto;
 }
 
 .clickable {
- @apply hover:scale-105 hover:cursor-pointer transition-all duration-200
+  @apply hover:opacity-75 hover:cursor-pointer transition-opacity duration-200;
 }
 
-.clickable:hover {
-  @apply dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.15)] light:drop-shadow-[0_0_8px_rgba(0,0,0,0.1)]
-}
-
+/* ===== Navigation Styles ===== */
+/* Breakpoints: mobile < 640px (sm), tablet 640-1024px (sm-lg), desktop > 1024px (lg) */
 .base-navtab {
-  @apply flex-1 text-center py-1.5 px-3 rounded-none md:rounded-sm dark:hover:bg-zinc-900 light:hover:bg-zinc-100
+  @apply flex-1 text-center py-2 px-4 rounded-none sm:rounded-md
+         transition-all duration-200
+         dark:text-neutral-400 light:text-neutral-500
+         dark:hover:bg-neutral-800/50 dark:hover:text-neutral-100
+         light:hover:bg-neutral-200/50 light:hover:text-neutral-900;
 }
 
 .active-navtab {
-  @apply font-bold dark:bg-zinc-900 dark:hover:bg-zinc-900 light:bg-zinc-100 light:hover:bg-zinc-100
+  @apply font-medium 
+         dark:bg-neutral-800/60 dark:text-neutral-100 dark:hover:bg-neutral-800/60 
+         light:bg-neutral-200/60 light:text-neutral-900 light:hover:bg-neutral-200/60;
 }
 
 .experience-navtab {
-  @apply font-normal dark:bg-zinc-900 dark:hover:bg-zinc-800 light:bg-zinc-100 light:hover:bg-zinc-200 hover:scale-101 rounded-none transition-all duration-200
+  @apply font-normal 
+         dark:bg-neutral-800/40 dark:hover:bg-neutral-800/60 dark:text-neutral-300
+         light:bg-neutral-200/40 light:hover:bg-neutral-200/60 light:text-neutral-600
+         rounded-none transition-all duration-200;
 }
 
 .experience-navtab-active {
-  @apply font-bold dark:bg-zinc-800 dark:hover:bg-zinc-800 light:bg-zinc-200 light:hover:bg-zinc-200 dark:shadow-inner light:shadow-inner
+  @apply font-medium 
+         dark:bg-neutral-800/70 dark:hover:bg-neutral-800/70 dark:text-neutral-50
+         light:bg-neutral-200/70 light:hover:bg-neutral-200/70 light:text-neutral-900;
 }
 
 .navbar {
-  @apply md:flex flex-col md:flex-row w-[100%] mb-2 md:mb-0 md:w-auto
+  @apply sm:flex flex-col sm:flex-row w-full mb-2 sm:mb-0 sm:w-auto;
 }
 
+/* ===== Section Styles ===== */
 .custom-section {
-  @apply flex flex-col w-[100%] p-5 dark:bg-zinc-950 light:bg-zinc-50 gap-6
+  @apply flex flex-col w-full px-5 py-4 gap-5;
+}
+
+/* ===== Card Styles ===== */
+.card {
+  @apply border dark:border-neutral-800/80 light:border-neutral-300/60 
+         rounded-lg 
+         dark:bg-neutral-900/50 light:bg-white/70
+         backdrop-blur-sm
+         transition-all duration-200;
+}
+
+.card:hover {
+  @apply dark:border-neutral-700/80 light:border-neutral-300/80;
+}
+
+/* ===== Scrollbar Styling ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply dark:bg-neutral-900 light:bg-neutral-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply dark:bg-neutral-700 light:bg-neutral-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply dark:bg-neutral-600 light:bg-neutral-400;
+}
+
+/* ===== Selection Styling ===== */
+::selection {
+  @apply dark:bg-neutral-700 light:bg-neutral-200;
 }

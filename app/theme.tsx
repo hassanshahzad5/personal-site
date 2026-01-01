@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 
 interface ThemeContextType {
   theme: 'light' | 'dark',
@@ -23,8 +23,6 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       return newTheme;
     });
   };
-
-  console.log(theme)
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
