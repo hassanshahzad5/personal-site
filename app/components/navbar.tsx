@@ -11,33 +11,20 @@ import Link from 'next/link';
 import { ThemeContext } from '../theme'
 
 // Breakpoints: mobile < 640px (sm), tablet 640-1024px (sm-lg), desktop > 1024px (lg)
-const MOBILE_BREAKPOINT = 640;
 
 export default function Navbar() {
   const pathname = usePathname();
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth < MOBILE_BREAKPOINT;
-    }
-    return false;
-  });
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
-    };
-
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener('resize', handleResize);
     window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -47,7 +34,7 @@ export default function Navbar() {
   }
 
   const closeMenuOnMobile = () => {
-    if (isMobile) setIsMenuOpen(false);
+    setIsMenuOpen(false);
   }
 
   const handleResumeClick = () => {
@@ -69,7 +56,7 @@ export default function Navbar() {
                        : 'dark:bg-transparent light:bg-transparent'}`}>
       
       {/* Mobile Header - only shows below sm breakpoint */}
-      <div className={`${isMobile ? 'flex' : 'hidden'} w-[95%] items-center justify-between py-2 ${isMenuOpen ? 'mb-2' : 'mb-0'}`}>
+      <div className={`flex sm:hidden w-[95%] items-center justify-between py-2 ${isMenuOpen ? 'mb-2' : 'mb-0'}`}>
         <button 
           onClick={() => toggleTheme()} 
           className='clickable flex items-center justify-center w-9 h-9 
@@ -97,10 +84,10 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Main Nav Content */}
-      <div className={`${(isMobile && isMenuOpen || !isMobile) ? 'flex' : 'hidden'} 
+      {/* Main Nav Content - always visible on desktop (sm+), toggle on mobile */}
+      <div className={`${isMenuOpen ? 'flex' : 'hidden'} sm:flex
                        w-full flex-col sm:flex-row justify-center sm:justify-between items-center
-                       ${isMobile ? 'animate-fade-in' : ''}`}>
+                       ${isMenuOpen ? 'animate-fade-in' : ''}`}>
         
         {/* Navigation Links */}
         <div className='flex flex-col w-full sm:w-auto sm:flex-row mb-3 sm:mb-0 sm:gap-1'>
@@ -181,10 +168,10 @@ export default function Navbar() {
           
           <button 
             onClick={() => toggleTheme()} 
-            className={`${isMobile ? 'hidden' : 'flex'} clickable items-center justify-center w-9 h-9
+            className='hidden sm:flex clickable items-center justify-center w-9 h-9
                        dark:bg-neutral-800/60 light:bg-white/60
                        border dark:border-neutral-700/50 light:border-neutral-300/50
-                       rounded-md backdrop-blur-sm transition-all duration-200`}
+                       rounded-md backdrop-blur-sm transition-all duration-200'
             aria-label='Toggle theme'
           >
             {theme === 'dark' 
