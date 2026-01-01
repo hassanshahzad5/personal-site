@@ -124,29 +124,16 @@ export default function ExperienceChip({photo, altPhotoText, company, website, l
           </div>
         )}
 
-        {/* Accomplishments - Summary on mobile, bullet list on tablet/desktop */}
+        {/* Accomplishments - Summary paragraph */}
         {info.length > 0 && (
-          <>
-            {/* Mobile: Single summary paragraph */}
-            <p className='sm:hidden text-sm text-center leading-relaxed dark:text-neutral-300 light:text-neutral-700'>
-              {info.map((accomplishment, idx) => (
-                <span key={idx}>
-                  <span dangerouslySetInnerHTML={{ __html: accomplishment }} />
-                  {idx < info.length - 1 && ' '}
-                </span>
-              ))}
-            </p>
-            
-            {/* Tablet/Desktop: Bullet point list */}
-            <ul className='hidden sm:block text-sm lg:text-base text-start leading-relaxed dark:text-neutral-300 light:text-neutral-700 space-y-1'>
-              {info.map((accomplishment, idx) => (
-                <li key={idx} className='relative pl-4'>
-                  <span className='inline-block absolute left-0 top-2 w-1 h-1 rounded-full dark:bg-neutral-600 light:bg-neutral-400'></span>
-                  <span dangerouslySetInnerHTML={{ __html: accomplishment }} />
-                </li>
-              ))}
-            </ul>
-          </>
+          <p className='text-sm lg:text-base text-center sm:text-start leading-relaxed dark:text-neutral-300 light:text-neutral-700'>
+            {info.map((accomplishment, idx) => (
+              <span key={idx}>
+                <span dangerouslySetInnerHTML={{ __html: accomplishment }} />
+                {idx < info.length - 1 && ' '}
+              </span>
+            ))}
+          </p>
         )}
 
         {/* Technologies */}
