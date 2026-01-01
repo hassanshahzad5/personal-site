@@ -1,16 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import ExperienceChip from '../components/experienceChip'
 import { experienceData } from '../data/experience'
 
+// Hydration-safe mounted state
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export default function Experience() {
   const [experienceSection, setExperienceSection] = useState('work')
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   const renderButtons = () => {
     const buttonJSX = experienceData.map((dataBlock) => {

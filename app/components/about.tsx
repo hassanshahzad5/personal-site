@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useSyncExternalStore } from 'react';
 import { MdLocationPin } from 'react-icons/md';
 import { FaCode, FaBolt } from 'react-icons/fa6';
 import { powerliftingData, type PowerliftingData } from '../data/powerlifting';
@@ -63,17 +63,34 @@ const getProfileImages = (useMetric: boolean, bests: PowerliftingData) => {
   ];
 };
 
+// Hydration-safe mounted state
+const subscribeNoop = () => () => {};
+const getMounted = () => true;
+const getServerMounted = () => false;
+
+// Hydration-safe metric detection
+const getUseMetric = () => {
+  const locale = typeof navigator !== 'undefined' ? navigator.language : 'en-US';
+  const imperialLocales = ['en-US', 'en-LR', 'my-MM'];
+  return !imperialLocales.some(l => locale.startsWith(l.split('-')[0]) && locale.includes(l.split('-')[1]));
+};
+const getServerUseMetric = () => true; // Default to metric on server
+
+// Hydration-safe mobile detection
+const getIsMobile = () => typeof window !== 'undefined' ? window.innerWidth < 640 : false;
+const getServerIsMobile = () => false;
+
 export default function AboutMe() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(subscribeNoop, getMounted, getServerMounted);
+  const useMetric = useSyncExternalStore(subscribeNoop, getUseMetric, getServerUseMetric);
+  const [isMobile, setIsMobile] = useState(false);
   const [showRole, setShowRole] = useState(false);
   const [showLocation, setShowLocation] = useState(false);
   const [showPhilosophy, setShowPhilosophy] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [profileIndex, setProfileIndex] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
   const [nameAnimation, setNameAnimation] = useState<'idle' | 'out' | 'in'>('idle');
   const [showNameTooltip, setShowNameTooltip] = useState(false);
-  const [useMetric, setUseMetric] = useState(false);
   
   const profileImages = getProfileImages(useMetric, powerliftingData);
   
@@ -88,17 +105,11 @@ export default function AboutMe() {
   const locationTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
   const philosophyTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  // Handle resize for mobile detection - this is a subscription to window resize
   useEffect(() => {
-    setMounted(true);
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
-    // Detect if user's locale uses metric (most countries except US, UK, Myanmar, Liberia)
-    const locale = navigator.language || 'en-US';
-    const imperialLocales = ['en-US', 'en-LR', 'my-MM'];
-    setUseMetric(!imperialLocales.some(l => locale.startsWith(l.split('-')[0]) && locale.includes(l.split('-')[1])));
-    
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 

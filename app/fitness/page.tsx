@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import { FiExternalLink } from 'react-icons/fi';
 import { powerliftingData } from '../data/powerlifting';
@@ -13,17 +13,24 @@ function getOrdinal(n: number): string {
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
+// Hydration-safe mounted state
+const subscribeNoop = () => () => {};
+const getMounted = () => true;
+const getServerMounted = () => false;
+
+// Detect initial metric preference from locale
+const getInitialMetric = () => {
+  const locale = typeof navigator !== 'undefined' ? navigator.language : 'en-US';
+  const imperialLocales = ['en-US', 'en-LR', 'en-MM'];
+  return !imperialLocales.some((l) => locale.startsWith(l.split('-')[0]) && locale === l);
+};
+
 export default function FitnessPage() {
   const [section, setSection] = useState<'personal' | 'coaching' | 'meet-director'>('personal');
-  const [useMetric, setUseMetric] = useState(true);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const locale = typeof navigator !== 'undefined' ? navigator.language : 'en-US';
-    const imperialLocales = ['en-US', 'en-LR', 'en-MM'];
-    setUseMetric(!imperialLocales.some((l) => locale.startsWith(l.split('-')[0]) && locale === l));
-  }, []);
+  const mounted = useSyncExternalStore(subscribeNoop, getMounted, getServerMounted);
+  // Initialize with locale preference, but allow user to toggle
+  const initialMetric = useSyncExternalStore(subscribeNoop, getInitialMetric, () => true);
+  const [useMetric, setUseMetric] = useState(initialMetric);
 
   const bests = powerliftingData;
   const unit = useMetric ? 'kg' : 'lbs';
