@@ -26,7 +26,7 @@ const getInitialMetric = () => {
 };
 
 export default function FitnessPage() {
-  const [section, setSection] = useState<'personal' | 'coaching' | 'meet-director'>('personal');
+  const [section, setSection] = useState<'personal' | 'meet-director' | 'iron-fortress'>('personal');
   const mounted = useSyncExternalStore(subscribeNoop, getMounted, getServerMounted);
   // Initialize with locale preference, but allow user to toggle
   const initialMetric = useSyncExternalStore(subscribeNoop, getInitialMetric, () => true);
@@ -266,34 +266,19 @@ export default function FitnessPage() {
                     </div>
                   
                     {/* Lift Details - Grid */}
-                    {/* SBDT Row */}
-                    <div className='grid grid-cols-4 gap-1.5 mt-3'>
+                    {/* Mobile/Tablet: 4 cols (SBDT row, BW/DOTS row), Desktop: 6 cols */}
+                    <div className='grid grid-cols-4 md:grid-cols-6 gap-1.5 mt-3'>
                       {[
-                        { label: 'SQ', value: meet.squat },
-                        { label: 'BP', value: meet.bench },
-                        { label: 'DL', value: meet.deadlift },
-                        { label: 'Total', value: meet.total },
+                        { label: 'SQ', value: convert(meet.squat), showUnit: true, span: 'md:order-2' },
+                        { label: 'BP', value: convert(meet.bench), showUnit: true, span: 'md:order-3' },
+                        { label: 'DL', value: convert(meet.deadlift), showUnit: true, span: 'md:order-4' },
+                        { label: 'Total', value: convert(meet.total), showUnit: true, span: 'md:order-5' },
+                        { label: 'BW', value: convert(meet.bodyweight), showUnit: true, span: 'col-span-2 md:col-span-1 md:order-1' },
+                        { label: 'DOTS', value: meet.dots.toFixed(2), showUnit: false, span: 'col-span-2 md:col-span-1 md:order-6' },
                       ].map((lift) => (
                         <div 
                           key={lift.label}
-                          className='flex flex-col items-center justify-center px-2 py-2 rounded dark:bg-neutral-800/40 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200 min-h-[48px]'
-                        >
-                          <span className='text-xs font-medium dark:text-neutral-300 light:text-neutral-700 tabular-nums'>
-                            {convert(lift.value)}{unit}
-                          </span>
-                          <span className='text-[9px] dark:text-neutral-500 light:text-neutral-500 mt-0.5'>{lift.label}</span>
-                        </div>
-                      ))}
-                    </div>
-                    {/* BW + DOTS Row */}
-                    <div className='grid grid-cols-2 gap-1.5 mt-1.5'>
-                      {[
-                        { label: 'BW', value: convert(meet.bodyweight), showUnit: true },
-                        { label: 'DOTS', value: meet.dots.toFixed(2), showUnit: false },
-                      ].map((lift) => (
-                        <div 
-                          key={lift.label}
-                          className='flex flex-col items-center justify-center px-2 py-2 rounded dark:bg-neutral-800/40 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200 min-h-[48px]'
+                          className={`flex flex-col items-center justify-center px-2 py-2 rounded dark:bg-neutral-800/40 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200 min-h-[48px] ${lift.span}`}
                         >
                           <span className='text-xs font-medium dark:text-neutral-300 light:text-neutral-700 tabular-nums'>
                             {lift.value}{lift.showUnit && unit}
@@ -345,7 +330,7 @@ export default function FitnessPage() {
     </div>
   );
 
-  const renderCoachingContent = () => (
+  const renderIronFortressContent = () => (
     <div className='flex flex-col items-center justify-center py-12 text-center'>
       <div className='mb-4'>
         <Image
@@ -366,9 +351,39 @@ export default function FitnessPage() {
       <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-2'>
         Iron Fortress Powerlifting
       </h3>
-      <p className='text-sm dark:text-neutral-500 light:text-neutral-500 max-w-md'>
-        Coaching content coming soon. Client transformations, training philosophy, and team highlights.
+      <p className='text-sm dark:text-neutral-500 light:text-neutral-500 max-w-md mb-4'>
+        Content coming soon. Transformations, philosophy, and team highlights.
       </p>
+      <div className='flex flex-row gap-3'>
+        <a
+          href='https://www.instagram.com/ironfortressfit_/'
+          target='_blank'
+          rel='noopener noreferrer'
+          className='inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium
+                     dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700
+                     light:bg-neutral-100 light:text-neutral-900 light:hover:bg-neutral-200
+                     border dark:border-neutral-700 light:border-neutral-300 transition-colors'
+        >
+          <svg className='w-4 h-4' fill='currentColor' viewBox='0 0 24 24'>
+            <path d='M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z'/>
+          </svg>
+          Instagram
+        </a>
+        <a
+          href='https://ironfortressfitness.com/'
+          target='_blank'
+          rel='noopener noreferrer'
+          className='inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium
+                     dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200
+                     light:bg-neutral-900 light:text-neutral-100 light:hover:bg-neutral-800
+                     transition-colors'
+        >
+          <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14' />
+          </svg>
+          Shop
+        </a>
+      </div>
     </div>
   );
 
@@ -552,10 +567,10 @@ export default function FitnessPage() {
     switch (section) {
       case 'personal':
         return renderPersonalContent();
-      case 'coaching':
-        return renderCoachingContent();
       case 'meet-director':
         return renderMeetDirectorContent();
+      case 'iron-fortress':
+        return renderIronFortressContent();
       default:
         return null;
     }
@@ -584,17 +599,17 @@ export default function FitnessPage() {
           </button>
           <button
             type='button'
-            onClick={() => setSection('coaching')}
-            className={`clickable base-navtab experience-navtab ${section === 'coaching' ? 'experience-navtab-active' : ''}`}
-          >
-            Coaching
-          </button>
-          <button
-            type='button'
             onClick={() => setSection('meet-director')}
             className={`clickable base-navtab experience-navtab ${section === 'meet-director' ? 'experience-navtab-active' : ''}`}
           >
             Meet Director
+          </button>
+          <button
+            type='button'
+            onClick={() => setSection('iron-fortress')}
+            className={`clickable base-navtab experience-navtab ${section === 'iron-fortress' ? 'experience-navtab-active' : ''}`}
+          >
+            Iron Fortress
           </button>
         </nav>
 

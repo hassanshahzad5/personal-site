@@ -157,10 +157,12 @@ export default function Navbar() {
               closeMenuOnMobile();
             }} 
             className='clickable flex flex-row items-center justify-center gap-2 
-                       px-4 py-2 rounded-md font-medium text-sm
-                       dark:bg-neutral-100 dark:text-neutral-900
-                       light:bg-neutral-900 light:text-neutral-100
-                       transition-all duration-200'
+                       px-3 py-2 rounded-md font-medium text-sm
+                       dark:bg-neutral-800/60 light:bg-white/60
+                       dark:text-neutral-300 light:text-neutral-600
+                       dark:hover:text-neutral-100 light:hover:text-neutral-900
+                       border dark:border-neutral-700/50 light:border-neutral-300/50
+                       backdrop-blur-sm transition-all duration-200'
           >
             <AiOutlineDownload className='w-4 h-4'/>
             Resume

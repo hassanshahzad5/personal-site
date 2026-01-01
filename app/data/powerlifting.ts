@@ -2,44 +2,7 @@
 // https://www.openpowerlifting.org/u/hassanshahzad
 // https://usapl.liftingdatabase.com/lifters-view?id=135980
 
-export type Placement = {
-  division: string;
-  place: number;
-};
-
-export type Meet = {
-  name: string;
-  date: string;
-  placements: Placement[];
-  bodyweight: number;
-  squat: number;
-  bench: number;
-  deadlift: number;
-  total: number;
-  dots: number;
-  openPowerliftingUrl?: string;
-  usaplUrl?: string;
-};
-
-export type Record = {
-  type: string;
-  division: string;
-  weightClass: string;
-  lift: string;
-  weight: number;
-  date: string;
-};
-
-export type PowerliftingData = {
-  squat: number;
-  bench: number;
-  deadlift: number;
-  total: number;
-  dots: number;
-  bodyweight: number;
-  meets: Meet[];
-  records: Record[];
-};
+import type { PowerliftingData } from '../types';
 
 export const powerliftingData: PowerliftingData = {
   // Personal bests (in kg)

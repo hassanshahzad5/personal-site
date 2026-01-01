@@ -5,21 +5,11 @@ import Link from 'next/link';
 import { useEffect, useState, useRef, useSyncExternalStore } from 'react';
 import { MdLocationPin } from 'react-icons/md';
 import { FaCode, FaBolt, FaPaintbrush } from 'react-icons/fa6';
-import { powerliftingData, type PowerliftingData } from '../data/powerlifting';
+import { powerliftingData } from '../data/powerlifting';
+import { getWorkStatusDisplay } from '../config/site';
+import type { TooltipData, PowerliftingData } from '../types';
 
 const kgToLbs = (kg: number) => (kg * 2.20462).toFixed(2);
-
-type TooltipData = {
-  type: 'text';
-  content: string;
-} | {
-  type: 'powerlifting';
-  intro: string;
-  roles: string[];
-  lifts: { label: string; value: string }[];
-  recordCount: number;
-  meetCount: number;
-};
 
 const getProfileImages = (useMetric: boolean, bests: PowerliftingData) => {
   const unit = useMetric ? 'kg' : 'lbs';
@@ -59,7 +49,7 @@ const getProfileImages = (useMetric: boolean, bests: PowerliftingData) => {
       name: 'Little Shah', 
       tooltip: {
         type: 'text' as const,
-        content: 'Before the code, before the weights. Just a kid from Broomfield with big dreams and zero idea what a for loop was.',
+        content: 'The foundation. Colorado roots, a Winnie the Pooh costume, and a stubborn belief that hard work beats talent. Some things never change.',
       }
     },
   ];
@@ -215,31 +205,55 @@ export default function AboutMe() {
       <div className='flex flex-col items-center text-center py-4'>
 
         {/* Photo - Click to discover easter eggs */}
-        <button
-          type="button"
-          onClick={handleProfileClick}
-          className='relative mb-4 rounded-full focus:outline-none focus-visible:ring-2 
-                     focus-visible:ring-neutral-400 focus-visible:ring-offset-2
-                     dark:focus-visible:ring-offset-neutral-900 light:focus-visible:ring-offset-white
-                     group cursor-pointer'
-          style={{ perspective: '1000px' }}
-          aria-label='Click to see different photos'
-        >
-          <Image 
-            src={profileImages[profileIndex].src}
-            alt={profileImages[profileIndex].alt}
-            width={120} 
-            height={120} 
-            className={`w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover
-                       border-2 dark:border-neutral-800 light:border-neutral-200
-                       transition-all duration-300 ease-out
-                       group-hover:shadow-lg group-hover:dark:shadow-neutral-800/50 group-hover:light:shadow-neutral-300/50
-                       group-hover:-translate-y-0.5
-                       ${isSpinning ? 'animate-spin-3d' : ''}`}
-            style={{ transformStyle: 'preserve-3d' }}
-            priority
-          />
-        </button>
+        <div className='relative mb-2'>
+          <button
+            type="button"
+            onClick={handleProfileClick}
+            className='relative rounded-full focus:outline-none focus-visible:ring-2 
+                       focus-visible:ring-neutral-400 focus-visible:ring-offset-2
+                       dark:focus-visible:ring-offset-neutral-900 light:focus-visible:ring-offset-white
+                       group cursor-pointer'
+            style={{ perspective: '1000px' }}
+            aria-label='Click to see different photos'
+          >
+            {/* Background blur effect on hover - desktop only, bottom-right */}
+            <div className='hidden md:block absolute w-12 h-12 rounded-full
+                            top-1/2 left-1/2 translate-x-3 translate-y-3
+                            opacity-0 group-hover:opacity-100
+                            dark:bg-neutral-500/10 light:bg-neutral-400/10
+                            blur-lg transition-opacity duration-300 ease-out -z-10' />
+            <Image 
+              src={profileImages[profileIndex].src}
+              alt={profileImages[profileIndex].alt}
+              width={120} 
+              height={120} 
+              className={`w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover
+                         border-2 dark:border-neutral-700 light:border-neutral-300
+                         ring-2 ring-transparent group-hover:ring-neutral-400/30
+                         transition-all duration-300 ease-out
+                         group-hover:shadow-xl group-hover:dark:shadow-neutral-700/40 group-hover:light:shadow-neutral-400/40
+                         group-hover:-translate-y-1 group-hover:scale-[1.02]
+                         ${isSpinning ? 'animate-spin-3d' : ''}`}
+              style={{ transformStyle: 'preserve-3d' }}
+              priority
+            />
+          </button>
+          {/* Status indicator */}
+          {(() => {
+            const status = getWorkStatusDisplay();
+            return (
+              <div className='absolute bottom-1 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-2 py-1 rounded-full
+                              dark:bg-neutral-900/90 light:bg-white/90 backdrop-blur-sm
+                              border dark:border-neutral-700 light:border-neutral-300
+                              shadow-sm whitespace-nowrap'>
+                <span className={`w-2 h-2 rounded-full shrink-0 ${status.color} ${status.pulse ? 'animate-pulse' : ''}`} />
+                <span className='text-[10px] font-medium dark:text-neutral-300 light:text-neutral-600'>
+                  {status.text}
+                </span>
+              </div>
+            );
+          })()}
+        </div>
 
         {/* Name */}
         <div className='relative' ref={nameRef}>
@@ -249,7 +263,7 @@ export default function AboutMe() {
               onMouseEnter={!isMobile && profileImages[profileIndex].tooltip ? handleNameTooltipEnter : undefined}
               onMouseLeave={!isMobile && profileImages[profileIndex].tooltip ? handleNameTooltipLeave : undefined}
               className={`text-2xl sm:text-3xl font-semibold dark:text-neutral-100 light:text-neutral-900 tracking-tight
-                         ${profileImages[profileIndex].tooltip ? 'cursor-pointer hover:underline underline-offset-4 decoration-neutral-400 transition-all' : ''}
+                         ${profileImages[profileIndex].tooltip ? 'cursor-pointer transition-all' : ''}
                          ${nameAnimation === 'out' ? 'animate-name-out' : ''}
                          ${nameAnimation === 'in' ? 'animate-name-in' : ''}`}
             >
@@ -559,6 +573,7 @@ export default function AboutMe() {
             )}
           </div>
         </div>
+
       </div>
     </article>
   );
