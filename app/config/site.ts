@@ -1,13 +1,3 @@
-/**
- * Site-wide configuration
- * Update these values to change site behavior
- */
-
-// ============================================
-// WORK STATUS
-// ============================================
-
-/** Available work status options */
 export enum WorkStatus {
   Open = 'open',
   Selective = 'selective',
@@ -15,14 +5,12 @@ export enum WorkStatus {
   Entrepreneurial = 'entrepreneurial',
 }
 
-/** Display configuration for each status */
 export interface StatusDisplay {
   color: string;
   text: string;
   pulse: boolean;
 }
 
-/** Status display mapping */
 const statusDisplayMap: Record<WorkStatus, StatusDisplay> = {
   [WorkStatus.Open]: {
     color: 'bg-emerald-500 dark:bg-emerald-400',
@@ -46,19 +34,11 @@ const statusDisplayMap: Record<WorkStatus, StatusDisplay> = {
   },
 };
 
-/** 
- * ⬇️ CHANGE THIS to update your work status
- */
 export const currentWorkStatus: WorkStatus = WorkStatus.Selective;
 
-/** Get the current work status display info */
 export function getWorkStatusDisplay(): StatusDisplay {
   return statusDisplayMap[currentWorkStatus];
 }
-
-// ============================================
-// SOCIAL LINKS
-// ============================================
 
 export interface SocialLinks {
   email: string;
@@ -79,10 +59,6 @@ export const socialLinks: SocialLinks = {
   ironFortressInstagram: 'https://www.instagram.com/ironfortressfit_/',
   ironFortressStore: 'https://ironfortressfitness.com/',
 };
-
-// ============================================
-// PERSONAL INFO
-// ============================================
 
 export interface PersonalInfo {
   name: string;

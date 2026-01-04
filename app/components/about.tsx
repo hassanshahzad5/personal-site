@@ -30,12 +30,10 @@ const getProfileImages = (useMetric: boolean, bests: PowerliftingData) => {
         type: 'powerlifting' as const,
         intro: 'Building Iron Fortress Powerlifting. Former President of CU Boulder Barbell.',
         lifts: [
-          // Row 1: SBDT
           { label: 'SQ', value: `${squat}${unit}` },
           { label: 'BP', value: `${bench}${unit}` },
           { label: 'DL', value: `${deadlift}${unit}` },
           { label: 'Total', value: `${total}${unit}` },
-          // Row 2: BW + DOTS
           { label: 'BW', value: `${bodyweight}${unit}` },
           { label: 'DOTS', value: dots },
         ],
@@ -55,20 +53,17 @@ const getProfileImages = (useMetric: boolean, bests: PowerliftingData) => {
   ];
 };
 
-// Hydration-safe mounted state
 const subscribeNoop = () => () => {};
 const getMounted = () => true;
 const getServerMounted = () => false;
 
-// Hydration-safe metric detection
 const getUseMetric = () => {
   const locale = typeof navigator !== 'undefined' ? navigator.language : 'en-US';
   const imperialLocales = ['en-US', 'en-LR', 'my-MM'];
   return !imperialLocales.some(l => locale.startsWith(l.split('-')[0]) && locale.includes(l.split('-')[1]));
 };
-const getServerUseMetric = () => true; // Default to metric on server
+const getServerUseMetric = () => true;
 
-// Hydration-safe mobile detection
 const getIsMobile = () => typeof window !== 'undefined' ? window.innerWidth < 640 : false;
 const getServerIsMobile = () => false;
 
@@ -93,14 +88,12 @@ export default function AboutMe() {
   const locationRef = useRef<HTMLDivElement>(null);
   const philosophyRef = useRef<HTMLDivElement>(null);
   
-  // Timeout refs for delayed tooltip closing (allows mouse to move to tooltip)
   const nameTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
   const roleTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
   const creatorTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
   const locationTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
   const philosophyTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Handle resize for mobile detection - this is a subscription to window resize
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
     checkMobile();
@@ -108,7 +101,6 @@ export default function AboutMe() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Close tooltips when clicking outside on mobile
   useEffect(() => {
     if (!isMobile) return;
     
@@ -146,20 +138,17 @@ export default function AboutMe() {
     setIsSpinning(true);
     setNameAnimation('out');
     
-    // Change image and name exactly at 50% when photo is edge-on (invisible at 90°)
     setTimeout(() => {
       setProfileIndex((prev) => (prev + 1) % profileImages.length);
       setNameAnimation('in');
     }, 250);
     
-    // End animations
     setTimeout(() => {
       setIsSpinning(false);
       setNameAnimation('idle');
     }, 500);
   };
 
-  // Tooltip hover handlers with delay to allow mouse movement to tooltip
   const handleNameTooltipEnter = () => {
     if (nameTooltipTimeout.current) clearTimeout(nameTooltipTimeout.current);
     setShowNameTooltip(true);
@@ -204,7 +193,6 @@ export default function AboutMe() {
     <article className={`w-full transition-all duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
       <div className='flex flex-col items-center text-center py-4'>
 
-        {/* Photo - Click to discover easter eggs */}
         <div className='relative mb-2'>
           <button
             type="button"
@@ -216,7 +204,6 @@ export default function AboutMe() {
             style={{ perspective: '1000px' }}
             aria-label='Click to see different photos'
           >
-            {/* Background blur effect on hover - desktop only, bottom-right */}
             <div className='hidden md:block absolute w-12 h-12 rounded-full
                             top-1/2 left-1/2 translate-x-3 translate-y-3
                             opacity-0 group-hover:opacity-100
@@ -238,7 +225,6 @@ export default function AboutMe() {
               priority
             />
           </button>
-          {/* Status indicator */}
           {(() => {
             const status = getWorkStatusDisplay();
             return (
@@ -255,7 +241,6 @@ export default function AboutMe() {
           })()}
         </div>
 
-        {/* Name */}
         <div className='relative' ref={nameRef}>
           <div className='overflow-hidden'>
             <h1 
@@ -271,7 +256,6 @@ export default function AboutMe() {
             </h1>
           </div>
           
-          {/* Name tooltip for easter egg names */}
           {showNameTooltip && profileImages[profileIndex].tooltip && (
             <div 
               className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-80 p-4 rounded-lg
@@ -287,8 +271,6 @@ export default function AboutMe() {
                     {profileImages[profileIndex].tooltip.intro}
                   </p>
 
-                  {/* Personal Bests - Compact Grid */}
-                  {/* SBDT Row */}
                   <div className='grid grid-cols-4 gap-1.5 mb-1.5'>
                     {profileImages[profileIndex].tooltip.lifts.slice(0, 4).map((lift) => (
                       <div 
@@ -302,7 +284,6 @@ export default function AboutMe() {
                       </div>
                     ))}
                   </div>
-                  {/* BW + DOTS Row */}
                   <div className='grid grid-cols-2 gap-1.5 mb-3'>
                     {profileImages[profileIndex].tooltip.lifts.slice(4).map((lift) => (
                       <div 
@@ -317,13 +298,11 @@ export default function AboutMe() {
                     ))}
                   </div>
 
-                  {/* Stats Summary */}
                   <div className='flex items-center justify-between text-[10px] dark:text-neutral-400 light:text-neutral-500 mb-3'>
                     <span>{profileImages[profileIndex].tooltip.recordCount} State Records</span>
                     <span>{profileImages[profileIndex].tooltip.meetCount} Competitions</span>
                   </div>
 
-                  {/* Link to full page */}
                   <Link 
                     href='/fitness'
                     className='block w-full text-center text-xs py-2 rounded-md
@@ -348,10 +327,8 @@ export default function AboutMe() {
           )}
         </div>
         
-        {/* Badges - stacked on mobile, row on desktop */}
         <div className='flex flex-col sm:flex-row items-center justify-center gap-2 mt-3'>
           
-          {/* Full Stack Developer */}
           <div className='relative' ref={roleRef}>
             <span
               onClick={isMobile ? () => setShowRole(!showRole) : undefined}
@@ -369,7 +346,6 @@ export default function AboutMe() {
               Full Stack Developer
             </span>
             
-            {/* Tooltip */}
             {showRole && (
               <div 
                 className={`absolute ${isMobile ? 'top-full left-1/2 -translate-x-1/2 mt-2' : 'top-1/2 -translate-y-1/2 right-full mr-2'} 
@@ -398,7 +374,6 @@ export default function AboutMe() {
                     I&apos;m just getting started.
                   </p>
                 </div>
-                {/* Arrow */}
                 <div className={`absolute ${isMobile ? '-top-2 left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2 -right-2'} 
                                 w-3 h-3 rotate-45 dark:bg-neutral-900 light:bg-white
                                 ${isMobile ? 'dark:border-l dark:border-t dark:border-neutral-700 light:border-l light:border-t light:border-neutral-200' 
@@ -407,7 +382,6 @@ export default function AboutMe() {
             )}
           </div>
           
-          {/* Creator */}
           <div className='relative' ref={creatorRef}>
             <span
               onClick={isMobile ? () => setShowCreator(!showCreator) : undefined}
@@ -425,7 +399,6 @@ export default function AboutMe() {
               Creator
             </span>
             
-            {/* Tooltip - appears at bottom on both mobile and desktop */}
             {showCreator && (
               <div 
                 className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-4 rounded-lg
@@ -448,7 +421,6 @@ export default function AboutMe() {
                     Now I create <strong className='dark:text-neutral-100 light:text-neutral-900'>digital experiences</strong> that engage, convert, and inspire.
                   </p>
                 </div>
-                {/* Arrow */}
                 <div className='absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 
                                 dark:bg-neutral-900 light:bg-white
                                 dark:border-l dark:border-t dark:border-neutral-700 
@@ -457,7 +429,6 @@ export default function AboutMe() {
             )}
           </div>
           
-          {/* Broomfield, CO */}
           <div className='relative' ref={locationRef}>
             <span
               onClick={isMobile ? () => setShowLocation(!showLocation) : handleLocationClick}
@@ -474,7 +445,6 @@ export default function AboutMe() {
               <span className='sm:underline sm:underline-offset-2'>Broomfield, CO</span>
             </span>
             
-            {/* Tooltip - Desktop: no maps link, Mobile: with maps link */}
             {showLocation && (
               <div 
                 className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-4 rounded-lg
@@ -496,7 +466,6 @@ export default function AboutMe() {
                   <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed'>
                     I&apos;ve worked in and around Denver my whole life and love it. I&apos;m a big people person and care deeply about <strong className='dark:text-neutral-100 light:text-neutral-900'>community</strong>. This is home.
                   </p>
-                  {/* Only show on mobile */}
                   {isMobile && (
                     <button 
                       onClick={handleLocationClick}
@@ -514,7 +483,6 @@ export default function AboutMe() {
             )}
           </div>
           
-          {/* Change the Culture */}
           <div className='relative' ref={philosophyRef}>
             <span
               onClick={isMobile ? () => setShowPhilosophy(!showPhilosophy) : undefined}
@@ -532,7 +500,6 @@ export default function AboutMe() {
               Change the Culture
             </span>
             
-            {/* Tooltip */}
             {showPhilosophy && (
               <div 
                 className={`absolute ${isMobile ? 'top-full left-1/2 -translate-x-1/2 mt-2' : 'top-1/2 -translate-y-1/2 left-full ml-2'} 
@@ -564,7 +531,6 @@ export default function AboutMe() {
                     building software, digital experiences, teams, and cultures that don&apos;t happen by accident and actually last.
                   </p>
                 </div>
-                {/* Arrow */}
                 <div className={`absolute ${isMobile ? '-top-2 left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2 -left-2'} 
                                 w-3 h-3 rotate-45 dark:bg-neutral-900 light:bg-white
                                 ${isMobile ? 'dark:border-l dark:border-t dark:border-neutral-700 light:border-l light:border-t light:border-neutral-200' 

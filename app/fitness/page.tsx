@@ -13,12 +13,10 @@ function getOrdinal(n: number): string {
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
-// Hydration-safe mounted state
 const subscribeNoop = () => () => {};
 const getMounted = () => true;
 const getServerMounted = () => false;
 
-// Detect initial metric preference from locale
 const getInitialMetric = () => {
   const locale = typeof navigator !== 'undefined' ? navigator.language : 'en-US';
   const imperialLocales = ['en-US', 'en-LR', 'en-MM'];
@@ -28,7 +26,6 @@ const getInitialMetric = () => {
 export default function FitnessPage() {
   const [section, setSection] = useState<'personal' | 'meet-director' | 'iron-fortress'>('personal');
   const mounted = useSyncExternalStore(subscribeNoop, getMounted, getServerMounted);
-  // Initialize with locale preference, but allow user to toggle
   const initialMetric = useSyncExternalStore(subscribeNoop, getInitialMetric, () => true);
   const [useMetric, setUseMetric] = useState(initialMetric);
 
@@ -38,14 +35,12 @@ export default function FitnessPage() {
 
   const renderPersonalContent = () => (
     <div className='flex flex-col gap-6'>
-      {/* Personal Bests Section */}
       <div>
         <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4'>
           <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 text-center sm:text-left'>
             Personal Bests
           </h3>
           
-          {/* Unit Toggle */}
           <div className='flex items-center justify-center sm:justify-end mt-2 sm:mt-0'>
             <div className='flex border dark:border-neutral-700 light:border-neutral-300 rounded-md overflow-hidden'>
               <button
@@ -74,7 +69,6 @@ export default function FitnessPage() {
           </div>
         </div>
 
-        {/* SBDT Row */}
         <div className='grid grid-cols-4 gap-2'>
           {[
             { label: 'SQ', value: convert(bests.squat) },
@@ -98,7 +92,6 @@ export default function FitnessPage() {
             </div>
           ))}
         </div>
-        {/* BW + DOTS Row */}
         <div className='grid grid-cols-2 gap-2 mt-2'>
           {[
             { label: 'BW', value: convert(bests.bodyweight), showUnit: true },
@@ -122,10 +115,8 @@ export default function FitnessPage() {
         </div>
       </div>
 
-      {/* Divider */}
       <div className='border-t dark:border-neutral-800 light:border-neutral-200'></div>
 
-      {/* Records Section */}
       <div>
         <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 text-center sm:text-left mb-4'>
           Records
@@ -192,10 +183,8 @@ export default function FitnessPage() {
         </div>
       </div>
 
-      {/* Divider */}
       <div className='border-t dark:border-neutral-800 light:border-neutral-200'></div>
 
-      {/* Competitions Section */}
       <div>
         <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 text-center sm:text-left mb-4'>
           Competitions
@@ -209,11 +198,8 @@ export default function FitnessPage() {
                 key={idx}
                 className='flex flex-col sm:flex-row relative'
               >
-                {/* Content */}
                 <div className={`flex-1 ${!isLast ? 'pb-5' : ''}`}>
-                  {/* Date with Timeline dot */}
                   <div className='flex items-center gap-3 sm:gap-4 mb-1'>
-                    {/* Timeline dot - desktop only */}
                     <div className='hidden sm:block w-3 h-3 rounded-full dark:bg-neutral-700 light:bg-neutral-300 shrink-0
                                     border-2 dark:border-neutral-900 light:border-white'></div>
                     <p className='text-sm dark:text-neutral-500 light:text-neutral-500 text-center sm:text-left w-full sm:w-auto'>
@@ -225,7 +211,6 @@ export default function FitnessPage() {
                     </p>
                   </div>
                   
-                  {/* Title and rest - indented to align with date text on desktop */}
                   <div className='sm:ml-7 flex flex-col mb-3'>
                     <div className='text-center sm:text-left'>
                       <h4 className='text-lg sm:text-xl font-semibold dark:text-neutral-100 light:text-neutral-900'>
@@ -245,7 +230,6 @@ export default function FitnessPage() {
                       </h4>
                     </div>
                     
-                    {/* Placements */}
                     <div className='flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mt-2'>
                       {meet.placements.map((p, pIdx) => (
                         <span
@@ -265,8 +249,6 @@ export default function FitnessPage() {
                       ))}
                     </div>
                   
-                    {/* Lift Details - Grid */}
-                    {/* Mobile/Tablet: 4 cols (SBDT row, BW/DOTS row), Desktop: 6 cols */}
                     <div className='grid grid-cols-4 md:grid-cols-6 gap-1.5 mt-3'>
                       {[
                         { label: 'SQ', value: convert(meet.squat), showUnit: true, span: 'md:order-2' },
@@ -289,7 +271,6 @@ export default function FitnessPage() {
                     </div>
                   </div>
                   
-                  {/* Timeline connector line - desktop only */}
                   {!isLast && (
                     <div className='hidden sm:block absolute left-[5px] top-[20px] bottom-0 w-px dark:bg-neutral-800 light:bg-neutral-300'></div>
                   )}
@@ -298,7 +279,6 @@ export default function FitnessPage() {
             );
           })}
           
-          {/* Profile Links */}
           <div className='flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-4 pt-4 border-t dark:border-neutral-800 light:border-neutral-200'>
             <a
               href='https://www.openpowerlifting.org/u/hassanshahzad'
@@ -405,7 +385,7 @@ export default function FitnessPage() {
         volunteers: 48,
       },
       description: '<strong>The largest collegiate-only powerlifting meet in Colorado.</strong> More than doubled participation from Year 1, bringing together <strong>5 teams</strong>: CU Boulder, CU Denver, CSU, CO School of Mines, and Regis University. <strong>Sold out in 2 months.</strong> Led as CEO alongside Amelia Henning (COO) and Jake Higgins (CFO), coordinating a cross-functional team across 2 universities. Reduced athlete registration costs by <strong>~87%</strong> ($20-$30 vs $200+ for sanctioned meets) by securing <strong>$25k+ in sponsorships</strong> through direct outreach, sponsor meetings, and delivering value via social media promotion and member engagement. Coordinated 48 volunteers and hired paid USAPL referees. Produced custom merch, stickers, tote bags, and backdrops. Every lifter received free professional photo/video, custom goody bags with sponsor gifts, and food for athletes, volunteers, coaches, and spectators throughout the day. Gave away <strong>$2,100+ in cash prizes</strong>, gift cards, and raffles. Best team awards with cash prizes. Built to bring people together for a day of lifting, fun, and community.',
-      media: [], // TODO: Add media
+      media: [],
     },
     {
       name: 'Colorado Collegiate Showdown 2024',
@@ -424,13 +404,12 @@ export default function FitnessPage() {
         volunteers: 19,
       },
       description: '<strong>The largest collegiate-only powerlifting meet in Colorado.</strong> Inaugural event bringing together <strong>4 teams</strong>: CU Boulder, CU Denver, CSU, and CO School of Mines. <strong>Sold out in 1 month.</strong> Led as CEO alongside Amelia Henning (COO) and the CU Boulder Barbell leadership team. Reduced athlete registration costs by <strong>~97%</strong> ($5-$15 vs $200+ for sanctioned meets) by securing <strong>$10k+ in sponsorships</strong> through direct outreach, sponsor meetings, and delivering value via social media promotion and member engagement. Coordinated 19 volunteers and hired paid WRPF referees. Produced custom merch, stickers, tote bags, and backdrops. Every lifter received free professional photo/video, custom goody bags with sponsor gifts, and food for athletes, volunteers, and coaches throughout the day. Gave away <strong>$1,700+ in cash prizes</strong>, gift cards, and raffles. Best team awards with cash prizes. Built to bring people together for a day of lifting, fun, and community.',
-      media: [], // TODO: Add media
+      media: [],
     },
   ];
 
   const renderMeetDirectorContent = () => (
     <div className='flex flex-col gap-6'>
-      {/* Summary Stats */}
       <div className='grid grid-cols-2 sm:grid-cols-5 gap-2'>
         <div className='flex flex-col items-center justify-center p-3 rounded-md min-h-[64px] dark:bg-neutral-800/30 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200'>
           <span className='text-xl sm:text-2xl font-bold dark:text-neutral-100 light:text-neutral-900 tabular-nums'>2</span>
@@ -454,10 +433,8 @@ export default function FitnessPage() {
         </div>
       </div>
 
-      {/* Divider */}
       <div className='border-t dark:border-neutral-800 light:border-neutral-200'></div>
 
-      {/* Meet Timeline */}
       <div className='flex flex-col'>
         {meets.map((meet, idx) => {
           const isLast = idx === meets.length - 1;
@@ -466,7 +443,6 @@ export default function FitnessPage() {
               key={idx}
               className='flex flex-col sm:flex-row relative'
             >
-              {/* Timeline connector - desktop only */}
               <div className='hidden sm:flex flex-col items-center mr-4 lg:mr-5'>
                 <div className='w-3 h-3 rounded-full dark:bg-neutral-700 light:bg-neutral-300 shrink-0 z-10 
                                 border-2 dark:border-neutral-900 light:border-white'></div>
@@ -475,11 +451,8 @@ export default function FitnessPage() {
                 )}
               </div>
 
-              {/* Content */}
               <div className={`flex-1 ${!isLast ? 'pb-6' : ''}`}>
-                {/* Header */}
                 <div className='flex flex-col sm:flex-row sm:items-start gap-4 mb-3'>
-                  {/* Logo */}
                   {meet.logo && (
                     <div className='flex justify-center sm:justify-start shrink-0'>
                       <div className='w-20 h-20 rounded-lg bg-white p-2 flex items-center justify-center'>
@@ -494,7 +467,6 @@ export default function FitnessPage() {
                     </div>
                   )}
                   
-                  {/* Text */}
                   <div className='text-center sm:text-left flex-1'>
                     <p className='text-sm dark:text-neutral-500 light:text-neutral-500'>
                       {new Date(meet.date).toLocaleDateString('en-US', { 
@@ -517,7 +489,6 @@ export default function FitnessPage() {
                   </div>
                 </div>
 
-                {/* Stats Badges */}
                 <div className='grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:justify-start gap-1.5 mb-3'>
                   <span className='px-2 py-1 text-[11px] sm:text-xs rounded dark:bg-neutral-800/60 light:bg-neutral-100 dark:text-neutral-300 light:text-neutral-700 border dark:border-neutral-700/50 light:border-neutral-300/50 text-center'>
                     {meet.stats.totalLifters} Lifters
@@ -539,16 +510,13 @@ export default function FitnessPage() {
                   </span>
                 </div>
 
-                {/* Description */}
                 <p 
                   className='text-sm dark:text-neutral-400 light:text-neutral-600 leading-relaxed mb-4 [&>strong]:dark:text-neutral-200 [&>strong]:light:text-neutral-800 [&>strong]:font-semibold'
                   dangerouslySetInnerHTML={{ __html: meet.description }}
                 />
 
-                {/* Media Placeholder */}
                 {meet.media && meet.media.length > 0 ? (
                   <div className='grid grid-cols-2 sm:grid-cols-3 gap-2'>
-                    {/* TODO: Render media items */}
                   </div>
                 ) : (
                   <div className='flex items-center justify-center py-6 rounded-md border border-dashed dark:border-neutral-800 light:border-neutral-300'>
@@ -578,9 +546,7 @@ export default function FitnessPage() {
 
   return (
     <section className='custom-section'>
-      {/* Card with Header, Tabs, and Content */}
       <div className={`w-full flex flex-col justify-center sm:justify-between items-center card p-5 transition-all duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-        {/* Section Header */}
         <h2 className='text-xl sm:text-2xl font-semibold dark:text-neutral-100 light:text-neutral-900 mb-1'>
           Fitness
         </h2>
@@ -588,7 +554,6 @@ export default function FitnessPage() {
           Building Iron Fortress Powerlifting · Former President of CU Boulder Barbell
         </p>
 
-        {/* Tab Navigation */}
         <nav className='w-full flex flex-row border dark:border-neutral-800 light:border-neutral-200 rounded-md overflow-hidden'>
           <button
             type='button'
@@ -613,7 +578,6 @@ export default function FitnessPage() {
           </button>
         </nav>
 
-        {/* Content Area */}
         <article 
           key={section}
           className='w-full mt-4 flex flex-col animate-fade-in'

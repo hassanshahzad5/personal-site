@@ -1,11 +1,3 @@
-/**
- * Shared TypeScript types and interfaces
- */
-
-// ============================================
-// TOOLTIP TYPES
-// ============================================
-
 export interface TextTooltip {
   type: 'text';
   content: string;
@@ -21,20 +13,12 @@ export interface PowerliftingTooltip {
 
 export type TooltipData = TextTooltip | PowerliftingTooltip;
 
-// ============================================
-// PROFILE TYPES
-// ============================================
-
 export interface ProfileImage {
   src: string;
   alt: string;
   name: string;
   tooltip: TooltipData | null;
 }
-
-// ============================================
-// LIFT TYPES
-// ============================================
 
 export interface LiftStat {
   label: string;
@@ -45,10 +29,6 @@ export interface Placement {
   division: string;
   place: number;
 }
-
-// ============================================
-// POWERLIFTING TYPES
-// ============================================
 
 export interface Meet {
   name: string;
@@ -84,10 +64,6 @@ export interface PowerliftingData {
   meets: Meet[];
 }
 
-// ============================================
-// EXPERIENCE TYPES
-// ============================================
-
 export interface Experience {
   photo: string;
   altPhotoText: string;
@@ -101,10 +77,6 @@ export interface Experience {
   tech: string[];
   display: boolean;
 }
-
-// ============================================
-// TECHNOLOGY TYPES
-// ============================================
 
 export interface Technology {
   name: string;
