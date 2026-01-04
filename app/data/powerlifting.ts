@@ -15,17 +15,17 @@ export const powerliftingData: PowerliftingData = {
   
   // Colorado State Raw Records
   records: [
-    { type: 'Colorado State', division: 'Raw Open', weightClass: '-140kg', lift: 'Squat', weight: 305, date: '2025-09-06' },
-    { type: 'Colorado State', division: 'Raw Junior', weightClass: '-140kg', lift: 'Squat', weight: 305, date: '2025-09-06' },
-    { type: 'Colorado State', division: 'Raw Junior', weightClass: '-140kg', lift: 'Deadlift', weight: 287.5, date: '2025-09-06' },
-    { type: 'Colorado State', division: 'Raw Junior', weightClass: '-140kg', lift: 'Deadlift (Single)', weight: 287.5, date: '2025-09-06' },
+    { type: 'Colorado State', division: 'Raw Open', weightClass: '-140kg', lift: 'Squat', weight: 305, date: '2025-09-07' },
+    { type: 'Colorado State', division: 'Raw Junior', weightClass: '-140kg', lift: 'Squat', weight: 305, date: '2025-09-07' },
+    { type: 'Colorado State', division: 'Raw Junior', weightClass: '-140kg', lift: 'Deadlift', weight: 287.5, date: '2025-09-07' },
+    { type: 'Colorado State', division: 'Raw Junior', weightClass: '-140kg', lift: 'Deadlift (Single)', weight: 287.5, date: '2025-09-07' },
   ],
   
   // Competition history (newest first)
   meets: [
     { 
       name: 'West Regionals', 
-      date: '2025-09-06', 
+      date: '2025-09-07', 
       placements: [
         { division: 'Raw Junior', place: 1 },
         { division: 'Raw Open', place: 3 },
@@ -83,7 +83,7 @@ export const powerliftingData: PowerliftingData = {
     },
     { 
       name: 'Nightmare Before Liftmass II', 
-      date: '2022-10-01', 
+      date: '2022-10-02', 
       placements: [
         { division: 'Raw Junior', place: 1 },
       ],
