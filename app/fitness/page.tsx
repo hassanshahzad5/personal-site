@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore, Suspense } from 'react';
 import Image from 'next/image';
 import { FiExternalLink } from 'react-icons/fi';
 import { powerliftingData } from '../data/powerlifting';
+import { useTabParam } from '../hooks/useTabParam';
 
 const kgToLbs = (kg: number) => (kg * 2.20462).toFixed(2);
 
@@ -11,6 +12,12 @@ function getOrdinal(n: number): string {
   const s = ['th', 'st', 'nd', 'rd'];
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+function formatDate(dateStr: string, options: Intl.DateTimeFormatOptions): string {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
+  return date.toLocaleDateString('en-US', options);
 }
 
 const subscribeNoop = () => () => {};
@@ -23,8 +30,11 @@ const getInitialMetric = () => {
   return !imperialLocales.some((l) => locale.startsWith(l.split('-')[0]) && locale === l);
 };
 
-export default function FitnessPage() {
-  const [section, setSection] = useState<'personal' | 'meet-director' | 'iron-fortress'>('personal');
+const VALID_TABS = ['personal', 'meet-director', 'iron-fortress'] as const;
+type FitnessTab = typeof VALID_TABS[number];
+
+function FitnessContent() {
+  const [section, setSection] = useTabParam<FitnessTab>(VALID_TABS, 'personal');
   const mounted = useSyncExternalStore(subscribeNoop, getMounted, getServerMounted);
   const initialMetric = useSyncExternalStore(subscribeNoop, getInitialMetric, () => true);
   const [useMetric, setUseMetric] = useState(initialMetric);
@@ -139,7 +149,7 @@ export default function FitnessPage() {
                       {record.type}
                     </span>
                     <span className='text-[10px] dark:text-neutral-600 light:text-neutral-400'>
-                      {new Date(record.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                      {formatDate(record.date, { month: 'short', year: 'numeric' })}
                     </span>
                   </div>
                   <h4 className='text-base font-semibold dark:text-neutral-100 light:text-neutral-900 truncate'>
@@ -203,11 +213,7 @@ export default function FitnessPage() {
                     <div className='hidden sm:block w-3 h-3 rounded-full dark:bg-neutral-700 light:bg-neutral-300 shrink-0
                                     border-2 dark:border-neutral-900 light:border-white'></div>
                     <p className='text-sm dark:text-neutral-500 light:text-neutral-500 text-center sm:text-left w-full sm:w-auto'>
-                      {new Date(meet.date).toLocaleDateString('en-US', { 
-                        month: 'long', 
-                        day: 'numeric', 
-                        year: 'numeric' 
-                      })}
+                      {formatDate(meet.date, { month: 'long', day: 'numeric', year: 'numeric' })}
                     </p>
                   </div>
                   
@@ -469,11 +475,7 @@ export default function FitnessPage() {
                   
                   <div className='text-center sm:text-left flex-1'>
                     <p className='text-sm dark:text-neutral-500 light:text-neutral-500'>
-                      {new Date(meet.date).toLocaleDateString('en-US', { 
-                        month: 'long', 
-                        day: 'numeric', 
-                        year: 'numeric' 
-                      })}
+                      {formatDate(meet.date, { month: 'long', day: 'numeric', year: 'numeric' })}
                     </p>
                     <h4 className='text-lg sm:text-xl font-semibold dark:text-neutral-100 light:text-neutral-900 mt-0.5'>
                       {meet.name}
@@ -586,5 +588,21 @@ export default function FitnessPage() {
         </article>
       </div>
     </section>
+  );
+}
+
+export default function FitnessPage() {
+  return (
+    <Suspense fallback={
+      <section className='custom-section'>
+        <div className='w-full flex flex-col justify-center sm:justify-between items-center card p-5 opacity-0'>
+          <h2 className='text-xl sm:text-2xl font-semibold dark:text-neutral-100 light:text-neutral-900 mb-1'>
+            Fitness
+          </h2>
+        </div>
+      </section>
+    }>
+      <FitnessContent />
+    </Suspense>
   );
 }

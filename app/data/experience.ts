@@ -1,7 +1,7 @@
 export const experienceData = [
   {
-    label: 'Work',
-    state: 'work',
+    label: 'Professional',
+    state: 'professional',
     data: [
       {
         photo: '/exclusiveresorts.png',

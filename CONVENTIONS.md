@@ -6,6 +6,18 @@
 - **Keep it simple**: Only add complexity when necessary. No premature abstractions.
 - **Consistency**: Follow existing patterns in the codebase.
 
+## Git Workflow
+
+- **Deploy workflow**: Only run `lint → build → add → commit → push` when explicitly requested.
+- **Semantic commit prefixes**: Always use semantic prefixes for commit messages:
+  - `feat:` new feature
+  - `fix:` bug fix
+  - `refactor:` code change that neither fixes a bug nor adds a feature
+  - `style:` formatting, missing semicolons, etc.
+  - `docs:` documentation only
+  - `chore:` maintenance tasks, dependencies
+  - `perf:` performance improvement
+
 ## TypeScript
 
 - Use types and interfaces for data structures
