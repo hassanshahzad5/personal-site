@@ -37,7 +37,7 @@ export default function ProjectGroup({ title, description, projects }: ProjectGr
           {description}
         </p>
       )}
-      <div className={`grid gap-3 ${projects.length === 1 ? 'grid-cols-1' : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'}`}>
+      <div className={`grid gap-3 ${projects.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4'}`}>
         {projects.map((project) => (
           <ProjectCard key={project.id} project={project} fullWidth={projects.length === 1} />
         ))}

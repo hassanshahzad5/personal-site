@@ -16,6 +16,7 @@ export interface Project {
   tags?: string[];
   details?: React.ReactNode;
   links?: { label: string; url: string }[];
+  padImages?: boolean;
 }
 
 interface ProjectCardProps {
@@ -78,12 +79,13 @@ export default function ProjectCard({ project, fullWidth = false }: ProjectCardP
         {thumbnailSrc && (
           <div className={`relative w-full rounded-md overflow-hidden mb-3
                           dark:bg-neutral-800 light:bg-neutral-200
-                          ${fullWidth ? 'h-48 sm:h-56' : 'aspect-[4/3]'}`}>
+                          ${fullWidth ? 'h-48 sm:h-56' : 'aspect-[4/3]'}
+                          ${project.padImages ? 'p-3' : ''}`}>
             <Image
               src={thumbnailSrc}
               alt={project.title}
               fill
-              className='object-contain group-hover:scale-105 transition-transform duration-300'
+              className={`object-contain group-hover:scale-105 transition-transform duration-300 ${project.padImages ? 'p-2' : ''}`}
             />
           </div>
         )}
@@ -112,43 +114,42 @@ export default function ProjectCard({ project, fullWidth = false }: ProjectCardP
       </button>
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={project.title}>
-        {/* Tags and View PDF row */}
-        <div className='flex flex-wrap items-center justify-between gap-2 mb-4'>
-          {project.tags && project.tags.length > 0 && (
-            <div className='flex flex-wrap gap-1.5'>
-              {project.tags.map((tag) => (
-                <TagBadge key={tag} tag={tag} size='md' />
-              ))}
-            </div>
-          )}
+        {/* View PDF button */}
+        {project.links && project.links.length > 0 && (
+          <div className='flex flex-wrap gap-2 mb-3'>
+            {project.links.map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm
+                           dark:bg-neutral-800 light:bg-neutral-100
+                           dark:text-neutral-200 light:text-neutral-800
+                           hover:dark:bg-neutral-700 hover:light:bg-neutral-200
+                           border dark:border-neutral-700 light:border-neutral-300
+                           transition-colors'
+              >
+                <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z' />
+                </svg>
+                {link.label}
+                <svg className='w-3 h-3 opacity-50' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14' />
+                </svg>
+              </a>
+            ))}
+          </div>
+        )}
 
-          {project.links && project.links.length > 0 && (
-            <div className='flex flex-wrap gap-2'>
-              {project.links.map((link) => (
-                <a
-                  key={link.url}
-                  href={link.url}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm
-                             dark:bg-neutral-800 light:bg-neutral-100
-                             dark:text-neutral-200 light:text-neutral-800
-                             hover:dark:bg-neutral-700 hover:light:bg-neutral-200
-                             border dark:border-neutral-700 light:border-neutral-300
-                             transition-colors'
-                >
-                  <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z' />
-                  </svg>
-                  {link.label}
-                  <svg className='w-3 h-3 opacity-50' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14' />
-                  </svg>
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
+        {/* Tags */}
+        {project.tags && project.tags.length > 0 && (
+          <div className='flex flex-wrap gap-1.5 mb-3'>
+            {project.tags.map((tag) => (
+              <TagBadge key={tag} tag={tag} size='md' />
+            ))}
+          </div>
+        )}
 
         {/* Description */}
         <p className='text-sm dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-4'>
@@ -163,33 +164,49 @@ export default function ProjectCard({ project, fullWidth = false }: ProjectCardP
         )}
 
         {/* Pages gallery */}
-        {project.pages && project.pages.length > 0 && (
-          <div>
-            <div className='grid grid-cols-1 md:grid-cols-4 gap-3'>
-              {project.pages.map((page, idx) => (
-                <div 
-                  key={page}
-                  className='relative w-full rounded-lg overflow-hidden p-3
-                             dark:bg-neutral-800 light:bg-neutral-100
-                             border dark:border-neutral-700 light:border-neutral-200'
-                >
-                  <Image
-                    src={page}
-                    alt={`${project.title} - Page ${idx + 1}`}
-                    width={800}
-                    height={1000}
-                    className='w-full h-auto'
-                  />
-                </div>
-              ))}
+        {project.pages && project.pages.length > 0 && (() => {
+          const count = project.pages.length;
+          // Calculate spans: items stretch to fill the row when fewer than max
+          // Desktop: 4 cols, Tablet: 2 cols, Mobile: 1 col
+          const getSpanClasses = () => {
+            if (count === 1) return 'col-span-1 md:col-span-2 xl:col-span-4';
+            if (count === 2) return 'col-span-1 md:col-span-1 xl:col-span-2';
+            if (count === 3) return 'col-span-1 md:col-span-1 xl:col-span-1';
+            return 'col-span-1';
+          };
+          const spanClasses = getSpanClasses();
+          const isSingle = count === 1;
+
+          return (
+            <div className={isSingle ? 'flex-1 flex flex-col' : ''}>
+              <div className={`gap-3 ${isSingle ? 'flex-1 flex' : 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4'}`}>
+                {project.pages.map((page, idx) => (
+                  <div 
+                    key={page}
+                    className={`relative rounded-lg overflow-hidden
+                               dark:bg-neutral-800 light:bg-neutral-100
+                               border dark:border-neutral-700 light:border-neutral-200
+                               ${project.padImages ? 'p-3' : ''}
+                               ${isSingle ? 'flex-1 flex items-center justify-center' : spanClasses + ' w-full'}`}
+                  >
+                    <Image
+                      src={page}
+                      alt={`${project.title} - Page ${idx + 1}`}
+                      width={800}
+                      height={1000}
+                      className={isSingle ? 'max-w-full max-h-full object-contain' : 'w-full h-auto'}
+                    />
+                  </div>
+                ))}
+              </div>
+              {project.pages.length > 1 && (
+                <p className='text-xs text-center dark:text-neutral-500 light:text-neutral-400 mt-3'>
+                  {project.pages.length} pages
+                </p>
+              )}
             </div>
-            {project.pages.length > 1 && (
-              <p className='text-xs text-center dark:text-neutral-500 light:text-neutral-400 mt-3'>
-                {project.pages.length} pages
-              </p>
-            )}
-          </div>
-        )}
+          );
+        })()}
       </Modal>
     </>
   );

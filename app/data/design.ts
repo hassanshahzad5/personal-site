@@ -72,6 +72,7 @@ export const professionalProjects: ProjectCategory[] = [
         title: 'Brand Logos',
         description: 'Official logo system created for CU Boulder Barbell in coordination with the Brand & Messaging department at CU Boulder to remain in compliance with university guidelines. Includes primary logos, secondary marks, and text-based variations across multiple color schemes.',
         tags: ['Branding', 'Logo Design', 'Illustrator'],
+        padImages: true,
         pages: [
           `${PROFESSIONAL_PATH}/cu-boulder-barbell/BBLogo-GoldBlack.PNG`,
           `${PROFESSIONAL_PATH}/cu-boulder-barbell/BBLogo-BlackGold.PNG`,

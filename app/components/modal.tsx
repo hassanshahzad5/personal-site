@@ -73,7 +73,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
           <button
             type='button'
             onClick={handleClose}
-            className='absolute right-4 top-4 p-1.5 rounded-full
+            className='absolute right-4 top-4 p-1.5 rounded-full cursor-pointer
                        dark:text-neutral-400 light:text-neutral-500
                        hover:dark:bg-neutral-800 hover:light:bg-neutral-100
                        transition-colors'
