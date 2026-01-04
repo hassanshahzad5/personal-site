@@ -191,7 +191,7 @@ export default function AboutMe() {
 
   return (
     <article className={`w-full transition-all duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-      <div className='flex flex-col items-center text-center py-4'>
+      <div className='flex flex-col items-center text-center pt-4'>
 
         <div className='relative mb-2'>
           <button

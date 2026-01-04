@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, useContext } from 'react';
 import { MdEmail, MdOutlineDarkMode, MdOutlineLightMode } from 'react-icons/md';
-import { FaLinkedin, FaGithub } from 'react-icons/fa';
+import { FaLinkedin, FaGithub, FaYoutube } from 'react-icons/fa';
 import { AiOutlineDownload } from 'react-icons/ai';
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 import Link from 'next/link';
@@ -148,6 +148,19 @@ export default function Navbar() {
             aria-label='GitHub Profile'
           >
             <FaGithub className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600' onClick={closeMenuOnMobile}/>
+          </Link>
+          
+          <Link 
+            href='https://www.youtube.com/@thehassanshahzad' 
+            target='_blank' 
+            rel='noopener noreferrer'
+            className='clickable flex items-center justify-center w-9 h-9
+                       dark:bg-neutral-800/60 light:bg-white/60
+                       border dark:border-neutral-700/50 light:border-neutral-300/50
+                       rounded-md backdrop-blur-sm transition-all duration-200'
+            aria-label='YouTube Channel'
+          >
+            <FaYoutube className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600' onClick={closeMenuOnMobile}/>
           </Link>
           
           <button 
