@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { FiExternalLink } from 'react-icons/fi';
 import { powerliftingData } from '../data/powerlifting';
 import { useTabParam } from '../hooks/useTabParam';
+import Modal from '../components/modal';
 
 const kgToLbs = (kg: number) => (kg * 2.20462).toFixed(2);
 
@@ -38,6 +39,7 @@ function FitnessContent() {
   const mounted = useSyncExternalStore(subscribeNoop, getMounted, getServerMounted);
   const initialMetric = useSyncExternalStore(subscribeNoop, getInitialMetric, () => true);
   const [useMetric, setUseMetric] = useState(initialMetric);
+  const [mediaModalOpen, setMediaModalOpen] = useState<string | null>(null);
 
   const bests = powerliftingData;
   const unit = useMetric ? 'kg' : 'lbs';
@@ -502,29 +504,68 @@ function FitnessContent() {
                     {meet.stats.volunteers} Staff
                   </span>
                   <span className='px-2 py-1 text-[11px] sm:text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
-                    {meet.stats.sessions}S / {meet.stats.flights}F
+                    {meet.stats.sessions} Sessions / {meet.stats.flights} Flights
                   </span>
                   <span className='px-2 py-1 text-[11px] sm:text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
                     {meet.stats.sponsors} Sponsors
                   </span>
                   <span className='px-2 py-1 text-[11px] sm:text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
-                    {meet.raised}
+                    {meet.raised} Raised
                   </span>
                 </div>
+
+                <button
+                  type='button'
+                  onClick={() => setMediaModalOpen(meet.name)}
+                  className='inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium cursor-pointer mb-3
+                             dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700
+                             light:bg-neutral-100 light:text-neutral-900 light:hover:bg-neutral-200
+                             border dark:border-neutral-700 light:border-neutral-300 transition-colors'
+                >
+                  <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' />
+                  </svg>
+                  See Media
+                </button>
 
                 <p 
                   className='text-sm dark:text-neutral-400 light:text-neutral-600 leading-relaxed mb-4 [&>strong]:dark:text-neutral-200 [&>strong]:light:text-neutral-800 [&>strong]:font-semibold'
                   dangerouslySetInnerHTML={{ __html: meet.description }}
                 />
 
-                {meet.media && meet.media.length > 0 ? (
-                  <div className='grid grid-cols-2 sm:grid-cols-3 gap-2'>
-                  </div>
-                ) : (
-                  <div className='flex items-center justify-center py-6 rounded-md border border-dashed dark:border-neutral-800 light:border-neutral-300'>
-                    <span className='text-xs dark:text-neutral-600 light:text-neutral-400'>Media coming soon</span>
-                  </div>
-                )}
+                <Modal 
+                  isOpen={mediaModalOpen === meet.name} 
+                  onClose={() => setMediaModalOpen(null)} 
+                  title={`${meet.name} - Media`}
+                >
+                  <p className='text-sm dark:text-neutral-400 light:text-neutral-600 mb-4'>
+                    Photos and videos from the event.
+                  </p>
+                  {meet.media && meet.media.length > 0 ? (
+                    <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3'>
+                      {meet.media.map((item, mediaIdx) => (
+                        <div 
+                          key={mediaIdx}
+                          className='relative w-full rounded-lg overflow-hidden
+                                     dark:bg-neutral-800 light:bg-neutral-100
+                                     border dark:border-neutral-700 light:border-neutral-200'
+                        >
+                          <Image
+                            src={item}
+                            alt={`${meet.name} - Media ${mediaIdx + 1}`}
+                            width={800}
+                            height={600}
+                            className='w-full h-auto'
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className='flex items-center justify-center py-12 rounded-md border border-dashed dark:border-neutral-800 light:border-neutral-300'>
+                      <span className='text-sm dark:text-neutral-500 light:text-neutral-400'>Media coming soon</span>
+                    </div>
+                  )}
+                </Modal>
               </div>
             </div>
           );
