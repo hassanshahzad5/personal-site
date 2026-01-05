@@ -9,6 +9,7 @@
 ## Git Workflow
 
 - **Deploy workflow**: Only run `lint → build → add → commit → push` when explicitly requested.
+- **"Send it"**: When told "send it", run the full deploy workflow: `lint → build → add → commit → push`.
 - **Semantic commit prefixes**: Always use semantic prefixes for commit messages:
   - `feat:` new feature
   - `fix:` bug fix

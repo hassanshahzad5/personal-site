@@ -79,6 +79,8 @@ export default function AboutMe() {
   const [isSpinning, setIsSpinning] = useState(false);
   const [nameAnimation, setNameAnimation] = useState<'idle' | 'out' | 'in'>('idle');
   const [showNameTooltip, setShowNameTooltip] = useState(false);
+  const [roleTooltipBelow, setRoleTooltipBelow] = useState(false);
+  const [philosophyTooltipBelow, setPhilosophyTooltipBelow] = useState(false);
   
   const profileImages = getProfileImages(useMetric, powerliftingData);
   
@@ -94,12 +96,35 @@ export default function AboutMe() {
   const locationTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
   const philosophyTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  const TOOLTIP_HEIGHT = 250; // approximate tooltip height
+  const PADDING = 16;
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  useEffect(() => {
+    if (showRole && roleRef.current && !isMobile) {
+      const rect = roleRef.current.getBoundingClientRect();
+      const badgeCenterY = rect.top + rect.height / 2;
+      const tooltipHalfHeight = TOOLTIP_HEIGHT / 2;
+      // Check if tooltip would extend above viewport
+      setRoleTooltipBelow(badgeCenterY - tooltipHalfHeight < PADDING);
+    }
+  }, [showRole, isMobile]);
+
+  useEffect(() => {
+    if (showPhilosophy && philosophyRef.current && !isMobile) {
+      const rect = philosophyRef.current.getBoundingClientRect();
+      const badgeCenterY = rect.top + rect.height / 2;
+      const tooltipHalfHeight = TOOLTIP_HEIGHT / 2;
+      // Check if tooltip would extend above viewport
+      setPhilosophyTooltipBelow(badgeCenterY - tooltipHalfHeight < PADDING);
+    }
+  }, [showPhilosophy, isMobile]);
 
   useEffect(() => {
     if (!isMobile) return;
@@ -348,11 +373,11 @@ export default function AboutMe() {
             
             {showRole && (
               <div 
-                className={`absolute ${isMobile ? 'top-full left-1/2 -translate-x-1/2 mt-2' : 'top-1/2 -translate-y-1/2 right-full mr-2'} 
+                className={`absolute ${isMobile || roleTooltipBelow ? 'top-full left-1/2 -translate-x-1/2 mt-2' : 'top-1/2 -translate-y-1/2 right-full mr-2'} 
                            w-72 p-4 rounded-lg
                            dark:bg-neutral-900 light:bg-white
                            dark:border-neutral-700 light:border-neutral-200 border
-                           shadow-lg z-50 text-left ${isMobile ? 'animate-slide-in-down' : 'animate-slide-in-left'}`}
+                           shadow-lg z-50 text-left ${isMobile || roleTooltipBelow ? 'animate-slide-in-down' : 'animate-slide-in-left'}`}
                 onMouseEnter={!isMobile ? handleRoleTooltipEnter : undefined}
                 onMouseLeave={!isMobile ? handleRoleTooltipLeave : undefined}
               >
@@ -374,9 +399,9 @@ export default function AboutMe() {
                     I&apos;m just getting started.
                   </p>
                 </div>
-                <div className={`absolute ${isMobile ? '-top-2 left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2 -right-2'} 
+                <div className={`absolute ${isMobile || roleTooltipBelow ? '-top-2 left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2 -right-2'} 
                                 w-3 h-3 rotate-45 dark:bg-neutral-900 light:bg-white
-                                ${isMobile ? 'dark:border-l dark:border-t dark:border-neutral-700 light:border-l light:border-t light:border-neutral-200' 
+                                ${isMobile || roleTooltipBelow ? 'dark:border-l dark:border-t dark:border-neutral-700 light:border-l light:border-t light:border-neutral-200' 
                                           : 'dark:border-r dark:border-t dark:border-neutral-700 light:border-r light:border-t light:border-neutral-200'}`}></div>
               </div>
             )}
@@ -502,11 +527,11 @@ export default function AboutMe() {
             
             {showPhilosophy && (
               <div 
-                className={`absolute ${isMobile ? 'top-full left-1/2 -translate-x-1/2 mt-2' : 'top-1/2 -translate-y-1/2 left-full ml-2'} 
+                className={`absolute ${isMobile || philosophyTooltipBelow ? 'top-full left-1/2 -translate-x-1/2 mt-2' : 'top-1/2 -translate-y-1/2 left-full ml-2'} 
                            w-72 p-4 rounded-lg
                            dark:bg-neutral-900 light:bg-white
                            dark:border-neutral-700 light:border-neutral-200 border
-                           shadow-lg z-50 text-left ${isMobile ? 'animate-slide-in-down' : 'animate-slide-in-right'}`}
+                           shadow-lg z-50 text-left ${isMobile || philosophyTooltipBelow ? 'animate-slide-in-down' : 'animate-slide-in-right'}`}
                 onMouseEnter={!isMobile ? handlePhilosophyTooltipEnter : undefined}
                 onMouseLeave={!isMobile ? handlePhilosophyTooltipLeave : undefined}
               >
@@ -531,9 +556,9 @@ export default function AboutMe() {
                     building software, digital experiences, teams, and cultures that don&apos;t happen by accident and actually last.
                   </p>
                 </div>
-                <div className={`absolute ${isMobile ? '-top-2 left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2 -left-2'} 
+                <div className={`absolute ${isMobile || philosophyTooltipBelow ? '-top-2 left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2 -left-2'} 
                                 w-3 h-3 rotate-45 dark:bg-neutral-900 light:bg-white
-                                ${isMobile ? 'dark:border-l dark:border-t dark:border-neutral-700 light:border-l light:border-t light:border-neutral-200' 
+                                ${isMobile || philosophyTooltipBelow ? 'dark:border-l dark:border-t dark:border-neutral-700 light:border-l light:border-t light:border-neutral-200' 
                                           : 'dark:border-l dark:border-b dark:border-neutral-700 light:border-l light:border-b light:border-neutral-200'}`}></div>
               </div>
             )}
