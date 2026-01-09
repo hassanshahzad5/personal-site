@@ -57,7 +57,7 @@ export const socialLinks: SocialLinks = {
   openpowerlifting: 'https://www.openpowerlifting.org/u/hassanshahzad',
   usapl: 'https://usapl.liftingdatabase.com/lifters-view?id=135980',
   ironFortressInstagram: 'https://www.instagram.com/ironfortressfit_/',
-  ironFortressStore: 'https://ironfortressfitness.com/',
+  ironFortressStore: 'https://ironfortressco.com/',
 };
 
 export interface PersonalInfo {
