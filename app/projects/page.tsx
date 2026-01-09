@@ -1,6 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
+import { socialLinks } from '../config/site';
 
 // Hydration-safe mounted state
 const subscribe = () => () => {};
@@ -27,7 +28,7 @@ export default function Projects() {
           <p className='text-sm dark:text-neutral-500 light:text-neutral-500 max-w-sm'>
             Currently curating projects to showcase. Check back soon or visit my{' '}
             <a 
-              href='https://github.com/hassanshahzad5' 
+              href={socialLinks.github} 
               target='_blank' 
               rel='noopener noreferrer'
               className='underline underline-offset-2 hover:dark:text-neutral-300 hover:light:text-neutral-700 transition-colors'

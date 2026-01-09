@@ -9,6 +9,7 @@ import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 import Link from 'next/link';
 
 import { ThemeContext } from '../theme'
+import { socialLinks } from '../config/site'
 
 // Breakpoints: mobile < 768px (md), desktop >= 768px (md+)
 
@@ -113,7 +114,7 @@ export default function Navbar() {
         {/* Action Icons */}
         <div className='flex flex-row gap-2 items-center'>
           <Link 
-            href='mailto:hassanshahzad2002sm@gmail.com' 
+            href={`mailto:${socialLinks.email}`} 
             rel='noopener noreferrer'
             className='clickable flex items-center justify-center w-9 h-9
                        dark:bg-neutral-800/60 light:bg-white/60
@@ -125,7 +126,7 @@ export default function Navbar() {
           </Link>
           
           <Link 
-            href='https://www.linkedin.com/in/thehassanshahzad/' 
+            href={socialLinks.linkedin} 
             target='_blank' 
             rel='noopener noreferrer'
             className='clickable flex items-center justify-center w-9 h-9
@@ -138,7 +139,7 @@ export default function Navbar() {
           </Link>
           
           <Link 
-            href='https://www.github.com/hassanshahzad5/' 
+            href={socialLinks.github} 
             target='_blank' 
             rel='noopener noreferrer'
             className='clickable flex items-center justify-center w-9 h-9

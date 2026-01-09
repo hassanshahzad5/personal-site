@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { FaLinkedin, FaGithub, FaYoutube } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
+import { socialLinks } from '../config/site';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -13,7 +14,7 @@ export default function Footer() {
       {/* Social Links */}
       <div className='flex gap-3 mb-4'>
         <Link 
-          href='mailto:hassanshahzad2002sm@gmail.com' 
+          href={`mailto:${socialLinks.email}`} 
           rel='noopener noreferrer'
           className='clickable flex items-center justify-center w-9 h-9
                      dark:bg-neutral-800/50 light:bg-white/50
@@ -24,7 +25,7 @@ export default function Footer() {
           <MdEmail className='w-4 h-4 dark:text-neutral-500 light:text-neutral-500'/>
         </Link>
         <Link 
-          href='https://www.linkedin.com/in/thehassanshahzad/' 
+          href={socialLinks.linkedin} 
           target='_blank' 
           rel='noopener noreferrer'
           className='clickable flex items-center justify-center w-9 h-9
@@ -36,7 +37,7 @@ export default function Footer() {
           <FaLinkedin className='w-4 h-4 dark:text-neutral-500 light:text-neutral-500'/>
         </Link>
         <Link 
-          href='https://www.github.com/hassanshahzad5/' 
+          href={socialLinks.github} 
           target='_blank' 
           rel='noopener noreferrer'
           className='clickable flex items-center justify-center w-9 h-9

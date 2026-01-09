@@ -6,6 +6,7 @@ import { FiExternalLink } from 'react-icons/fi';
 import { powerliftingData } from '../data/powerlifting';
 import { useTabParam } from '../hooks/useTabParam';
 import Modal from '../components/modal';
+import { socialLinks } from '../config/site';
 
 const kgToLbs = (kg: number) => (kg * 2.20462).toFixed(2);
 
@@ -182,7 +183,7 @@ function FitnessContent() {
             {bests.records.length} Colorado State Records
           </span>
           <a
-            href='https://usapl.liftingdatabase.com/lifters-view?id=135980'
+            href={socialLinks.usapl}
             target='_blank'
             rel='noopener noreferrer'
             className='inline-flex items-center gap-1 text-xs
@@ -289,7 +290,7 @@ function FitnessContent() {
           
           <div className='flex flex-wrap items-center justify-center sm:justify-start gap-4 mt-4 pt-4 border-t dark:border-neutral-800 light:border-neutral-200'>
             <a
-              href='https://www.openpowerlifting.org/u/hassanshahzad'
+              href={socialLinks.openpowerlifting}
               target='_blank'
               rel='noopener noreferrer'
               className='inline-flex items-center gap-1 text-sm 
@@ -301,7 +302,7 @@ function FitnessContent() {
               OpenPowerlifting <FiExternalLink className='w-3 h-3' />
             </a>
             <a
-              href='https://usapl.liftingdatabase.com/lifters-view?id=135980'
+              href={socialLinks.usapl}
               target='_blank'
               rel='noopener noreferrer'
               className='inline-flex items-center gap-1 text-sm 
@@ -344,7 +345,7 @@ function FitnessContent() {
       </p>
       <div className='flex flex-row gap-3'>
         <a
-          href='https://www.instagram.com/ironfortressfit_/'
+          href={socialLinks.ironFortressInstagram}
           target='_blank'
           rel='noopener noreferrer'
           className='inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium
@@ -358,7 +359,7 @@ function FitnessContent() {
           Instagram
         </a>
         <a
-          href='https://ironfortressfitness.com/'
+          href={socialLinks.ironFortressStore}
           target='_blank'
           rel='noopener noreferrer'
           className='inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium
@@ -369,7 +370,7 @@ function FitnessContent() {
           <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
             <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14' />
           </svg>
-          Shop
+          Website
         </a>
       </div>
     </div>
