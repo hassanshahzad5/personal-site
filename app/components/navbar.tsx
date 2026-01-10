@@ -51,7 +51,7 @@ export default function Navbar() {
   }
 
   const handleResumeClick = () => {
-    window.open('/resume.pdf', '_blank');
+    window.open('/documents/resume.pdf', '_blank');
   }
 
   const navTabs = [

@@ -4,7 +4,7 @@ export const experienceData = [
     state: 'professional',
     data: [
       {
-        photo: '/exclusiveresorts.png',
+        photo: '/logos/exclusiveresorts.png',
         altPhotoText: 'Logo - Exclusive Resorts',
         company: 'Exclusive Resorts',
         website: 'https://exclusiveresorts.com',
@@ -35,7 +35,7 @@ export const experienceData = [
         display: true,
       },
       {
-        photo: '/second-edition.png',
+        photo: '/logos/secondedition.png',
         altPhotoText: 'Logo - Second Edition, LLC',
         company: 'Second Edition, LLC',
         website: 'https://secondedition.co',
@@ -66,7 +66,7 @@ export const experienceData = [
         display: true,
       },
       {
-        photo: '/nist.svg',
+        photo: '/logos/nist.svg',
         altPhotoText: 'Logo - National Institute of Standards & Technology',
         company: 'National Institute of Standards & Technology',
         website: 'https://nist.gov',
@@ -89,7 +89,7 @@ export const experienceData = [
     state: 'education',
     data: [
       {
-        photo: '/cuboulder.png',
+        photo: '/logos/cuboulder.png',
         altPhotoText: 'Logo - University of Colorado Boulder',
         company: 'University of Colorado - Boulder',
         website: 'https://colorado.edu',
@@ -112,7 +112,7 @@ export const experienceData = [
     state: 'leadership',
     data: [
       {
-        photo: '/second-edition.png',
+        photo: '/logos/secondedition.png',
         altPhotoText: 'Logo - Second Edition, LLC',
         company: 'Second Edition, LLC',
         website: 'https://secondedition.co',
@@ -140,7 +140,7 @@ export const experienceData = [
         display: true,
       },
       {
-        photo: '/cubarbell.png',
+        photo: '/logos/cubarbell.png',
         altPhotoText: 'Logo - CU Boulder Barbell, NPO',
         company: 'CU Boulder Barbell, NPO',
         website: 'https://cubarbell.com',

@@ -22,9 +22,9 @@ const getProfileImages = (useMetric: boolean, bests: PowerliftingData) => {
   const dots = (bests.dots ?? 0).toFixed(2);
 
   return [
-    { src: '/profile.jpg', alt: 'Picture of Hassan Shahzad', name: 'Hassan Shahzad', tooltip: null },
+    { src: '/profiles/profile-main.jpg', alt: 'Picture of Hassan Shahzad', name: 'Hassan Shahzad', tooltip: null },
     { 
-      src: '/profile-theshah.jpg', 
+      src: '/profiles/profile-theshah.jpg', 
       alt: 'Hassan lifting weights', 
       name: 'The Shah', 
       tooltip: {
@@ -43,7 +43,7 @@ const getProfileImages = (useMetric: boolean, bests: PowerliftingData) => {
       }
     },
     { 
-      src: '/profile-littleshah.jpg', 
+      src: '/profiles/profile-littleshah.jpg', 
       alt: 'Hassan as a little kid', 
       name: 'Little Shah', 
       tooltip: {

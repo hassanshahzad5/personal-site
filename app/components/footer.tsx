@@ -62,7 +62,7 @@ export default function Footer() {
           <FaYoutube className='w-4 h-4 dark:text-neutral-500 light:text-neutral-500'/>
         </Link>
         <Link 
-          href='/resume.pdf'
+          href='/documents/resume.pdf'
           target='_blank' 
           rel='noopener noreferrer'
           className='clickable flex flex-row items-center justify-center gap-1.5 
