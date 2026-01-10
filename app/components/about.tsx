@@ -68,7 +68,7 @@ const getServerUseMetric = () => true;
 export default function AboutMe() {
   const mounted = useSyncExternalStore(subscribeNoop, getMounted, getServerMounted);
   const useMetric = useSyncExternalStore(subscribeNoop, getUseMetric, getServerUseMetric);
-  const { isMobile, isTablet, isDesktop } = useViewportState();
+  const { isMobile, isTablet, isDesktop, isMobileOrTablet } = useViewportState();
   const [showRole, setShowRole] = useState(false);
   const [showCreator, setShowCreator] = useState(false);
   const [showLocation, setShowLocation] = useState(false);
@@ -93,9 +93,9 @@ export default function AboutMe() {
   const locationTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
   const philosophyTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Lock body scroll when tablet drawer is open
+  // Lock body scroll when drawer is open (mobile and tablet)
   useEffect(() => {
-    if (isTablet && mobileDrawer) {
+    if (isMobileOrTablet && mobileDrawer) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -103,24 +103,12 @@ export default function AboutMe() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isTablet, mobileDrawer]);
+  }, [isMobileOrTablet, mobileDrawer]);
 
   useEffect(() => {
-    if (!isMobile) return;
+    if (isDesktop) return;
     
     const handleClickOutside = (e: MouseEvent) => {
-      if (roleRef.current && !roleRef.current.contains(e.target as Node)) {
-        setShowRole(false);
-      }
-      if (creatorRef.current && !creatorRef.current.contains(e.target as Node)) {
-        setShowCreator(false);
-      }
-      if (locationRef.current && !locationRef.current.contains(e.target as Node)) {
-        setShowLocation(false);
-      }
-      if (philosophyRef.current && !philosophyRef.current.contains(e.target as Node)) {
-        setShowPhilosophy(false);
-      }
       if (nameRef.current && !nameRef.current.contains(e.target as Node)) {
         setShowNameTooltip(false);
       }
@@ -128,7 +116,7 @@ export default function AboutMe() {
     
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isMobile]);
+  }, [isDesktop]);
 
   const handleLocationClick = () => {
     window.open(
@@ -335,7 +323,7 @@ export default function AboutMe() {
           
           <div className='relative' ref={roleRef}>
             <span
-              onClick={isTablet ? () => setMobileDrawer('role') : (isMobile ? () => setShowRole(!showRole) : undefined)}
+              onClick={isMobileOrTablet ? () => setMobileDrawer('role') : undefined}
               onMouseEnter={isDesktop ? handleRoleTooltipEnter : undefined}
               onMouseLeave={isDesktop ? handleRoleTooltipLeave : undefined}
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors 
@@ -350,7 +338,7 @@ export default function AboutMe() {
               Full Stack Developer
             </span>
             
-            {!isTablet && showRole && (
+            {isDesktop && showRole && (
               <div 
                 className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-4 rounded-lg
                            dark:bg-neutral-900 light:bg-white
@@ -387,7 +375,7 @@ export default function AboutMe() {
           
           <div className='relative' ref={creatorRef}>
             <span
-              onClick={isTablet ? () => setMobileDrawer('creator') : (isMobile ? () => setShowCreator(!showCreator) : undefined)}
+              onClick={isMobileOrTablet ? () => setMobileDrawer('creator') : undefined}
               onMouseEnter={isDesktop ? handleCreatorTooltipEnter : undefined}
               onMouseLeave={isDesktop ? handleCreatorTooltipLeave : undefined}
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors 
@@ -402,7 +390,7 @@ export default function AboutMe() {
               Creator
             </span>
             
-            {!isTablet && showCreator && (
+            {isDesktop && showCreator && (
               <div 
                 className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-4 rounded-lg
                            dark:bg-neutral-900 light:bg-white
@@ -434,7 +422,7 @@ export default function AboutMe() {
           
           <div className='relative' ref={locationRef}>
             <span
-              onClick={isTablet ? () => setMobileDrawer('location') : (isMobile ? () => setShowLocation(!showLocation) : handleLocationClick)}
+              onClick={isMobileOrTablet ? () => setMobileDrawer('location') : handleLocationClick}
               onMouseEnter={isDesktop ? handleLocationTooltipEnter : undefined}
               onMouseLeave={isDesktop ? handleLocationTooltipLeave : undefined}
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors cursor-pointer
@@ -448,7 +436,7 @@ export default function AboutMe() {
               <span className='xl:underline xl:underline-offset-2'>Broomfield, CO</span>
             </span>
             
-            {!isTablet && showLocation && (
+            {isDesktop && showLocation && (
               <div 
                 className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-4 rounded-lg
                            dark:bg-neutral-900 light:bg-white
@@ -469,14 +457,6 @@ export default function AboutMe() {
                   <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed'>
                     I&apos;ve worked in and around Denver my whole life and love it. I&apos;m a big people person and care deeply about <strong className='dark:text-neutral-100 light:text-neutral-900'>community</strong>. This is home.
                   </p>
-                  {isMobile && (
-                    <button 
-                      onClick={handleLocationClick}
-                      className='mt-3 text-xs dark:text-neutral-400 light:text-neutral-500 hover:dark:text-neutral-200 hover:light:text-neutral-700 underline underline-offset-2 transition-colors'
-                    >
-                      View on Google Maps →
-                    </button>
-                  )}
                 </div>
                 <div className='absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 
                                 dark:bg-neutral-900 light:bg-white
@@ -488,7 +468,7 @@ export default function AboutMe() {
           
           <div className='relative' ref={philosophyRef}>
             <span
-              onClick={isTablet ? () => setMobileDrawer('philosophy') : (isMobile ? () => setShowPhilosophy(!showPhilosophy) : undefined)}
+              onClick={isMobileOrTablet ? () => setMobileDrawer('philosophy') : undefined}
               onMouseEnter={isDesktop ? handlePhilosophyTooltipEnter : undefined}
               onMouseLeave={isDesktop ? handlePhilosophyTooltipLeave : undefined}
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors 
@@ -503,7 +483,7 @@ export default function AboutMe() {
               Change the Culture
             </span>
             
-            {!isTablet && showPhilosophy && (
+            {isDesktop && showPhilosophy && (
               <div 
                 className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-4 rounded-lg
                            dark:bg-neutral-900 light:bg-white
@@ -544,8 +524,8 @@ export default function AboutMe() {
 
       </div>
 
-      {/* Tablet Drawer */}
-      {isTablet && (
+      {/* Mobile & Tablet Drawer */}
+      {isMobileOrTablet && (
         <>
           {/* Backdrop */}
           <div 
