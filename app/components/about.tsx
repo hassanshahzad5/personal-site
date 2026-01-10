@@ -7,6 +7,7 @@ import { MdLocationPin } from 'react-icons/md';
 import { FaCode, FaBolt, FaPaintbrush } from 'react-icons/fa6';
 import { powerliftingData } from '../data/powerlifting';
 import { getWorkStatusDisplay } from '../config/site';
+import { useViewportState } from '../hooks/useViewport';
 import type { TooltipData, PowerliftingData } from '../types';
 
 const kgToLbs = (kg: number) => (kg * 2.20462).toFixed(2);
@@ -64,13 +65,10 @@ const getUseMetric = () => {
 };
 const getServerUseMetric = () => true;
 
-const getIsMobile = () => typeof window !== 'undefined' ? window.innerWidth < 640 : false;
-const getServerIsMobile = () => false;
-
 export default function AboutMe() {
   const mounted = useSyncExternalStore(subscribeNoop, getMounted, getServerMounted);
   const useMetric = useSyncExternalStore(subscribeNoop, getUseMetric, getServerUseMetric);
-  const [isMobile, setIsMobile] = useState(false);
+  const { isMobile, isTablet, isDesktop } = useViewportState();
   const [showRole, setShowRole] = useState(false);
   const [showCreator, setShowCreator] = useState(false);
   const [showLocation, setShowLocation] = useState(false);
@@ -79,8 +77,7 @@ export default function AboutMe() {
   const [isSpinning, setIsSpinning] = useState(false);
   const [nameAnimation, setNameAnimation] = useState<'idle' | 'out' | 'in'>('idle');
   const [showNameTooltip, setShowNameTooltip] = useState(false);
-  const [roleTooltipBelow, setRoleTooltipBelow] = useState(false);
-  const [philosophyTooltipBelow, setPhilosophyTooltipBelow] = useState(false);
+  const [mobileDrawer, setMobileDrawer] = useState<'role' | 'creator' | 'location' | 'philosophy' | null>(null);
   
   const profileImages = getProfileImages(useMetric, powerliftingData);
   
@@ -96,35 +93,17 @@ export default function AboutMe() {
   const locationTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
   const philosophyTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  const TOOLTIP_HEIGHT = 250; // approximate tooltip height
-  const PADDING = 16;
-
+  // Lock body scroll when tablet drawer is open
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 640);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    if (showRole && roleRef.current && !isMobile) {
-      const rect = roleRef.current.getBoundingClientRect();
-      const badgeCenterY = rect.top + rect.height / 2;
-      const tooltipHalfHeight = TOOLTIP_HEIGHT / 2;
-      // Check if tooltip would extend above viewport
-      setRoleTooltipBelow(badgeCenterY - tooltipHalfHeight < PADDING);
+    if (isTablet && mobileDrawer) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
-  }, [showRole, isMobile]);
-
-  useEffect(() => {
-    if (showPhilosophy && philosophyRef.current && !isMobile) {
-      const rect = philosophyRef.current.getBoundingClientRect();
-      const badgeCenterY = rect.top + rect.height / 2;
-      const tooltipHalfHeight = TOOLTIP_HEIGHT / 2;
-      // Check if tooltip would extend above viewport
-      setPhilosophyTooltipBelow(badgeCenterY - tooltipHalfHeight < PADDING);
-    }
-  }, [showPhilosophy, isMobile]);
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isTablet, mobileDrawer]);
 
   useEffect(() => {
     if (!isMobile) return;
@@ -270,8 +249,8 @@ export default function AboutMe() {
           <div className='overflow-hidden'>
             <h1 
               onClick={profileImages[profileIndex].tooltip ? () => setShowNameTooltip(!showNameTooltip) : undefined}
-              onMouseEnter={!isMobile && profileImages[profileIndex].tooltip ? handleNameTooltipEnter : undefined}
-              onMouseLeave={!isMobile && profileImages[profileIndex].tooltip ? handleNameTooltipLeave : undefined}
+              onMouseEnter={isDesktop && profileImages[profileIndex].tooltip ? handleNameTooltipEnter : undefined}
+              onMouseLeave={isDesktop && profileImages[profileIndex].tooltip ? handleNameTooltipLeave : undefined}
               className={`text-2xl sm:text-3xl font-semibold dark:text-neutral-100 light:text-neutral-900 tracking-tight
                          ${profileImages[profileIndex].tooltip ? 'cursor-pointer transition-all' : ''}
                          ${nameAnimation === 'out' ? 'animate-name-out' : ''}
@@ -287,8 +266,8 @@ export default function AboutMe() {
                          dark:bg-neutral-900 light:bg-white
                          dark:border-neutral-700 light:border-neutral-200 border
                          shadow-lg z-50 text-left animate-slide-in-down'
-              onMouseEnter={!isMobile ? handleNameTooltipEnter : undefined}
-              onMouseLeave={!isMobile ? handleNameTooltipLeave : undefined}
+              onMouseEnter={isDesktop ? handleNameTooltipEnter : undefined}
+              onMouseLeave={isDesktop ? handleNameTooltipLeave : undefined}
             >
               {profileImages[profileIndex].tooltip.type === 'powerlifting' ? (
                 <>
@@ -352,34 +331,33 @@ export default function AboutMe() {
           )}
         </div>
         
-        <div className='flex flex-col sm:flex-row items-center justify-center gap-2 mt-3'>
+        <div className='flex flex-row flex-wrap items-center justify-center gap-2 mt-3'>
           
           <div className='relative' ref={roleRef}>
             <span
-              onClick={isMobile ? () => setShowRole(!showRole) : undefined}
-              onMouseEnter={!isMobile ? handleRoleTooltipEnter : undefined}
-              onMouseLeave={!isMobile ? handleRoleTooltipLeave : undefined}
+              onClick={isTablet ? () => setMobileDrawer('role') : (isMobile ? () => setShowRole(!showRole) : undefined)}
+              onMouseEnter={isDesktop ? handleRoleTooltipEnter : undefined}
+              onMouseLeave={isDesktop ? handleRoleTooltipLeave : undefined}
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors 
                          text-xs dark:bg-neutral-800/60 light:bg-neutral-100
                          dark:text-neutral-300 light:text-neutral-600
                          border dark:border-neutral-700/50 light:border-neutral-300/50
                          hover:dark:bg-neutral-700/60 hover:light:bg-neutral-200
-                         ${isMobile ? 'cursor-pointer' : 'cursor-default'}
+                         ${!isDesktop ? 'cursor-pointer' : 'cursor-default'}
                          ${showRole ? 'dark:bg-neutral-700/60 light:bg-neutral-200' : ''}`}
             >
               <FaCode className='w-3 h-3' />
               Full Stack Developer
             </span>
             
-            {showRole && (
+            {!isTablet && showRole && (
               <div 
-                className={`absolute ${isMobile || roleTooltipBelow ? 'top-full left-1/2 -translate-x-1/2 mt-2' : 'top-1/2 -translate-y-1/2 right-full mr-2'} 
-                           w-72 p-4 rounded-lg
+                className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-4 rounded-lg
                            dark:bg-neutral-900 light:bg-white
                            dark:border-neutral-700 light:border-neutral-200 border
-                           shadow-lg z-50 text-left ${isMobile || roleTooltipBelow ? 'animate-slide-in-down' : 'animate-slide-in-left'}`}
-                onMouseEnter={!isMobile ? handleRoleTooltipEnter : undefined}
-                onMouseLeave={!isMobile ? handleRoleTooltipLeave : undefined}
+                           shadow-lg z-50 text-left animate-slide-in-down'
+                onMouseEnter={handleRoleTooltipEnter}
+                onMouseLeave={handleRoleTooltipLeave}
               >
                 <div className='animate-text-reveal-delayed'>
                   <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
@@ -399,39 +377,39 @@ export default function AboutMe() {
                     I&apos;m just getting started.
                   </p>
                 </div>
-                <div className={`absolute ${isMobile || roleTooltipBelow ? '-top-2 left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2 -right-2'} 
-                                w-3 h-3 rotate-45 dark:bg-neutral-900 light:bg-white
-                                ${isMobile || roleTooltipBelow ? 'dark:border-l dark:border-t dark:border-neutral-700 light:border-l light:border-t light:border-neutral-200' 
-                                          : 'dark:border-r dark:border-t dark:border-neutral-700 light:border-r light:border-t light:border-neutral-200'}`}></div>
+                <div className='absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 
+                                dark:bg-neutral-900 light:bg-white
+                                dark:border-l dark:border-t dark:border-neutral-700 
+                                light:border-l light:border-t light:border-neutral-200'></div>
               </div>
             )}
           </div>
           
           <div className='relative' ref={creatorRef}>
             <span
-              onClick={isMobile ? () => setShowCreator(!showCreator) : undefined}
-              onMouseEnter={!isMobile ? handleCreatorTooltipEnter : undefined}
-              onMouseLeave={!isMobile ? handleCreatorTooltipLeave : undefined}
+              onClick={isTablet ? () => setMobileDrawer('creator') : (isMobile ? () => setShowCreator(!showCreator) : undefined)}
+              onMouseEnter={isDesktop ? handleCreatorTooltipEnter : undefined}
+              onMouseLeave={isDesktop ? handleCreatorTooltipLeave : undefined}
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors 
                          text-xs dark:bg-neutral-800/60 light:bg-neutral-100
                          dark:text-neutral-300 light:text-neutral-600
                          border dark:border-neutral-700/50 light:border-neutral-300/50
                          hover:dark:bg-neutral-700/60 hover:light:bg-neutral-200
-                         ${isMobile ? 'cursor-pointer' : 'cursor-default'}
+                         ${!isDesktop ? 'cursor-pointer' : 'cursor-default'}
                          ${showCreator ? 'dark:bg-neutral-700/60 light:bg-neutral-200' : ''}`}
             >
               <FaPaintbrush className='w-3 h-3' />
               Creator
             </span>
             
-            {showCreator && (
+            {!isTablet && showCreator && (
               <div 
                 className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-4 rounded-lg
                            dark:bg-neutral-900 light:bg-white
                            dark:border-neutral-700 light:border-neutral-200 border
                            shadow-lg z-50 text-left animate-slide-in-down'
-                onMouseEnter={!isMobile ? handleCreatorTooltipEnter : undefined}
-                onMouseLeave={!isMobile ? handleCreatorTooltipLeave : undefined}
+                onMouseEnter={handleCreatorTooltipEnter}
+                onMouseLeave={handleCreatorTooltipLeave}
               >
                 <div className='animate-text-reveal-delayed'>
                   <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
@@ -456,9 +434,9 @@ export default function AboutMe() {
           
           <div className='relative' ref={locationRef}>
             <span
-              onClick={isMobile ? () => setShowLocation(!showLocation) : handleLocationClick}
-              onMouseEnter={!isMobile ? handleLocationTooltipEnter : undefined}
-              onMouseLeave={!isMobile ? handleLocationTooltipLeave : undefined}
+              onClick={isTablet ? () => setMobileDrawer('location') : (isMobile ? () => setShowLocation(!showLocation) : handleLocationClick)}
+              onMouseEnter={isDesktop ? handleLocationTooltipEnter : undefined}
+              onMouseLeave={isDesktop ? handleLocationTooltipLeave : undefined}
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors cursor-pointer
                          text-xs dark:bg-neutral-800/60 light:bg-neutral-100
                          dark:text-neutral-300 light:text-neutral-600
@@ -467,17 +445,17 @@ export default function AboutMe() {
                          ${showLocation ? 'dark:bg-neutral-700/60 light:bg-neutral-200' : ''}`}
             >
               <MdLocationPin className='w-3 h-3' />
-              <span className='sm:underline sm:underline-offset-2'>Broomfield, CO</span>
+              <span className='xl:underline xl:underline-offset-2'>Broomfield, CO</span>
             </span>
             
-            {showLocation && (
+            {!isTablet && showLocation && (
               <div 
                 className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-4 rounded-lg
                            dark:bg-neutral-900 light:bg-white
                            dark:border-neutral-700 light:border-neutral-200 border
                            shadow-lg z-50 text-left animate-slide-in-down'
-                onMouseEnter={!isMobile ? handleLocationTooltipEnter : undefined}
-                onMouseLeave={!isMobile ? handleLocationTooltipLeave : undefined}
+                onMouseEnter={handleLocationTooltipEnter}
+                onMouseLeave={handleLocationTooltipLeave}
               >
                 <div className='animate-text-reveal-delayed'>
                   <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
@@ -510,30 +488,29 @@ export default function AboutMe() {
           
           <div className='relative' ref={philosophyRef}>
             <span
-              onClick={isMobile ? () => setShowPhilosophy(!showPhilosophy) : undefined}
-              onMouseEnter={!isMobile ? handlePhilosophyTooltipEnter : undefined}
-              onMouseLeave={!isMobile ? handlePhilosophyTooltipLeave : undefined}
+              onClick={isTablet ? () => setMobileDrawer('philosophy') : (isMobile ? () => setShowPhilosophy(!showPhilosophy) : undefined)}
+              onMouseEnter={isDesktop ? handlePhilosophyTooltipEnter : undefined}
+              onMouseLeave={isDesktop ? handlePhilosophyTooltipLeave : undefined}
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors 
                          text-xs dark:bg-neutral-800/60 light:bg-neutral-100
                          dark:text-neutral-300 light:text-neutral-600
                          border dark:border-neutral-700/50 light:border-neutral-300/50
                          hover:dark:bg-neutral-700/60 hover:light:bg-neutral-200
-                         ${isMobile ? 'cursor-pointer' : 'cursor-default'}
+                         ${!isDesktop ? 'cursor-pointer' : 'cursor-default'}
                          ${showPhilosophy ? 'dark:bg-neutral-700/60 light:bg-neutral-200' : ''}`}
             >
               <FaBolt className='w-3 h-3' />
               Change the Culture
             </span>
             
-            {showPhilosophy && (
+            {!isTablet && showPhilosophy && (
               <div 
-                className={`absolute ${isMobile || philosophyTooltipBelow ? 'top-full left-1/2 -translate-x-1/2 mt-2' : 'top-1/2 -translate-y-1/2 left-full ml-2'} 
-                           w-72 p-4 rounded-lg
+                className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 p-4 rounded-lg
                            dark:bg-neutral-900 light:bg-white
                            dark:border-neutral-700 light:border-neutral-200 border
-                           shadow-lg z-50 text-left ${isMobile || philosophyTooltipBelow ? 'animate-slide-in-down' : 'animate-slide-in-right'}`}
-                onMouseEnter={!isMobile ? handlePhilosophyTooltipEnter : undefined}
-                onMouseLeave={!isMobile ? handlePhilosophyTooltipLeave : undefined}
+                           shadow-lg z-50 text-left animate-slide-in-down'
+                onMouseEnter={handlePhilosophyTooltipEnter}
+                onMouseLeave={handlePhilosophyTooltipLeave}
               >
                 <div className='animate-text-reveal-delayed'>
                   <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
@@ -556,16 +533,151 @@ export default function AboutMe() {
                     building software, digital experiences, teams, and cultures that don&apos;t happen by accident and actually last.
                   </p>
                 </div>
-                <div className={`absolute ${isMobile || philosophyTooltipBelow ? '-top-2 left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2 -left-2'} 
-                                w-3 h-3 rotate-45 dark:bg-neutral-900 light:bg-white
-                                ${isMobile || philosophyTooltipBelow ? 'dark:border-l dark:border-t dark:border-neutral-700 light:border-l light:border-t light:border-neutral-200' 
-                                          : 'dark:border-l dark:border-b dark:border-neutral-700 light:border-l light:border-b light:border-neutral-200'}`}></div>
+                <div className='absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 
+                                dark:bg-neutral-900 light:bg-white
+                                dark:border-l dark:border-t dark:border-neutral-700 
+                                light:border-l light:border-t light:border-neutral-200'></div>
               </div>
             )}
           </div>
         </div>
 
       </div>
+
+      {/* Tablet Drawer */}
+      {isTablet && (
+        <>
+          {/* Backdrop */}
+          <div 
+            className={`fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-opacity duration-300
+                       ${mobileDrawer ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+            onClick={() => setMobileDrawer(null)}
+          />
+          
+          {/* Drawer */}
+          <div 
+            className={`fixed bottom-0 left-0 right-0 z-50 
+                       dark:bg-neutral-900 light:bg-white
+                       rounded-t-2xl shadow-2xl
+                       transition-transform duration-300 ease-out
+                       ${mobileDrawer ? 'translate-y-0' : 'translate-y-full'}`}
+          >
+            {/* Handle */}
+            <div className='flex justify-center pt-3 pb-2'>
+              <div className='w-10 h-1 rounded-full dark:bg-neutral-700 light:bg-neutral-300' />
+            </div>
+            
+            {/* Content */}
+            <div className='px-5 pb-8 max-h-[70vh] overflow-y-auto'>
+              {mobileDrawer === 'role' && (
+                <div>
+                  <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
+                    Full Stack Developer
+                  </h3>
+                  <div className='space-y-3 text-sm dark:text-neutral-300 light:text-neutral-700'>
+                    <p>
+                      I declared CS as my major <strong className='dark:text-neutral-100 light:text-neutral-900'>knowing nothing</strong> about it. 
+                      My first semester humbled me. I went from being a gifted kid in high school to failing classes and struggling to find balance between work, school, training, personal projects, and life.
+                    </p>
+                    <p>
+                      I questioned if CS was for me. Then I <strong className='dark:text-neutral-100 light:text-neutral-900'>quit my job</strong> with no backup plan and reached out to 
+                      Second Edition, a startup founded by a freshman year friend. They took a huge chance on me. It was my first interaction with code in the real world.
+                    </p>
+                    <p>
+                      I fell in love with building. I was actually <strong className='dark:text-neutral-100 light:text-neutral-900'>creating meaningful, impactful software</strong>,
+                      pulling 80+ hour weeks just because of the fulfillment I got from learning, collaborating, and shipping with my team.
+                    </p>
+                    <p>
+                      When they lost funding and I was laid off, I was devestated until I found <strong className='dark:text-neutral-100 light:text-neutral-900'>Exclusive Resorts</strong> and got my first experience on a larger team. 
+                      I&apos;m just getting started.
+                    </p>
+                  </div>
+                </div>
+              )}
+              
+              {mobileDrawer === 'creator' && (
+                <div>
+                  <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
+                    Creator
+                  </h3>
+                  <div className='space-y-3 text-sm dark:text-neutral-300 light:text-neutral-700'>
+                    <p>
+                      I started creating in high school, making social media ads and videos to <strong className='dark:text-neutral-100 light:text-neutral-900'>change the culture</strong> and 
+                      push school spirit. Taught myself Photoshop, Illustrator, and Premiere Pro from scratch.
+                    </p>
+                    <p>
+                      In college, I picked up a minor in <strong className='dark:text-neutral-100 light:text-neutral-900'>Creative Technology & Design</strong>, 
+                      connecting my CS skills to the creator space. I kept building, designing ads for CU Boulder Barbell and collaborating with sponsors on joint posts.
+                    </p>
+                    <p>
+                      Now I create <strong className='dark:text-neutral-100 light:text-neutral-900'>digital experiences</strong> that engage, convert, and inspire.
+                    </p>
+                  </div>
+                </div>
+              )}
+              
+              {mobileDrawer === 'location' && (
+                <div>
+                  <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
+                    Broomfield, CO
+                  </h3>
+                  <div className='space-y-3 text-sm dark:text-neutral-300 light:text-neutral-700'>
+                    <p>
+                      I&apos;m a <strong className='dark:text-neutral-100 light:text-neutral-900'>Colorado native,</strong> Born and raised in Broomfield. 
+                      I went to the same K-12 school my whole life and found my love for community through student leadership and community involvement.
+                    </p>
+                    <p>
+                      That&apos;s where I got into <strong className='dark:text-neutral-100 light:text-neutral-900'>event planning</strong> and developed an obsession with the details. 
+                      At <strong className='dark:text-neutral-100 light:text-neutral-900'>CU Boulder</strong>, I applied those same ideas to CU Boulder Barbell, which we founded and grew into a nonprofit club with tax-exempt status and 100+ active members.
+                    </p>
+                    <p>
+                      I&apos;ve worked in and around Denver my whole life and love it. I&apos;m a big people person and care deeply about <strong className='dark:text-neutral-100 light:text-neutral-900'>community</strong>. This is home.
+                    </p>
+                  </div>
+                  <button 
+                    onClick={handleLocationClick}
+                    className='mt-4 w-full py-3 rounded-lg text-sm font-medium
+                               dark:bg-neutral-800 dark:text-neutral-100 
+                               light:bg-neutral-100 light:text-neutral-900
+                               transition-colors'
+                  >
+                    View on Google Maps →
+                  </button>
+                </div>
+              )}
+              
+              {mobileDrawer === 'philosophy' && (
+                <div>
+                  <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
+                    Change the Culture
+                  </h3>
+                  <div className='space-y-3 text-sm dark:text-neutral-300 light:text-neutral-700'>
+                    <p>
+                      <strong className='dark:text-neutral-100 light:text-neutral-900'>Change the Culture.</strong> That&apos;s my life mantra. 
+                    </p>
+                    <p>
+                      Culture isn&apos;t a slogan or a set of values on a wall. It&apos;s how people act under pressure, how decisions get made when the answer isn&apos;t obvious, 
+                      and what behavior gets tolerated when things are hard.
+                    </p>
+                    <p>
+                      Changing culture is <strong className='dark:text-neutral-100 light:text-neutral-900'>uncomfortable work</strong>. It demands discipline, strength, and radical accountability 
+                      at the company level, the community level, and personally. I take responsibility for that and build it directly into how I operate.
+                    </p>
+                    <p>
+                      I value clarity, respect, detail, doing the right thing, and refusing to cut corners. I&apos;ve applied that mindset across software, retail, and travel/hospitality 
+                      environments where execution, standards, and customer experience matter.
+                    </p>
+                    <p>
+                      I&apos;m a <strong className='dark:text-neutral-100 light:text-neutral-900'>creator</strong> at heart: 
+                      building software, digital experiences, teams, and cultures that don&apos;t happen by accident and actually last.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </article>
   );
 }

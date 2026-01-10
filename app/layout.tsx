@@ -35,11 +35,11 @@ export default function RootLayout({
       <ThemeProvider>
       <html lang='en' className='dark'>
         <body className={`${dmSans.variable} ${newsreader.variable} antialiased`}>
+          <Navbar />
           <main className='flex flex-col items-center w-full xl:w-[80%] mx-auto'>
-            <Navbar />
             {children}
-            <Footer />
           </main>
+          <Footer />
         </body>
       </html>
       </ThemeProvider>

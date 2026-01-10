@@ -44,6 +44,7 @@ export interface SocialLinks {
   email: string;
   linkedin: string;
   github: string;
+  youtube: string;
   openpowerlifting: string;
   usapl: string;
   ironFortressInstagram: string;
@@ -54,6 +55,7 @@ export const socialLinks: SocialLinks = {
   email: 'hassanshahzad2002sm@gmail.com',
   linkedin: 'https://www.linkedin.com/in/thehassanshahzad/',
   github: 'https://www.github.com/hassanshahzad5/',
+  youtube: 'https://www.youtube.com/@thehassanshahzad',
   openpowerlifting: 'https://www.openpowerlifting.org/u/hassanshahzad',
   usapl: 'https://usapl.liftingdatabase.com/lifters-view?id=135980',
   ironFortressInstagram: 'https://www.instagram.com/ironfortressfit_/',
