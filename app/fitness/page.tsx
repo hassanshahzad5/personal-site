@@ -55,10 +55,16 @@ function FitnessContent() {
           </h3>
           
           <div className='flex items-center justify-center sm:justify-end mt-2 sm:mt-0'>
-            <div className='flex border dark:border-neutral-700 light:border-neutral-300 rounded-md overflow-hidden'>
+            <div 
+              role="group" 
+              aria-label="Weight unit selection"
+              className='flex border dark:border-neutral-700 light:border-neutral-300 rounded-md overflow-hidden'
+            >
               <button
                 type='button'
                 onClick={() => setUseMetric(true)}
+                aria-pressed={useMetric}
+                aria-label="Use kilograms"
                 className={`px-3 py-1 text-xs cursor-pointer transition-all duration-200
                   ${useMetric
                     ? 'dark:bg-neutral-800 dark:text-neutral-100 light:bg-neutral-200 light:text-neutral-900'
@@ -70,6 +76,8 @@ function FitnessContent() {
               <button
                 type='button'
                 onClick={() => setUseMetric(false)}
+                aria-pressed={!useMetric}
+                aria-label="Use pounds"
                 className={`px-3 py-1 text-xs cursor-pointer transition-all duration-200 border-l dark:border-neutral-700 light:border-neutral-300
                   ${!useMetric
                     ? 'dark:bg-neutral-800 dark:text-neutral-100 light:bg-neutral-200 light:text-neutral-900'

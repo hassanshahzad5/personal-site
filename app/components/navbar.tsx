@@ -42,6 +42,18 @@ export default function Navbar() {
     };
   }, [isMenuOpen]);
 
+  // Close menu on Escape key (accessibility)
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+    
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isMenuOpen]);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   }
@@ -64,7 +76,9 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop Navbar */}
-      <nav className={`hidden md:flex w-full flex-row justify-between 
+      <nav 
+        aria-label="Main navigation"
+        className={`hidden md:flex w-full flex-row justify-between 
                        py-3 px-5 items-center sticky top-0 z-50 transition-all duration-200
                        ${isScrolled 
                          ? 'dark:bg-neutral-900/80 light:bg-white/80 backdrop-blur-md border-b dark:border-neutral-800/50 light:border-neutral-200/50' 
@@ -77,7 +91,8 @@ export default function Navbar() {
             return (
               <Link 
                 key={tab.href} 
-                href={tab.href} 
+                href={tab.href}
+                aria-current={active ? 'page' : undefined}
                 className={`px-4 py-2 rounded-md text-center font-medium transition-all duration-200
                            ${active 
                              ? 'dark:text-neutral-100 light:text-neutral-900 dark:bg-neutral-900 light:bg-neutral-100' 
@@ -111,9 +126,9 @@ export default function Navbar() {
                        dark:bg-neutral-800/60 light:bg-white/60
                        border dark:border-neutral-700/50 light:border-neutral-300/50
                        rounded-md backdrop-blur-sm transition-all duration-200'
-            aria-label='LinkedIn Profile'
+            aria-label='LinkedIn Profile (opens in new tab)'
           >
-            <FaLinkedin className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600'/>
+            <FaLinkedin className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600' aria-hidden="true"/>
           </Link>
           
           <Link 
@@ -124,9 +139,9 @@ export default function Navbar() {
                        dark:bg-neutral-800/60 light:bg-white/60
                        border dark:border-neutral-700/50 light:border-neutral-300/50
                        rounded-md backdrop-blur-sm transition-all duration-200'
-            aria-label='GitHub Profile'
+            aria-label='GitHub Profile (opens in new tab)'
           >
-            <FaGithub className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600'/>
+            <FaGithub className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600' aria-hidden="true"/>
           </Link>
           
           <Link 
@@ -137,9 +152,9 @@ export default function Navbar() {
                        dark:bg-neutral-800/60 light:bg-white/60
                        border dark:border-neutral-700/50 light:border-neutral-300/50
                        rounded-md backdrop-blur-sm transition-all duration-200'
-            aria-label='YouTube Channel'
+            aria-label='YouTube Channel (opens in new tab)'
           >
-            <FaYoutube className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600'/>
+            <FaYoutube className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600' aria-hidden="true"/>
           </Link>
           
           <button 
@@ -152,46 +167,54 @@ export default function Navbar() {
                        dark:hover:text-neutral-100 light:hover:text-neutral-900
                        border dark:border-neutral-700/50 light:border-neutral-300/50
                        backdrop-blur-sm transition-all duration-200'
+            aria-label="Download resume (opens in new tab)"
           >
-            <AiOutlineDownload className='w-4 h-4'/>
+            <AiOutlineDownload className='w-4 h-4' aria-hidden="true"/>
             Resume
           </button>
           
           <button 
+            type="button"
             onClick={() => toggleTheme()} 
             className='clickable flex items-center justify-center w-9 h-9
                        dark:bg-neutral-800/60 light:bg-white/60
                        border dark:border-neutral-700/50 light:border-neutral-300/50
                        rounded-md backdrop-blur-sm transition-all duration-200'
-            aria-label='Toggle theme'
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
           >
             {theme === 'dark' 
-              ? <MdOutlineDarkMode className='w-5 h-5 dark:text-neutral-400'/> 
-              : <MdOutlineLightMode className='w-5 h-5 light:text-neutral-600'/>}
+              ? <MdOutlineDarkMode className='w-5 h-5 dark:text-neutral-400' aria-hidden="true"/> 
+              : <MdOutlineLightMode className='w-5 h-5 light:text-neutral-600' aria-hidden="true"/>}
           </button>
         </div>
       </nav>
 
       {/* Mobile Header Bar */}
-      <nav className={`flex md:hidden w-full items-center justify-between px-5 py-3 sticky top-0 z-50 transition-all duration-200
+      <nav 
+        aria-label="Mobile navigation"
+        className={`flex md:hidden w-full items-center justify-between px-5 py-3 sticky top-0 z-50 transition-all duration-200
                        ${isScrolled && !isMenuOpen
                          ? 'dark:bg-neutral-900/80 light:bg-white/80 backdrop-blur-md border-b dark:border-neutral-800/50 light:border-neutral-200/50' 
                          : 'dark:bg-transparent light:bg-transparent'}`}>
         <button 
+          type="button"
           onClick={() => toggleTheme()} 
           className='clickable flex items-center justify-center w-9 h-9 
                      dark:bg-neutral-800/60 light:bg-white/60
                      border dark:border-neutral-700/50 light:border-neutral-300/50 
                      rounded-md backdrop-blur-sm transition-all duration-200'
-          aria-label='Toggle theme'
+          aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
           {theme === 'dark' 
-            ? <MdOutlineDarkMode className='w-5 h-5 dark:text-neutral-400'/> 
-            : <MdOutlineLightMode className='w-5 h-5 light:text-neutral-600'/>}
+            ? <MdOutlineDarkMode className='w-5 h-5 dark:text-neutral-400' aria-hidden="true"/> 
+            : <MdOutlineLightMode className='w-5 h-5 light:text-neutral-600' aria-hidden="true"/>}
         </button>
         
         <button 
-          aria-label='Toggle Menu' 
+          type="button"
+          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
           onClick={toggleMenu}
           className='clickable flex items-center justify-center w-9 h-9
                      dark:bg-neutral-800/60 light:bg-white/60
@@ -199,13 +222,17 @@ export default function Navbar() {
                      rounded-md backdrop-blur-sm transition-all duration-200 z-60'
         >
           {isMenuOpen 
-            ? <RxCross1 className='w-5 h-5'/> 
-            : <RxHamburgerMenu className='w-5 h-5'/>}
+            ? <RxCross1 className='w-5 h-5' aria-hidden="true"/> 
+            : <RxHamburgerMenu className='w-5 h-5' aria-hidden="true"/>}
         </button>
       </nav>
 
       {/* Mobile Full-Screen Menu Overlay */}
       <div 
+        id="mobile-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
         className={`fixed inset-0 z-40 md:hidden flex flex-col
                     dark:bg-neutral-900/85 light:bg-neutral-100/85 backdrop-blur-lg
                     transition-all duration-300 ease-out
@@ -223,6 +250,7 @@ export default function Navbar() {
                 key={tab.href} 
                 href={tab.href}
                 onClick={closeMenuOnMobile}
+                aria-current={active ? 'page' : undefined}
                 className={`w-full p-2 block transition-all duration-300
                            ${!isLast ? 'border-b dark:border-neutral-800 light:border-neutral-200' : ''}`}
                 style={{ 
@@ -273,9 +301,9 @@ export default function Navbar() {
                        dark:bg-neutral-800/60 light:bg-neutral-100
                        border dark:border-neutral-700/50 light:border-neutral-300/50
                        rounded-md transition-colors duration-200'
-            aria-label='LinkedIn Profile'
+            aria-label='LinkedIn Profile (opens in new tab)'
           >
-            <FaLinkedin className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600'/>
+            <FaLinkedin className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600' aria-hidden="true"/>
           </Link>
           
           <Link 
@@ -287,9 +315,9 @@ export default function Navbar() {
                        dark:bg-neutral-800/60 light:bg-neutral-100
                        border dark:border-neutral-700/50 light:border-neutral-300/50
                        rounded-md transition-colors duration-200'
-            aria-label='GitHub Profile'
+            aria-label='GitHub Profile (opens in new tab)'
           >
-            <FaGithub className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600'/>
+            <FaGithub className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600' aria-hidden="true"/>
           </Link>
           
           <Link 
@@ -301,9 +329,9 @@ export default function Navbar() {
                        dark:bg-neutral-800/60 light:bg-neutral-100
                        border dark:border-neutral-700/50 light:border-neutral-300/50
                        rounded-md transition-colors duration-200'
-            aria-label='YouTube Channel'
+            aria-label='YouTube Channel (opens in new tab)'
           >
-            <FaYoutube className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600'/>
+            <FaYoutube className='w-5 h-5 dark:text-neutral-400 light:text-neutral-600' aria-hidden="true"/>
           </Link>
           
           <button 
@@ -318,8 +346,9 @@ export default function Navbar() {
                        dark:text-neutral-100 light:text-neutral-900
                        border dark:border-neutral-700 light:border-neutral-300
                        transition-colors duration-200'
+            aria-label="Download resume (opens in new tab)"
           >
-            <AiOutlineDownload className='w-4 h-4'/>
+            <AiOutlineDownload className='w-4 h-4' aria-hidden="true"/>
             Resume
           </button>
         </div>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useEffect, useState, useRef, useSyncExternalStore } from 'react';
 import { MdLocationPin } from 'react-icons/md';
 import { FaCode, FaBolt, FaPaintbrush } from 'react-icons/fa6';
+import { RxCross1 } from 'react-icons/rx';
 import { powerliftingData } from '../data/powerlifting';
 import { getWorkStatusDisplay } from '../config/site';
 import { useViewportState } from '../hooks/useViewport';
@@ -82,10 +83,13 @@ export default function AboutMe() {
   const profileImages = getProfileImages(useMetric, powerliftingData);
   
   const nameRef = useRef<HTMLDivElement>(null);
+  const nameTooltipRef = useRef<HTMLDivElement>(null);
   const roleRef = useRef<HTMLDivElement>(null);
   const creatorRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLDivElement>(null);
   const philosophyRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const drawerCloseRef = useRef<HTMLButtonElement>(null);
   
   const nameTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
   const roleTooltipTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -104,6 +108,42 @@ export default function AboutMe() {
       document.body.style.overflow = '';
     };
   }, [isMobileOrTablet, mobileDrawer]);
+
+  // Focus trap and keyboard handling for drawer
+  useEffect(() => {
+    if (!mobileDrawer || !drawerRef.current) return;
+
+    // Focus the close button when drawer opens
+    setTimeout(() => drawerCloseRef.current?.focus(), 100);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Close on Escape
+      if (e.key === 'Escape') {
+        setMobileDrawer(null);
+        return;
+      }
+
+      // Focus trap on Tab
+      if (e.key === 'Tab' && drawerRef.current) {
+        const focusableElements = drawerRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement?.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement?.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [mobileDrawer]);
 
   useEffect(() => {
     if (isDesktop) return;
@@ -237,10 +277,26 @@ export default function AboutMe() {
           <div className='overflow-hidden'>
             <h1 
               onClick={profileImages[profileIndex].tooltip ? () => setShowNameTooltip(!showNameTooltip) : undefined}
+              onKeyDown={profileImages[profileIndex].tooltip ? (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setShowNameTooltip(!showNameTooltip);
+                }
+              } : undefined}
               onMouseEnter={isDesktop && profileImages[profileIndex].tooltip ? handleNameTooltipEnter : undefined}
               onMouseLeave={isDesktop && profileImages[profileIndex].tooltip ? handleNameTooltipLeave : undefined}
+              onFocus={isDesktop && profileImages[profileIndex].tooltip ? () => setShowNameTooltip(true) : undefined}
+              onBlur={isDesktop && profileImages[profileIndex].tooltip ? (e) => {
+                // Don't close if focus is moving into the tooltip
+                if (nameTooltipRef.current?.contains(e.relatedTarget as Node)) return;
+                setShowNameTooltip(false);
+              } : undefined}
+              tabIndex={profileImages[profileIndex].tooltip ? 0 : undefined}
+              role={profileImages[profileIndex].tooltip ? 'button' : undefined}
+              aria-expanded={profileImages[profileIndex].tooltip ? showNameTooltip : undefined}
+              aria-haspopup={profileImages[profileIndex].tooltip ? 'dialog' : undefined}
               className={`text-2xl sm:text-3xl font-semibold dark:text-neutral-100 light:text-neutral-900 tracking-tight
-                         ${profileImages[profileIndex].tooltip ? 'cursor-pointer transition-all' : ''}
+                         ${profileImages[profileIndex].tooltip ? 'cursor-pointer transition-all focus:underline focus:underline-offset-4' : ''}
                          ${nameAnimation === 'out' ? 'animate-name-out' : ''}
                          ${nameAnimation === 'in' ? 'animate-name-in' : ''}`}
             >
@@ -250,12 +306,22 @@ export default function AboutMe() {
           
           {showNameTooltip && profileImages[profileIndex].tooltip && (
             <div 
+              ref={nameTooltipRef}
+              role="dialog"
+              aria-label={`${profileImages[profileIndex].name} details`}
               className='absolute top-full left-1/2 -translate-x-1/2 mt-2 w-80 p-4 rounded-lg
                          dark:bg-neutral-900 light:bg-white
                          dark:border-neutral-700 light:border-neutral-200 border
                          shadow-lg z-50 text-left animate-slide-in-down'
               onMouseEnter={isDesktop ? handleNameTooltipEnter : undefined}
               onMouseLeave={isDesktop ? handleNameTooltipLeave : undefined}
+              onBlur={(e) => {
+                // Close tooltip when focus leaves the tooltip entirely
+                if (!e.currentTarget.contains(e.relatedTarget as Node) && 
+                    e.relatedTarget !== nameRef.current?.querySelector('h1')) {
+                  setShowNameTooltip(false);
+                }
+              }}
             >
               {profileImages[profileIndex].tooltip.type === 'powerlifting' ? (
                 <>
@@ -322,21 +388,27 @@ export default function AboutMe() {
         <div className='flex flex-row flex-wrap items-center justify-center gap-2 mt-3'>
           
           <div className='relative' ref={roleRef}>
-            <span
-              onClick={isMobileOrTablet ? () => setMobileDrawer('role') : undefined}
+            <button
+              type="button"
+              onClick={isMobileOrTablet ? () => setMobileDrawer('role') : () => setShowRole(!showRole)}
               onMouseEnter={isDesktop ? handleRoleTooltipEnter : undefined}
               onMouseLeave={isDesktop ? handleRoleTooltipLeave : undefined}
+              onFocus={isDesktop ? () => setShowRole(true) : undefined}
+              onBlur={isDesktop ? () => setShowRole(false) : undefined}
+              aria-expanded={showRole}
+              aria-haspopup="dialog"
+              aria-label="Full Stack Developer - click to learn more"
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors 
                          text-xs dark:bg-neutral-800/60 light:bg-neutral-100
                          dark:text-neutral-300 light:text-neutral-600
                          border dark:border-neutral-700/50 light:border-neutral-300/50
                          hover:dark:bg-neutral-700/60 hover:light:bg-neutral-200
-                         ${!isDesktop ? 'cursor-pointer' : 'cursor-default'}
+                         cursor-pointer
                          ${showRole ? 'dark:bg-neutral-700/60 light:bg-neutral-200' : ''}`}
             >
-              <FaCode className='w-3 h-3' />
+              <FaCode className='w-3 h-3' aria-hidden="true" />
               Full Stack Developer
-            </span>
+            </button>
             
             {isDesktop && showRole && (
               <div 
@@ -374,21 +446,27 @@ export default function AboutMe() {
           </div>
           
           <div className='relative' ref={creatorRef}>
-            <span
-              onClick={isMobileOrTablet ? () => setMobileDrawer('creator') : undefined}
+            <button
+              type="button"
+              onClick={isMobileOrTablet ? () => setMobileDrawer('creator') : () => setShowCreator(!showCreator)}
               onMouseEnter={isDesktop ? handleCreatorTooltipEnter : undefined}
               onMouseLeave={isDesktop ? handleCreatorTooltipLeave : undefined}
+              onFocus={isDesktop ? () => setShowCreator(true) : undefined}
+              onBlur={isDesktop ? () => setShowCreator(false) : undefined}
+              aria-expanded={showCreator}
+              aria-haspopup="dialog"
+              aria-label="Creator - click to learn more"
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors 
                          text-xs dark:bg-neutral-800/60 light:bg-neutral-100
                          dark:text-neutral-300 light:text-neutral-600
                          border dark:border-neutral-700/50 light:border-neutral-300/50
                          hover:dark:bg-neutral-700/60 hover:light:bg-neutral-200
-                         ${!isDesktop ? 'cursor-pointer' : 'cursor-default'}
+                         cursor-pointer
                          ${showCreator ? 'dark:bg-neutral-700/60 light:bg-neutral-200' : ''}`}
             >
-              <FaPaintbrush className='w-3 h-3' />
+              <FaPaintbrush className='w-3 h-3' aria-hidden="true" />
               Creator
-            </span>
+            </button>
             
             {isDesktop && showCreator && (
               <div 
@@ -421,10 +499,16 @@ export default function AboutMe() {
           </div>
           
           <div className='relative' ref={locationRef}>
-            <span
-              onClick={isMobileOrTablet ? () => setMobileDrawer('location') : handleLocationClick}
+            <button
+              type="button"
+              onClick={isMobileOrTablet ? () => setMobileDrawer('location') : () => setShowLocation(!showLocation)}
               onMouseEnter={isDesktop ? handleLocationTooltipEnter : undefined}
               onMouseLeave={isDesktop ? handleLocationTooltipLeave : undefined}
+              onFocus={isDesktop ? () => setShowLocation(true) : undefined}
+              onBlur={isDesktop ? () => setShowLocation(false) : undefined}
+              aria-expanded={showLocation}
+              aria-haspopup="dialog"
+              aria-label="Broomfield, Colorado - click to learn more"
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors cursor-pointer
                          text-xs dark:bg-neutral-800/60 light:bg-neutral-100
                          dark:text-neutral-300 light:text-neutral-600
@@ -432,9 +516,9 @@ export default function AboutMe() {
                          hover:dark:bg-neutral-700/60 hover:light:bg-neutral-200
                          ${showLocation ? 'dark:bg-neutral-700/60 light:bg-neutral-200' : ''}`}
             >
-              <MdLocationPin className='w-3 h-3' />
+              <MdLocationPin className='w-3 h-3' aria-hidden="true" />
               <span className='xl:underline xl:underline-offset-2'>Broomfield, CO</span>
-            </span>
+            </button>
             
             {isDesktop && showLocation && (
               <div 
@@ -467,21 +551,27 @@ export default function AboutMe() {
           </div>
           
           <div className='relative' ref={philosophyRef}>
-            <span
-              onClick={isMobileOrTablet ? () => setMobileDrawer('philosophy') : undefined}
+            <button
+              type="button"
+              onClick={isMobileOrTablet ? () => setMobileDrawer('philosophy') : () => setShowPhilosophy(!showPhilosophy)}
               onMouseEnter={isDesktop ? handlePhilosophyTooltipEnter : undefined}
               onMouseLeave={isDesktop ? handlePhilosophyTooltipLeave : undefined}
+              onFocus={isDesktop ? () => setShowPhilosophy(true) : undefined}
+              onBlur={isDesktop ? () => setShowPhilosophy(false) : undefined}
+              aria-expanded={showPhilosophy}
+              aria-haspopup="dialog"
+              aria-label="Change the Culture - click to learn more"
               className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full transition-colors 
                          text-xs dark:bg-neutral-800/60 light:bg-neutral-100
                          dark:text-neutral-300 light:text-neutral-600
                          border dark:border-neutral-700/50 light:border-neutral-300/50
                          hover:dark:bg-neutral-700/60 hover:light:bg-neutral-200
-                         ${!isDesktop ? 'cursor-pointer' : 'cursor-default'}
+                         cursor-pointer
                          ${showPhilosophy ? 'dark:bg-neutral-700/60 light:bg-neutral-200' : ''}`}
             >
-              <FaBolt className='w-3 h-3' />
+              <FaBolt className='w-3 h-3' aria-hidden="true" />
               Change the Culture
-            </span>
+            </button>
             
             {isDesktop && showPhilosophy && (
               <div 
@@ -536,15 +626,38 @@ export default function AboutMe() {
           
           {/* Drawer */}
           <div 
+            ref={drawerRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={
+              mobileDrawer === 'role' ? 'Full Stack Developer details' :
+              mobileDrawer === 'creator' ? 'Creator details' :
+              mobileDrawer === 'location' ? 'Location details' :
+              mobileDrawer === 'philosophy' ? 'Change the Culture details' : 'Details'
+            }
             className={`fixed bottom-0 left-0 right-0 z-50 
                        dark:bg-neutral-900 light:bg-white
                        rounded-t-2xl shadow-2xl
                        transition-transform duration-300 ease-out
                        ${mobileDrawer ? 'translate-y-0' : 'translate-y-full'}`}
           >
-            {/* Handle */}
-            <div className='flex justify-center pt-3 pb-2'>
+            {/* Header with Handle and Close Button */}
+            <div className='flex items-center justify-between px-5 pt-3 pb-2'>
+              <div className='w-9' /> {/* Spacer for centering */}
               <div className='w-10 h-1 rounded-full dark:bg-neutral-700 light:bg-neutral-300' />
+              <button
+                ref={drawerCloseRef}
+                type="button"
+                onClick={() => setMobileDrawer(null)}
+                aria-label="Close drawer"
+                className='flex items-center justify-center w-9 h-9 rounded-full
+                           dark:bg-neutral-800 light:bg-neutral-100
+                           dark:text-neutral-400 light:text-neutral-600
+                           hover:dark:bg-neutral-700 hover:light:bg-neutral-200
+                           transition-colors'
+              >
+                <RxCross1 className='w-4 h-4' aria-hidden="true" />
+              </button>
             </div>
             
             {/* Content */}
@@ -615,7 +728,9 @@ export default function AboutMe() {
                     </p>
                   </div>
                   <button 
+                    type="button"
                     onClick={handleLocationClick}
+                    aria-label="View Broomfield, Colorado on Google Maps (opens in new tab)"
                     className='mt-4 w-full py-3 rounded-lg text-sm font-medium
                                dark:bg-neutral-800 dark:text-neutral-100 
                                light:bg-neutral-100 light:text-neutral-900

@@ -35,8 +35,19 @@ export default function RootLayout({
       <ThemeProvider>
       <html lang='en' className='dark'>
         <body className={`${dmSans.variable} ${newsreader.variable} antialiased`}>
+          {/* Skip to main content link for keyboard users */}
+          <a 
+            href="#main-content" 
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100]
+                       focus:px-4 focus:py-2 focus:rounded-md focus:font-medium
+                       focus:dark:bg-neutral-800 focus:dark:text-neutral-100
+                       focus:light:bg-white focus:light:text-neutral-900
+                       focus:ring-2 focus:ring-offset-2 focus:dark:ring-neutral-400 focus:light:ring-neutral-600"
+          >
+            Skip to main content
+          </a>
           <Navbar />
-          <main className='flex flex-col items-center w-full xl:w-[80%] mx-auto'>
+          <main id="main-content" className='flex flex-col items-center w-full xl:w-[80%] mx-auto' role="main">
             {children}
           </main>
           <Footer />
