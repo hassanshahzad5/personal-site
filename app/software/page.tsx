@@ -8,7 +8,7 @@ const subscribe = () => () => {};
 const getSnapshot = () => true;
 const getServerSnapshot = () => false;
 
-export default function Projects() {
+export default function Software() {
   const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
@@ -17,7 +17,7 @@ export default function Projects() {
       <div className={`w-full flex flex-col justify-center sm:justify-between items-center card p-5 transition-all duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
         {/* Section Header */}
         <h2 className='text-xl sm:text-2xl font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
-          Projects
+          Software
         </h2>
 
         {/* Coming Soon Content */}

@@ -66,10 +66,79 @@ const getUseMetric = () => {
 };
 const getServerUseMetric = () => true;
 
+// Shared content for badge tooltips and drawers
+const badgeContent = {
+  role: {
+    title: 'Full Stack Developer',
+    paragraphs: [
+      <>I declared Computer Science as my major <strong>knowing absolutely nothing</strong> about it. My first semester humbled me. I went from being at the top of my class in high school to failing classes and struggling to find balance between work, school, training, personal projects, and life.</>,
+      <>I needed to figure out if coding was something I truly wanted to do for a living, so <strong>I quit my job</strong> at the end of my 3rd year of college with no backup plan. Shortly after, I reached out to a freshman year friend, who founded <strong>Second Edition</strong>, a luxury furniture resale and consignment startup in Denver. They took a huge chance on me. It was my first interaction with code in the real world.</>,
+      <>I fell in love with building and our mission to reduce wastefulness in the furniture industry. I was finally putting the pieces together and <strong>creating meaningful, impactful software</strong>, pulling 80+ hour weeks as the sole developer just because of the fulfillment I got from learning, collaborating, and shipping with my team.</>,
+      <>After graduating, I joined <strong>Exclusive Resorts</strong> and am getting my first experience on a larger cross-functional team. I&apos;m just getting started and am eager to see where this journey takes me.</>,
+    ],
+  },
+  creator: {
+    title: 'Creator',
+    paragraphs: [
+      <>I started creating in high school, <strong>seeing a clear gap</strong> in our Student Council&apos;s ability to communicate and connect with the student body. I taught myself <strong>Photoshop, Illustrator, and Premiere Pro</strong> from scratch, diving into graphic design, apparel design, video editing, and social media management.</>,
+      <>I led our council&apos;s <strong>Challenge the Culture</strong> campaign my senior year, aimed at improving school spirit through social media recognition—ads for games, events, and student life. I also created and led our first ever <strong>Color Dance</strong>, a new annual event to welcome students back before homecoming.</>,
+      <>In college, I picked up a minor in <strong>Creative Technology &amp; Design</strong>, expanding my skillset and connecting design to code. I designed logos and marketing materials for CU Boulder Barbell and led the <strong>2024 & 2025 Colorado Collegiate Showdowns</strong>, mock powerlifting meets bringing together athletes from university clubs across the state.</>,
+      <>Now <strong>I create digital experiences that engage, convert, and inspire</strong> - with an attention to detail shaped by years of management, event planning, and hands-on execution.</>,
+    ],
+  },
+  location: {
+    title: 'Broomfield, CO',
+    paragraphs: [
+      <>I&apos;m a <strong>Colorado native</strong> born and raised in Broomfield to a Pakistani immigrant family. I went to the same school from Kindergarten through High School and found my <strong>love for community</strong> through student leadership and involvement.</>,
+      <>I believe deeply in <strong>giving back to the communities, organizations, and people that invested in me</strong>. My university gave me opportunities to grow, and I spent my time there focusing on ways to make college better and less lonely for the people around me. I co-founded CU Boulder Barbell and grew it from a school club into a 501(c)(3) nonprofit organization serving 100+ members.</>,
+      <>I&apos;m a <strong>family and community man</strong> who knows that the grass is greenest where you water it - and I&apos;ve spent my life watering Colorado. This is home, and I will absolutely keep building here.</>,
+    ],
+  },
+  philosophy: {
+    title: 'Change the Culture',
+    paragraphs: [
+      <><strong>This is my life mantra.</strong></>,
+      <>Culture isn&apos;t an abstract idea or a slogan or a set of values on a wall. It&apos;s revelealed in how people act under pressure, the decisions that get made when the answer isn&apos;t obvious, and in what gets tolerated when things get hard and doing the right thing is uncomfortable.</>,
+      <><strong>Changing culture is slow, uncomfortable, and necessary work</strong>. It starts with individuals, compounds through teams and communities, and ultimately shapes the systems and outcomes that affect the world at large. It demands vigilance, consistency, discipline, attention to detail, and radical accountability at every level.</>,
+      <>I take responsibility for that work and integrate this mindset into how I operate - through leadership, software, and design - across luxury goods and services environments, fitness organizations, and other communities where execution, high standards, and customer experience matter.</>,
+      <>Great people, teams, and cultures don&apos;t come to be by accident. I build them by holding myself and those around me to a <strong>consistently higher standard</strong>.</>,
+    ],
+  },
+};
+
+// Reusable component for rendering badge content
+const BadgeContentParagraphs = ({ 
+  paragraphs, 
+  variant 
+}: { 
+  paragraphs: React.ReactNode[]; 
+  variant: 'tooltip' | 'drawer';
+}) => {
+  const baseClass = variant === 'tooltip' 
+    ? 'text-xs leading-relaxed' 
+    : 'text-sm';
+  const spacingClass = variant === 'tooltip' ? 'mb-2 last:mb-0' : '';
+  const containerClass = variant === 'drawer' ? 'space-y-3' : '';
+  const strongClass = 'dark:text-neutral-100 light:text-neutral-900';
+
+  return (
+    <div className={containerClass}>
+      {paragraphs.map((paragraph, index) => (
+        <p 
+          key={index} 
+          className={`dark:text-neutral-300 light:text-neutral-700 ${baseClass} ${spacingClass} [&>strong]:${strongClass}`}
+        >
+          {paragraph}
+        </p>
+      ))}
+    </div>
+  );
+};
+
 export default function AboutMe() {
   const mounted = useSyncExternalStore(subscribeNoop, getMounted, getServerMounted);
   const useMetric = useSyncExternalStore(subscribeNoop, getUseMetric, getServerUseMetric);
-  const { isMobile, isTablet, isDesktop, isMobileOrTablet } = useViewportState();
+  const {isDesktop, isMobileOrTablet } = useViewportState();
   const [showRole, setShowRole] = useState(false);
   const [showCreator, setShowCreator] = useState(false);
   const [showLocation, setShowLocation] = useState(false);
@@ -419,24 +488,7 @@ export default function AboutMe() {
                 onMouseEnter={handleRoleTooltipEnter}
                 onMouseLeave={handleRoleTooltipLeave}
               >
-                <div className='animate-text-reveal-delayed'>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
-                    I declared CS as my major <strong className='dark:text-neutral-100 light:text-neutral-900'>knowing nothing</strong> about it. 
-                    My first semester humbled me. I went from being a gifted kid in high school to failing classes and struggling to find balance between work, school, training, personal projects, and life.
-                  </p>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
-                    I questioned if CS was for me. Then I <strong className='dark:text-neutral-100 light:text-neutral-900'>quit my job</strong> with no backup plan and reached out to 
-                    Second Edition, a startup founded by a freshman year friend. They took a huge chance on me. It was my first interaction with code in the real world.
-                  </p>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
-                    I fell in love with building. I was actually <strong className='dark:text-neutral-100 light:text-neutral-900'>creating meaningful, impactful software</strong>,
-                    pulling 80+ hour weeks just because of the fulfillment I got from learning, collaborating, and shipping with my team.
-                  </p>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed'>
-                    When they lost funding and I was laid off, I was devestated until I found <strong className='dark:text-neutral-100 light:text-neutral-900'>Exclusive Resorts</strong> and got my first experience on a larger team. 
-                    I&apos;m just getting started.
-                  </p>
-                </div>
+                <BadgeContentParagraphs paragraphs={badgeContent.role.paragraphs} variant="tooltip" />
                 <div className='absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 
                                 dark:bg-neutral-900 light:bg-white
                                 dark:border-l dark:border-t dark:border-neutral-700 
@@ -477,19 +529,7 @@ export default function AboutMe() {
                 onMouseEnter={handleCreatorTooltipEnter}
                 onMouseLeave={handleCreatorTooltipLeave}
               >
-                <div className='animate-text-reveal-delayed'>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
-                    I started creating in high school, making social media ads and videos to <strong className='dark:text-neutral-100 light:text-neutral-900'>change the culture</strong> and 
-                    push school spirit. Taught myself Photoshop, Illustrator, and Premiere Pro from scratch.
-                  </p>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
-                    In college, I picked up a minor in <strong className='dark:text-neutral-100 light:text-neutral-900'>Creative Technology & Design</strong>, 
-                    connecting my CS skills to the creator space. I kept building, designing ads for CU Boulder Barbell and collaborating with sponsors on joint posts.
-                  </p>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed'>
-                    Now I create <strong className='dark:text-neutral-100 light:text-neutral-900'>digital experiences</strong> that engage, convert, and inspire.
-                  </p>
-                </div>
+                <BadgeContentParagraphs paragraphs={badgeContent.creator.paragraphs} variant="tooltip" />
                 <div className='absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 
                                 dark:bg-neutral-900 light:bg-white
                                 dark:border-l dark:border-t dark:border-neutral-700 
@@ -529,19 +569,7 @@ export default function AboutMe() {
                 onMouseEnter={handleLocationTooltipEnter}
                 onMouseLeave={handleLocationTooltipLeave}
               >
-                <div className='animate-text-reveal-delayed'>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
-                    I&apos;m a <strong className='dark:text-neutral-100 light:text-neutral-900'>Colorado native,</strong> Born and raised in Broomfield. 
-                    I went to the same K-12 school my whole life and found my love for community through student leadership and community involvement.
-                  </p>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
-                    That&apos;s where I got into <strong className='dark:text-neutral-100 light:text-neutral-900'>event planning</strong> and developed an obsession with the details. 
-                    At <strong className='dark:text-neutral-100 light:text-neutral-900'>CU Boulder</strong>, I applied those same ideas to CU Boulder Barbell, which we founded and grew into a nonprofit club with tax-exempt status and 100+ active members.
-                  </p>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed'>
-                    I&apos;ve worked in and around Denver my whole life and love it. I&apos;m a big people person and care deeply about <strong className='dark:text-neutral-100 light:text-neutral-900'>community</strong>. This is home.
-                  </p>
-                </div>
+                <BadgeContentParagraphs paragraphs={badgeContent.location.paragraphs} variant="tooltip" />
                 <div className='absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 
                                 dark:bg-neutral-900 light:bg-white
                                 dark:border-l dark:border-t dark:border-neutral-700 
@@ -582,27 +610,7 @@ export default function AboutMe() {
                 onMouseEnter={handlePhilosophyTooltipEnter}
                 onMouseLeave={handlePhilosophyTooltipLeave}
               >
-                <div className='animate-text-reveal-delayed'>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
-                    <strong className='dark:text-neutral-100 light:text-neutral-900'>Change the Culture.</strong> That&apos;s my life mantra. 
-                  </p>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
-                    Culture isn&apos;t a slogan or a set of values on a wall. It&apos;s how people act under pressure, how decisions get made when the answer isn&apos;t obvious, 
-                    and what behavior gets tolerated when things are hard.
-                  </p>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
-                    Changing culture is <strong className='dark:text-neutral-100 light:text-neutral-900'>uncomfortable work</strong>. It demands discipline, strength, and radical accountability 
-                    at the company level, the community level, and personally. I take responsibility for that and build it directly into how I operate.
-                  </p>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed mb-2'>
-                    I value clarity, respect, detail, doing the right thing, and refusing to cut corners. I&apos;ve applied that mindset across software, retail, and travel/hospitality 
-                    environments where execution, standards, and customer experience matter.
-                  </p>
-                  <p className='text-xs dark:text-neutral-300 light:text-neutral-700 leading-relaxed'>
-                    I&apos;m a <strong className='dark:text-neutral-100 light:text-neutral-900'>creator</strong> at heart: 
-                    building software, digital experiences, teams, and cultures that don&apos;t happen by accident and actually last.
-                  </p>
-                </div>
+                <BadgeContentParagraphs paragraphs={badgeContent.philosophy.paragraphs} variant="tooltip" />
                 <div className='absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 
                                 dark:bg-neutral-900 light:bg-white
                                 dark:border-l dark:border-t dark:border-neutral-700 
@@ -665,68 +673,27 @@ export default function AboutMe() {
               {mobileDrawer === 'role' && (
                 <div>
                   <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
-                    Full Stack Developer
+                    {badgeContent.role.title}
                   </h3>
-                  <div className='space-y-3 text-sm dark:text-neutral-300 light:text-neutral-700'>
-                    <p>
-                      I declared CS as my major <strong className='dark:text-neutral-100 light:text-neutral-900'>knowing nothing</strong> about it. 
-                      My first semester humbled me. I went from being a gifted kid in high school to failing classes and struggling to find balance between work, school, training, personal projects, and life.
-                    </p>
-                    <p>
-                      I questioned if CS was for me. Then I <strong className='dark:text-neutral-100 light:text-neutral-900'>quit my job</strong> with no backup plan and reached out to 
-                      Second Edition, a startup founded by a freshman year friend. They took a huge chance on me. It was my first interaction with code in the real world.
-                    </p>
-                    <p>
-                      I fell in love with building. I was actually <strong className='dark:text-neutral-100 light:text-neutral-900'>creating meaningful, impactful software</strong>,
-                      pulling 80+ hour weeks just because of the fulfillment I got from learning, collaborating, and shipping with my team.
-                    </p>
-                    <p>
-                      When they lost funding and I was laid off, I was devestated until I found <strong className='dark:text-neutral-100 light:text-neutral-900'>Exclusive Resorts</strong> and got my first experience on a larger team. 
-                      I&apos;m just getting started.
-                    </p>
-                  </div>
+                  <BadgeContentParagraphs paragraphs={badgeContent.role.paragraphs} variant="drawer" />
                 </div>
               )}
               
               {mobileDrawer === 'creator' && (
                 <div>
                   <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
-                    Creator
+                    {badgeContent.creator.title}
                   </h3>
-                  <div className='space-y-3 text-sm dark:text-neutral-300 light:text-neutral-700'>
-                    <p>
-                      I started creating in high school, making social media ads and videos to <strong className='dark:text-neutral-100 light:text-neutral-900'>change the culture</strong> and 
-                      push school spirit. Taught myself Photoshop, Illustrator, and Premiere Pro from scratch.
-                    </p>
-                    <p>
-                      In college, I picked up a minor in <strong className='dark:text-neutral-100 light:text-neutral-900'>Creative Technology & Design</strong>, 
-                      connecting my CS skills to the creator space. I kept building, designing ads for CU Boulder Barbell and collaborating with sponsors on joint posts.
-                    </p>
-                    <p>
-                      Now I create <strong className='dark:text-neutral-100 light:text-neutral-900'>digital experiences</strong> that engage, convert, and inspire.
-                    </p>
-                  </div>
+                  <BadgeContentParagraphs paragraphs={badgeContent.creator.paragraphs} variant="drawer" />
                 </div>
               )}
               
               {mobileDrawer === 'location' && (
                 <div>
                   <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
-                    Broomfield, CO
+                    {badgeContent.location.title}
                   </h3>
-                  <div className='space-y-3 text-sm dark:text-neutral-300 light:text-neutral-700'>
-                    <p>
-                      I&apos;m a <strong className='dark:text-neutral-100 light:text-neutral-900'>Colorado native,</strong> Born and raised in Broomfield. 
-                      I went to the same K-12 school my whole life and found my love for community through student leadership and community involvement.
-                    </p>
-                    <p>
-                      That&apos;s where I got into <strong className='dark:text-neutral-100 light:text-neutral-900'>event planning</strong> and developed an obsession with the details. 
-                      At <strong className='dark:text-neutral-100 light:text-neutral-900'>CU Boulder</strong>, I applied those same ideas to CU Boulder Barbell, which we founded and grew into a nonprofit club with tax-exempt status and 100+ active members.
-                    </p>
-                    <p>
-                      I&apos;ve worked in and around Denver my whole life and love it. I&apos;m a big people person and care deeply about <strong className='dark:text-neutral-100 light:text-neutral-900'>community</strong>. This is home.
-                    </p>
-                  </div>
+                  <BadgeContentParagraphs paragraphs={badgeContent.location.paragraphs} variant="drawer" />
                   <button 
                     type="button"
                     onClick={handleLocationClick}
@@ -744,29 +711,9 @@ export default function AboutMe() {
               {mobileDrawer === 'philosophy' && (
                 <div>
                   <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
-                    Change the Culture
+                    {badgeContent.philosophy.title}
                   </h3>
-                  <div className='space-y-3 text-sm dark:text-neutral-300 light:text-neutral-700'>
-                    <p>
-                      <strong className='dark:text-neutral-100 light:text-neutral-900'>Change the Culture.</strong> That&apos;s my life mantra. 
-                    </p>
-                    <p>
-                      Culture isn&apos;t a slogan or a set of values on a wall. It&apos;s how people act under pressure, how decisions get made when the answer isn&apos;t obvious, 
-                      and what behavior gets tolerated when things are hard.
-                    </p>
-                    <p>
-                      Changing culture is <strong className='dark:text-neutral-100 light:text-neutral-900'>uncomfortable work</strong>. It demands discipline, strength, and radical accountability 
-                      at the company level, the community level, and personally. I take responsibility for that and build it directly into how I operate.
-                    </p>
-                    <p>
-                      I value clarity, respect, detail, doing the right thing, and refusing to cut corners. I&apos;ve applied that mindset across software, retail, and travel/hospitality 
-                      environments where execution, standards, and customer experience matter.
-                    </p>
-                    <p>
-                      I&apos;m a <strong className='dark:text-neutral-100 light:text-neutral-900'>creator</strong> at heart: 
-                      building software, digital experiences, teams, and cultures that don&apos;t happen by accident and actually last.
-                    </p>
-                  </div>
+                  <BadgeContentParagraphs paragraphs={badgeContent.philosophy.paragraphs} variant="drawer" />
                 </div>
               )}
             </div>

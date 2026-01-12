@@ -67,10 +67,10 @@ export default function Navbar() {
   }
 
   const navTabs = [
-    { label: 'Home', href: '/', description: 'About Me' },
-    { label: 'Projects', href: '/projects', description: 'Full Stack / SWE Projects' },
+    { label: 'Home', href: '/', description: 'About Me, My Journey, and Experience' },
+    { label: 'Software', href: '/software', description: 'Full Stack & Software Engineering Projects' },
     { label: 'Design', href: '/design', description: 'Creative Technology & Design Projects' },
-    { label: 'Fitness', href: '/fitness', description: 'Powerlifting & Fitness Projects' },
+    { label: 'Fitness', href: '/fitness', description: 'Powerlifting Stats & Meets, Events, and Iron Fortress Powerlifting' },
   ]
 
   return (
