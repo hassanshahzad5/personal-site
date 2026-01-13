@@ -98,7 +98,7 @@ const badgeContent = {
     title: 'Change the Culture',
     paragraphs: [
       <><strong>This is my life mantra.</strong></>,
-      <>Culture isn&apos;t an abstract idea or a slogan or a set of values on a wall. It&apos;s revelealed in how people act under pressure, the decisions that get made when the answer isn&apos;t obvious, and in what gets tolerated when things get hard and doing the right thing is uncomfortable.</>,
+      <>Culture isn&apos;t an abstract idea or a slogan or a set of values on a wall. It&apos;s revealed in how people act under pressure, the decisions that get made when the answer isn&apos;t obvious, and in what gets tolerated when things get hard and doing the right thing is uncomfortable.</>,
       <><strong>Changing culture is slow, uncomfortable, and necessary work</strong>. It starts with individuals, compounds through teams and communities, and ultimately shapes the systems and outcomes that affect the world at large. It demands vigilance, consistency, discipline, attention to detail, and radical accountability at every level.</>,
       <>I take responsibility for that work and integrate this mindset into how I operate - through leadership, software, and design - across luxury goods and services environments, fitness organizations, and other communities where execution, high standards, and customer experience matter.</>,
       <>Great people, teams, and cultures don&apos;t come to be by accident. I build them by holding myself and those around me to a <strong>consistently higher standard</strong>.</>,
