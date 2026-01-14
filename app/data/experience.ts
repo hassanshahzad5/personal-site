@@ -4,7 +4,10 @@ export const experienceData = [
     state: 'professional',
     data: [
       {
-        photo: '/logos/exclusiveresorts.png',
+        photo: {
+          light: '/logos/companies/exclusiveresorts-black.png',
+          dark: '/logos/companies/exclusiveresorts-white.png',
+        },
         altPhotoText: 'Logo - Exclusive Resorts',
         company: 'Exclusive Resorts',
         website: 'https://exclusiveresorts.com',
@@ -35,7 +38,10 @@ export const experienceData = [
         display: true,
       },
       {
-        photo: '/logos/secondedition.png',
+        photo: {
+          light: '/logos/companies/secondedition-black.png',
+          dark: '/logos/companies/secondedition-white.png',
+        },
         altPhotoText: 'Logo - Second Edition, LLC',
         company: 'Second Edition, LLC',
         website: 'https://secondedition.co',
@@ -66,7 +72,10 @@ export const experienceData = [
         display: true,
       },
       {
-        photo: '/logos/nist.svg',
+        photo: {
+          light: '/logos/companies/nist-black.png',
+          dark: '/logos/companies/nist-white.png',
+        },
         altPhotoText: 'Logo - National Institute of Standards & Technology',
         company: 'National Institute of Standards & Technology',
         website: 'https://nist.gov',
@@ -89,7 +98,7 @@ export const experienceData = [
     state: 'education',
     data: [
       {
-        photo: '/logos/cuboulder.png',
+        photo: '/logos/education/cuboulder.png',
         altPhotoText: 'Logo - University of Colorado Boulder',
         company: 'University of Colorado - Boulder',
         website: 'https://colorado.edu',
@@ -112,7 +121,10 @@ export const experienceData = [
     state: 'leadership',
     data: [
       {
-        photo: '/logos/secondedition.png',
+        photo: {
+          light: '/logos/companies/secondedition-black.png',
+          dark: '/logos/companies/secondedition-white.png',
+        },
         altPhotoText: 'Logo - Second Edition, LLC',
         company: 'Second Edition, LLC',
         website: 'https://secondedition.co',
@@ -140,7 +152,7 @@ export const experienceData = [
         display: true,
       },
       {
-        photo: '/logos/cubarbell.png',
+        photo: '/logos/organizations/cubarbell.png',
         altPhotoText: 'Logo - CU Boulder Barbell, NPO',
         company: 'CU Boulder Barbell, NPO',
         website: 'https://cubarbell.com',

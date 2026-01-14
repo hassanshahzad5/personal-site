@@ -36,7 +36,7 @@ const tagIcons: Record<string, React.ReactNode> = {
   'Lab': <MdScience className='w-3 h-3' />,
   'Personal': <FiHeart className='w-3 h-3' />,
   'Cultural Theory': <FiUsers className='w-3 h-3' />,
-  'iOS Design': <MdPhoneIphone className='w-3 h-3' />,
+  'Adobe Photoshop Mix - iOS': <MdPhoneIphone className='w-3 h-3' />,
   'Branding': <MdGridOn className='w-3 h-3' />,
   'Logo Design': <MdGridOn className='w-3 h-3' />,
 };

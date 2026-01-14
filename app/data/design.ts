@@ -17,9 +17,9 @@ export const personalProjects: ProjectCategory[] = [
     projects: [
       {
         id: 'change-the-culture',
-        title: 'Change the Culture',
-        description: 'A self-initiated project exploring Raimon Panikkar\'s 29 ways to change culture. Created as a series of design cards visualizing each method of cultural transformation. Made using an iOS design app in 2020 as part of learning how to effect meaningful change in communities and organizations.',
-        tags: ['Personal', 'Cultural Theory', 'iOS Design'],
+        title: 'How to Change the Culture',
+        description: 'A self-initiated project exploring Spanish priest, theologian, scholar, chemist, and philosopher Raimon Panikkar\'s 29 ways to change culture. Created as a series of design cards visualizing each method of cultural transformation. Made using Adobe Photoshop Mix in 2020 as part of learning how to effect meaningful change in communities and organizations.',
+        tags: ['Adobe Photoshop Mix - iOS', 'Personal', 'Cultural Theory'],
         pages: [
           `${PERSONAL_PATH}/change-the-culture/00-model-of-cultural-change.jpg`,
           `${PERSONAL_PATH}/change-the-culture/00-summary.jpg`,

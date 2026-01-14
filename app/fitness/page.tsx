@@ -331,14 +331,14 @@ function FitnessContent() {
     <div className='flex flex-col items-center justify-center py-12 text-center'>
       <div className='mb-4'>
         <Image
-          src='/logos/ironfortress-white.png'
+          src='/logos/organizations/ironfortress-white.png'
           alt='Iron Fortress Powerlifting logo'
           width={120}
           height={120}
           className='hidden dark:block'
         />
         <Image
-          src='/logos/ironfortress-black.png'
+          src='/logos/organizations/ironfortress-black.png'
           alt='Iron Fortress Powerlifting logo'
           width={120}
           height={120}
@@ -392,7 +392,7 @@ function FitnessContent() {
       location: 'Denver, CO',
       type: 'Mock Meet',
       raised: '$25k+',
-      logo: '/logos/meet-coloradocollegiateshowdown2025.png',
+      logo: '/logos/meets/meet-coloradocollegiateshowdown2025.png',
       stats: {
         totalLifters: 63,
         teams: 5,
@@ -411,7 +411,7 @@ function FitnessContent() {
       location: 'Gunbarrel, CO',
       type: 'Mock Meet',
       raised: '$10k+',
-      logo: '/logos/meet-coloradocollegiateshowdown2024.png',
+      logo: '/logos/meets/meet-coloradocollegiateshowdown2024.png',
       stats: {
         totalLifters: 29,
         teams: 4,
