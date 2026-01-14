@@ -1,9 +1,9 @@
 'use client'
 
 import { useSyncExternalStore } from 'react';
-import ExperienceChip from '../components/experienceChip'
+import ExperienceChip from './experienceChip'
 import { experienceData } from '../data/experience'
-import Tabs from '../components/tabs'
+import Tabs from './tabs'
 
 const subscribe = () => () => {};
 const getSnapshot = () => true;
@@ -42,14 +42,14 @@ function renderExperienceContent(tab: ExperienceTab) {
   ));
 }
 
-export default function Experience() {
+export default function ExperienceSection() {
   const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
     <section className={`w-full flex flex-col justify-center sm:justify-between items-center card p-5 transition-all duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-      <h1 className='text-xl sm:text-2xl font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
+      <h2 className='text-xl sm:text-2xl font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
         Experience
-      </h1>
+      </h2>
 
       <Tabs tabs={EXPERIENCE_TABS} defaultTab='professional'>
         {renderExperienceContent}

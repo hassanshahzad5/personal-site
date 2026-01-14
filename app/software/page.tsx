@@ -16,9 +16,9 @@ export default function Software() {
       {/* Card with Header and Content */}
       <div className={`w-full flex flex-col justify-center sm:justify-between items-center card p-5 transition-all duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
         {/* Section Header */}
-        <h2 className='text-xl sm:text-2xl font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
+        <h1 className='text-xl sm:text-2xl font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
           Software
-        </h2>
+        </h1>
 
         {/* Coming Soon Content */}
         <div className='w-full flex flex-col items-center justify-center py-12 text-center'>

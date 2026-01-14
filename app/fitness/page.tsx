@@ -599,9 +599,9 @@ function FitnessContent() {
   return (
     <section className='custom-section'>
       <div className={`w-full flex flex-col justify-center sm:justify-between items-center card p-5 transition-all duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-        <h2 className='text-xl sm:text-2xl font-semibold dark:text-neutral-100 light:text-neutral-900 mb-1'>
+        <h1 className='text-xl sm:text-2xl font-semibold dark:text-neutral-100 light:text-neutral-900 mb-1'>
           Fitness
-        </h2>
+        </h1>
         <p className='text-sm dark:text-neutral-500 light:text-neutral-500 mb-3 text-center w-full'>
           Building Iron Fortress Powerlifting · Former President of CU Boulder Barbell
         </p>
@@ -646,9 +646,9 @@ export default function FitnessPage() {
     <Suspense fallback={
       <section className='custom-section'>
         <div className='w-full flex flex-col justify-center sm:justify-between items-center card p-5 opacity-0'>
-          <h2 className='text-xl sm:text-2xl font-semibold dark:text-neutral-100 light:text-neutral-900 mb-1'>
+          <h1 className='text-xl sm:text-2xl font-semibold dark:text-neutral-100 light:text-neutral-900 mb-1'>
             Fitness
-          </h2>
+          </h1>
         </div>
       </section>
     }>
