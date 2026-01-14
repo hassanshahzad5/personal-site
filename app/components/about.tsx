@@ -334,7 +334,7 @@ export default function AboutMe() {
                               border dark:border-neutral-700 light:border-neutral-300
                               shadow-sm whitespace-nowrap'>
                 <span className={`w-2 h-2 rounded-full shrink-0 ${status.color} ${status.pulse ? 'animate-pulse' : ''}`} />
-                <span className='text-[10px] font-medium dark:text-neutral-300 light:text-neutral-600'>
+                <span className='text-xs font-medium dark:text-neutral-300 light:text-neutral-600'>
                   {status.text}
                 </span>
               </div>
@@ -407,7 +407,7 @@ export default function AboutMe() {
                                    border dark:border-neutral-700/50 light:border-neutral-300'
                       >
                         <span className='font-semibold text-xs leading-none tabular-nums dark:text-neutral-200 light:text-neutral-700'>{lift.value}</span>
-                        <span className='text-[9px] leading-none dark:text-neutral-500 light:text-neutral-400 mt-1'>{lift.label}</span>
+                        <span className='text-xs leading-none dark:text-neutral-500 light:text-neutral-400 mt-1'>{lift.label}</span>
                       </div>
                     ))}
                   </div>
@@ -420,12 +420,12 @@ export default function AboutMe() {
                                    border dark:border-neutral-700/50 light:border-neutral-300'
                       >
                         <span className='font-semibold text-xs leading-none tabular-nums dark:text-neutral-200 light:text-neutral-700'>{lift.value}</span>
-                        <span className='text-[9px] leading-none dark:text-neutral-500 light:text-neutral-400 mt-1'>{lift.label}</span>
+                        <span className='text-xs leading-none dark:text-neutral-500 light:text-neutral-400 mt-1'>{lift.label}</span>
                       </div>
                     ))}
                   </div>
 
-                  <div className='flex items-center justify-between text-[10px] dark:text-neutral-400 light:text-neutral-500 mb-3'>
+                  <div className='flex items-center justify-between text-xs dark:text-neutral-400 light:text-neutral-500 mb-3'>
                     <span>{profileImages[profileIndex].tooltip.recordCount} State Records</span>
                     <span>{profileImages[profileIndex].tooltip.meetCount} Competitions</span>
                   </div>
@@ -557,7 +557,7 @@ export default function AboutMe() {
                          ${showLocation ? 'dark:bg-neutral-700/60 light:bg-neutral-200' : ''}`}
             >
               <MdLocationPin className='w-3 h-3' aria-hidden="true" />
-              <span className='xl:underline xl:underline-offset-2'>Broomfield, CO</span>
+              <span>Broomfield, CO</span>
             </button>
             
             {isDesktop && showLocation && (
@@ -570,6 +570,18 @@ export default function AboutMe() {
                 onMouseLeave={handleLocationTooltipLeave}
               >
                 <BadgeContentParagraphs paragraphs={badgeContent.location.paragraphs} variant="tooltip" />
+                <button 
+                  type="button"
+                  onClick={handleLocationClick}
+                  aria-label="View Broomfield, Colorado on Google Maps (opens in new tab)"
+                  className='mt-3 w-full py-2 rounded-md text-xs font-medium
+                             dark:bg-neutral-800 dark:text-neutral-100 
+                             light:bg-neutral-100 light:text-neutral-900
+                             hover:dark:bg-neutral-700 hover:light:bg-neutral-200
+                             transition-colors'
+                >
+                  View on Google Maps →
+                </button>
                 <div className='absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 
                                 dark:bg-neutral-900 light:bg-white
                                 dark:border-l dark:border-t dark:border-neutral-700 
@@ -672,27 +684,27 @@ export default function AboutMe() {
             <div className='px-5 pb-8 max-h-[70vh] overflow-y-auto'>
               {mobileDrawer === 'role' && (
                 <div>
-                  <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
+                  <h2 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
                     {badgeContent.role.title}
-                  </h3>
+                  </h2>
                   <BadgeContentParagraphs paragraphs={badgeContent.role.paragraphs} variant="drawer" />
                 </div>
               )}
               
               {mobileDrawer === 'creator' && (
                 <div>
-                  <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
+                  <h2 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
                     {badgeContent.creator.title}
-                  </h3>
+                  </h2>
                   <BadgeContentParagraphs paragraphs={badgeContent.creator.paragraphs} variant="drawer" />
                 </div>
               )}
               
               {mobileDrawer === 'location' && (
                 <div>
-                  <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
+                  <h2 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
                     {badgeContent.location.title}
-                  </h3>
+                  </h2>
                   <BadgeContentParagraphs paragraphs={badgeContent.location.paragraphs} variant="drawer" />
                   <button 
                     type="button"
@@ -710,9 +722,9 @@ export default function AboutMe() {
               
               {mobileDrawer === 'philosophy' && (
                 <div>
-                  <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
+                  <h2 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-3'>
                     {badgeContent.philosophy.title}
-                  </h3>
+                  </h2>
                   <BadgeContentParagraphs paragraphs={badgeContent.philosophy.paragraphs} variant="drawer" />
                 </div>
               )}

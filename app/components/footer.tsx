@@ -74,10 +74,10 @@ export default function Footer() {
                      dark:text-neutral-500 light:text-neutral-500
                      border dark:border-neutral-700/50 light:border-neutral-300/50
                      backdrop-blur-sm transition-all duration-200'
-          aria-label='Download resume (opens in new tab)'
+          aria-label='Download resume PDF (opens in new tab)'
         >
           <AiOutlineDownload className='w-4 h-4' aria-hidden="true"/>
-          Resume
+          Resume (PDF)
         </Link>
       </nav>
 

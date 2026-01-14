@@ -50,9 +50,9 @@ function FitnessContent() {
     <div className='flex flex-col gap-6'>
       <div>
         <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4'>
-          <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 text-center sm:text-left'>
+          <h2 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 text-center sm:text-left'>
             Personal Bests
-          </h3>
+          </h2>
           
           <div className='flex items-center justify-center sm:justify-end mt-2 sm:mt-0'>
             <div 
@@ -105,9 +105,9 @@ function FitnessContent() {
             >
               <span className='text-sm sm:text-base font-semibold dark:text-neutral-100 light:text-neutral-900 tabular-nums'>
                 {lift.value}
-                <span className='text-[10px] sm:text-xs font-normal ml-0.5 dark:text-neutral-500 light:text-neutral-500'>{unit}</span>
+                <span className='text-xs font-normal ml-0.5 dark:text-neutral-500 light:text-neutral-500'>{unit}</span>
               </span>
-              <span className='text-[10px] sm:text-xs dark:text-neutral-500 light:text-neutral-500 mt-0.5'>
+              <span className='text-xs dark:text-neutral-500 light:text-neutral-500 mt-0.5'>
                 {lift.label}
               </span>
             </div>
@@ -126,9 +126,9 @@ function FitnessContent() {
             >
               <span className='text-sm sm:text-base font-semibold dark:text-neutral-100 light:text-neutral-900 tabular-nums'>
                 {lift.value}
-                {lift.showUnit && <span className='text-[10px] sm:text-xs font-normal ml-0.5 dark:text-neutral-500 light:text-neutral-500'>{unit}</span>}
+                {lift.showUnit && <span className='text-xs font-normal ml-0.5 dark:text-neutral-500 light:text-neutral-500'>{unit}</span>}
               </span>
-              <span className='text-[10px] sm:text-xs dark:text-neutral-500 light:text-neutral-500 mt-0.5'>
+              <span className='text-xs dark:text-neutral-500 light:text-neutral-500 mt-0.5'>
                 {lift.label}
               </span>
             </div>
@@ -139,9 +139,9 @@ function FitnessContent() {
       <div className='border-t dark:border-neutral-800 light:border-neutral-200'></div>
 
       <div>
-        <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 text-center sm:text-left mb-4'>
+        <h2 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 text-center sm:text-left mb-4'>
           Records
-        </h3>
+        </h2>
         
         <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
           {bests.records.map((record, idx) => (
@@ -156,16 +156,16 @@ function FitnessContent() {
               <div className='flex items-center justify-between gap-4'>
                 <div className='flex-1 min-w-0'>
                   <div className='flex items-center gap-2 mb-1'>
-                    <span className='text-[10px] uppercase tracking-wider dark:text-neutral-500 light:text-neutral-500'>
+                    <span className='text-xs uppercase tracking-wider dark:text-neutral-500 light:text-neutral-500'>
                       {record.type}
                     </span>
-                    <span className='text-[10px] dark:text-neutral-600 light:text-neutral-400'>
+                    <span className='text-xs dark:text-neutral-600 light:text-neutral-400'>
                       {formatDate(record.date, { month: 'short', year: 'numeric' })}
                     </span>
                   </div>
-                  <h4 className='text-base font-semibold dark:text-neutral-100 light:text-neutral-900 truncate'>
+                  <h3 className='text-base font-semibold dark:text-neutral-100 light:text-neutral-900 truncate'>
                     {record.lift}
-                  </h4>
+                  </h3>
                   <p className='text-xs dark:text-neutral-500 light:text-neutral-500 mt-0.5'>
                     {record.division} · {record.weightClass}
                   </p>
@@ -207,9 +207,9 @@ function FitnessContent() {
       <div className='border-t dark:border-neutral-800 light:border-neutral-200'></div>
 
       <div>
-        <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 text-center sm:text-left mb-4'>
+        <h2 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 text-center sm:text-left mb-4'>
           Competitions
-        </h3>
+        </h2>
 
         <div className='flex flex-col'>
           {bests.meets.map((meet, idx) => {
@@ -230,7 +230,7 @@ function FitnessContent() {
                   
                   <div className='sm:ml-7 flex flex-col mb-3'>
                     <div className='text-center sm:text-left'>
-                      <h4 className='text-lg sm:text-xl font-semibold dark:text-neutral-100 light:text-neutral-900'>
+                      <h3 className='text-lg sm:text-xl font-semibold dark:text-neutral-100 light:text-neutral-900'>
                         {meet.usaplUrl ? (
                           <a
                             href={meet.usaplUrl}
@@ -244,14 +244,14 @@ function FitnessContent() {
                         ) : (
                           meet.name
                         )}
-                      </h4>
+                      </h3>
                     </div>
                     
                     <div className='flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mt-2'>
                       {meet.placements.map((p, pIdx) => (
                         <span
                           key={pIdx}
-                          className={`text-[11px] px-1.5 py-0.5 rounded border
+                          className={`text-xs px-1.5 py-0.5 rounded border
                             ${p.place === 1 
                               ? 'dark:bg-amber-900/30 light:bg-amber-50 dark:text-amber-300 light:text-amber-700 dark:border-amber-700/40 light:border-amber-300'
                               : p.place === 2 
@@ -282,7 +282,7 @@ function FitnessContent() {
                           <span className='text-xs font-medium dark:text-neutral-300 light:text-neutral-700 tabular-nums'>
                             {lift.value}{lift.showUnit && unit}
                           </span>
-                          <span className='text-[9px] dark:text-neutral-500 light:text-neutral-500 mt-0.5'>{lift.label}</span>
+                          <span className='text-xs dark:text-neutral-500 light:text-neutral-500 mt-0.5'>{lift.label}</span>
                         </div>
                       ))}
                     </div>
@@ -332,22 +332,22 @@ function FitnessContent() {
       <div className='mb-4'>
         <Image
           src='/logos/ironfortress-white.png'
-          alt='Iron Fortress Powerlifting'
+          alt='Iron Fortress Powerlifting logo'
           width={120}
           height={120}
           className='hidden dark:block'
         />
         <Image
           src='/logos/ironfortress-black.png'
-          alt='Iron Fortress Powerlifting'
+          alt='Iron Fortress Powerlifting logo'
           width={120}
           height={120}
           className='block dark:hidden'
         />
       </div>
-      <h3 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-2'>
+      <h2 className='text-lg font-semibold dark:text-neutral-100 light:text-neutral-900 mb-2'>
         Iron Fortress Powerlifting
-      </h3>
+      </h2>
       <p className='text-sm dark:text-neutral-500 light:text-neutral-500 max-w-md mb-4'>
         Content coming soon. Transformations, philosophy, and team highlights.
       </p>
@@ -430,23 +430,23 @@ function FitnessContent() {
       <div className='grid grid-cols-2 sm:grid-cols-5 gap-2'>
         <div className='flex flex-col items-center justify-center p-3 rounded-md min-h-[64px] dark:bg-neutral-800/30 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200'>
           <span className='text-xl sm:text-2xl font-bold dark:text-neutral-100 light:text-neutral-900 tabular-nums'>2</span>
-          <span className='text-[10px] sm:text-xs dark:text-neutral-500 light:text-neutral-500'>Events</span>
+          <span className='text-xs dark:text-neutral-500 light:text-neutral-500'>Events</span>
         </div>
         <div className='flex flex-col items-center justify-center p-3 rounded-md min-h-[64px] dark:bg-neutral-800/30 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200'>
           <span className='text-xl sm:text-2xl font-bold dark:text-neutral-100 light:text-neutral-900 tabular-nums'>92</span>
-          <span className='text-[10px] sm:text-xs dark:text-neutral-500 light:text-neutral-500'>Lifters</span>
+          <span className='text-xs dark:text-neutral-500 light:text-neutral-500'>Lifters</span>
         </div>
         <div className='flex flex-col items-center justify-center p-3 rounded-md min-h-[64px] dark:bg-neutral-800/30 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200'>
           <span className='text-xl sm:text-2xl font-bold dark:text-neutral-100 light:text-neutral-900 tabular-nums'>67</span>
-          <span className='text-[10px] sm:text-xs dark:text-neutral-500 light:text-neutral-500'>Volunteers</span>
+          <span className='text-xs dark:text-neutral-500 light:text-neutral-500'>Volunteers</span>
         </div>
         <div className='flex flex-col items-center justify-center p-3 rounded-md min-h-[64px] dark:bg-neutral-800/30 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200'>
           <span className='text-xl sm:text-2xl font-bold dark:text-neutral-100 light:text-neutral-900 tabular-nums'>38</span>
-          <span className='text-[10px] sm:text-xs dark:text-neutral-500 light:text-neutral-500'>Sponsors</span>
+          <span className='text-xs dark:text-neutral-500 light:text-neutral-500'>Sponsors</span>
         </div>
         <div className='col-span-2 sm:col-span-1 flex flex-col items-center justify-center p-3 rounded-md min-h-[64px] dark:bg-neutral-800/30 light:bg-neutral-50 border dark:border-neutral-800 light:border-neutral-200'>
           <span className='text-xl sm:text-2xl font-bold dark:text-neutral-100 light:text-neutral-900 tabular-nums'>$35k+</span>
-          <span className='text-[10px] sm:text-xs dark:text-neutral-500 light:text-neutral-500'>Raised</span>
+          <span className='text-xs dark:text-neutral-500 light:text-neutral-500'>Raised</span>
         </div>
       </div>
 
@@ -488,9 +488,9 @@ function FitnessContent() {
                     <p className='text-sm dark:text-neutral-500 light:text-neutral-500'>
                       {formatDate(meet.date, { month: 'long', day: 'numeric', year: 'numeric' })}
                     </p>
-                    <h4 className='text-lg sm:text-xl font-semibold dark:text-neutral-100 light:text-neutral-900 mt-0.5'>
+                    <h2 className='text-lg sm:text-xl font-semibold dark:text-neutral-100 light:text-neutral-900 mt-0.5'>
                       {meet.name}
-                    </h4>
+                    </h2>
                     {meet.subtitle && (
                       <p className='text-sm italic dark:text-neutral-400 light:text-neutral-600'>
                         {meet.subtitle}
@@ -503,22 +503,22 @@ function FitnessContent() {
                 </div>
 
                 <div className='grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:justify-start gap-1.5 mb-3'>
-                  <span className='px-2 py-1 text-[11px] sm:text-xs rounded dark:bg-neutral-800/60 light:bg-neutral-100 dark:text-neutral-300 light:text-neutral-700 border dark:border-neutral-700/50 light:border-neutral-300/50 text-center'>
+                  <span className='px-2 py-1 text-xs rounded dark:bg-neutral-800/60 light:bg-neutral-100 dark:text-neutral-300 light:text-neutral-700 border dark:border-neutral-700/50 light:border-neutral-300/50 text-center'>
                     {meet.stats.totalLifters} Lifters
                   </span>
-                  <span className='px-2 py-1 text-[11px] sm:text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
+                  <span className='px-2 py-1 text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
                     {meet.stats.teams} Teams
                   </span>
-                  <span className='px-2 py-1 text-[11px] sm:text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
+                  <span className='px-2 py-1 text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
                     {meet.stats.volunteers} Staff
                   </span>
-                  <span className='px-2 py-1 text-[11px] sm:text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
+                  <span className='px-2 py-1 text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
                     {meet.stats.sessions} Sessions / {meet.stats.flights} Flights
                   </span>
-                  <span className='px-2 py-1 text-[11px] sm:text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
+                  <span className='px-2 py-1 text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
                     {meet.stats.sponsors} Sponsors
                   </span>
-                  <span className='px-2 py-1 text-[11px] sm:text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
+                  <span className='px-2 py-1 text-xs rounded dark:bg-neutral-800/40 light:bg-neutral-50 dark:text-neutral-400 light:text-neutral-600 border dark:border-neutral-800 light:border-neutral-200 text-center'>
                     {meet.raised} Raised
                   </span>
                 </div>

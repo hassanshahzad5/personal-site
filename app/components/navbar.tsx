@@ -167,10 +167,10 @@ export default function Navbar() {
                        dark:hover:text-neutral-100 light:hover:text-neutral-900
                        border dark:border-neutral-700/50 light:border-neutral-300/50
                        backdrop-blur-sm transition-all duration-200'
-            aria-label="Download resume (opens in new tab)"
+            aria-label="Download resume PDF (opens in new tab)"
           >
             <AiOutlineDownload className='w-4 h-4' aria-hidden="true"/>
-            Resume
+            Resume (PDF)
           </button>
           
           <button 
@@ -346,10 +346,10 @@ export default function Navbar() {
                        dark:text-neutral-100 light:text-neutral-900
                        border dark:border-neutral-700 light:border-neutral-300
                        transition-colors duration-200'
-            aria-label="Download resume (opens in new tab)"
+            aria-label="Download resume PDF (opens in new tab)"
           >
             <AiOutlineDownload className='w-4 h-4' aria-hidden="true"/>
-            Resume
+            Resume (PDF)
           </button>
         </div>
       </div>

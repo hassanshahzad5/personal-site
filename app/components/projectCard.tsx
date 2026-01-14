@@ -51,7 +51,7 @@ function TagBadge({ tag, size = 'sm' }: { tag: string; size?: 'sm' | 'md' }) {
                   dark:bg-neutral-800/60 light:bg-neutral-100
                   dark:text-neutral-300 light:text-neutral-600
                   border dark:border-neutral-700/50 light:border-neutral-300/50
-                  ${isSmall ? 'text-[10px] px-2 py-0.5' : 'text-xs px-2.5 py-1'}`}
+                  ${isSmall ? 'text-xs px-2 py-0.5' : 'text-xs px-2.5 py-1'}`}
     >
       {icon}
       {tag}
@@ -83,17 +83,17 @@ export default function ProjectCard({ project, fullWidth = false }: ProjectCardP
                           ${project.padImages ? 'p-3' : ''}`}>
             <Image
               src={thumbnailSrc}
-              alt={project.title}
+              alt={`${project.title} thumbnail`}
               fill
               className={`object-contain group-hover:scale-105 transition-transform duration-300 ${project.padImages ? 'p-2' : ''}`}
             />
           </div>
         )}
 
-        <h4 className='font-semibold dark:text-neutral-100 light:text-neutral-900 mb-1
+        <h3 className='font-semibold dark:text-neutral-100 light:text-neutral-900 mb-1
                        group-hover:dark:text-neutral-50 transition-colors'>
           {project.title}
-        </h4>
+        </h3>
 
         <p className='text-sm dark:text-neutral-400 light:text-neutral-600 line-clamp-2 mb-2'>
           {project.description}
@@ -105,7 +105,7 @@ export default function ProjectCard({ project, fullWidth = false }: ProjectCardP
               <TagBadge key={tag} tag={tag} size='sm' />
             ))}
             {project.tags.length > 3 && (
-              <span className='text-[10px] dark:text-neutral-500 light:text-neutral-400'>
+              <span className='text-xs dark:text-neutral-500 light:text-neutral-400'>
                 +{project.tags.length - 3}
               </span>
             )}

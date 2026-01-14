@@ -12,9 +12,9 @@ export default function ProjectGroup({ title, description, projects }: ProjectGr
   if (projects.length === 0) {
     return (
       <div className='mb-6 last:mb-0'>
-        <h3 className='text-base font-semibold dark:text-neutral-100 light:text-neutral-900 mb-2'>
+        <h2 className='text-base font-semibold dark:text-neutral-100 light:text-neutral-900 mb-2'>
           {title}
-        </h3>
+        </h2>
         {description && (
           <p className='text-sm dark:text-neutral-500 light:text-neutral-500 mb-4'>
             {description}
@@ -29,9 +29,9 @@ export default function ProjectGroup({ title, description, projects }: ProjectGr
 
   return (
     <div className='mb-6 last:mb-0'>
-      <h3 className='text-base font-semibold dark:text-neutral-100 light:text-neutral-900 mb-2'>
+      <h2 className='text-base font-semibold dark:text-neutral-100 light:text-neutral-900 mb-2'>
         {title}
-      </h3>
+      </h2>
       {description && (
         <p className='text-sm dark:text-neutral-500 light:text-neutral-500 mb-4'>
           {description}

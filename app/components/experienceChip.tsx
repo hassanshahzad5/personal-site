@@ -119,7 +119,7 @@ export default function ExperienceChip({photo, altPhotoText, company, website, l
         {/* Industry badge */}
         {industry && (
           <div className='flex justify-center sm:justify-start mb-2'>
-            <span className='text-[11px] px-1.5 py-0.5 rounded
+            <span className='text-xs px-1.5 py-0.5 rounded
                             dark:bg-neutral-800/60 light:bg-neutral-100
                             dark:text-neutral-400 light:text-neutral-600
                             border dark:border-neutral-700/50 light:border-neutral-300/50'>
