@@ -6,9 +6,11 @@ interface ProjectGroupProps {
   title: string;
   description?: string;
   projects: Project[];
+  openProjectId?: string | null;
+  onProjectOpenChange?: (projectId: string | null) => void;
 }
 
-export default function ProjectGroup({ title, description, projects }: ProjectGroupProps) {
+export default function ProjectGroup({ title, description, projects, openProjectId, onProjectOpenChange }: ProjectGroupProps) {
   if (projects.length === 0) {
     return (
       <div className='mb-6 last:mb-0'>
@@ -39,7 +41,13 @@ export default function ProjectGroup({ title, description, projects }: ProjectGr
       )}
       <div className={`grid gap-3 ${projects.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4'}`}>
         {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} fullWidth={projects.length === 1} />
+          <ProjectCard
+            key={project.id}
+            project={project}
+            fullWidth={projects.length === 1}
+            isOpen={openProjectId === project.id}
+            onOpenChange={(open) => onProjectOpenChange?.(open ? project.id : null)}
+          />
         ))}
       </div>
     </div>

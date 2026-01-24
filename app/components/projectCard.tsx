@@ -1,11 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import Modal from './modal';
-import { SiAdobeillustrator, SiAdobeindesign } from 'react-icons/si';
-import { MdTextFields, MdMenuBook, MdGridOn, MdPrint, MdScience, MdPhoneIphone } from 'react-icons/md';
-import { FiFileText, FiLayout, FiHeart, FiUsers } from 'react-icons/fi';
+import { SiAdobeillustrator, SiAdobeindesign, SiAdobephotoshop } from 'react-icons/si';
+import { MdPrint, MdPhoneIphone } from 'react-icons/md';
+import { FiTag, FiPenTool } from 'react-icons/fi';
 
 export interface Project {
   id: string;
@@ -22,23 +21,19 @@ export interface Project {
 interface ProjectCardProps {
   project: Project;
   fullWidth?: boolean;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 const tagIcons: Record<string, React.ReactNode> = {
-  'Illustrator': <SiAdobeillustrator className='w-3 h-3' />,
-  'InDesign': <SiAdobeindesign className='w-3 h-3' />,
-  'Typography': <MdTextFields className='w-3 h-3' />,
-  'Editorial': <FiFileText className='w-3 h-3' />,
-  'Type Specimen': <MdTextFields className='w-3 h-3' />,
-  'Book Design': <MdMenuBook className='w-3 h-3' />,
+  'Adobe Illustrator': <SiAdobeillustrator className='w-3 h-3' />,
+  'Adobe InDesign': <SiAdobeindesign className='w-3 h-3' />,
+  'Adobe Photoshop': <SiAdobephotoshop className='w-3 h-3' />,
+  'Adobe Photoshop Mix - iOS': <SiAdobephotoshop className='w-3 h-3' />,
+  'Social Media Marketing': <MdPhoneIphone className='w-3 h-3' />,
   'Print': <MdPrint className='w-3 h-3' />,
-  'Layout': <FiLayout className='w-3 h-3' />,
-  'Lab': <MdScience className='w-3 h-3' />,
-  'Personal': <FiHeart className='w-3 h-3' />,
-  'Cultural Theory': <FiUsers className='w-3 h-3' />,
-  'Adobe Photoshop Mix - iOS': <MdPhoneIphone className='w-3 h-3' />,
-  'Branding': <MdGridOn className='w-3 h-3' />,
-  'Logo Design': <MdGridOn className='w-3 h-3' />,
+  'Branding': <FiTag className='w-3 h-3' />,
+  'Logo Design': <FiPenTool className='w-3 h-3' />,
 };
 
 function TagBadge({ tag, size = 'sm' }: { tag: string; size?: 'sm' | 'md' }) {
@@ -59,16 +54,22 @@ function TagBadge({ tag, size = 'sm' }: { tag: string; size?: 'sm' | 'md' }) {
   );
 }
 
-export default function ProjectCard({ project, fullWidth = false }: ProjectCardProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
+export default function ProjectCard({ project, fullWidth = false, isOpen = false, onOpenChange }: ProjectCardProps) {
   const thumbnailSrc = project.thumbnail || (project.pages && project.pages[0]);
+
+  const handleOpen = () => {
+    onOpenChange?.(true);
+  };
+
+  const handleClose = () => {
+    onOpenChange?.(false);
+  };
 
   return (
     <>
       <button
         type='button'
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpen}
         className='group text-left w-full p-4 rounded-lg
                    dark:bg-neutral-800/30 light:bg-neutral-50
                    border dark:border-neutral-800 light:border-neutral-200
@@ -113,7 +114,7 @@ export default function ProjectCard({ project, fullWidth = false }: ProjectCardP
         )}
       </button>
 
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={project.title}>
+      <Modal isOpen={isOpen} onClose={handleClose} title={project.title}>
         {/* View PDF button */}
         {project.links && project.links.length > 0 && (
           <div className='flex flex-wrap gap-2 mb-3'>
